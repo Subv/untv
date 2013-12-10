@@ -1,4 +1,4 @@
-untv
-====
+UNTV - *Free Your TV*
+=====================
 
-a cross-platform open media center for home theater computers
+UNTV is a cross platform DRM-free media platform for home theater computers.

@@ -1,0 +1,29 @@
+{
+	"main": "src/index.html",
+	"name": "UNTV",
+	"description": "cross platform DRM-free media platform for home theater computers",
+	"version": "0.1.0",
+	"keywords": [""],
+	"window": {
+		"title": "UNTV",
+		"icon": "src/assets/images/icon.png",
+		"toolbar": true,
+		"frame": true,
+		"width": "",
+		"height": "",
+		"position": "center",
+		"min_height": 480,
+		"max_height": 1080,
+		"min_width": 640,
+		"max_width": 1920,
+		"fullscreen": true,
+		"show": true,
+		"kiosk": false
+	},
+	"webkit": {
+		"plugin": true
+	},
+	"dependencies": {
+		"coffee-script": "~1.6.3"
+	}
+}
