@@ -1,29 +1,51 @@
 {
-	"main": "src/index.html",
-	"name": "UNTV",
-	"description": "cross platform DRM-free media platform for home theater computers",
-	"version": "0.1.0",
-	"keywords": [""],
-	"window": {
-		"title": "UNTV",
-		"icon": "src/assets/images/icon.png",
-		"toolbar": true,
-		"frame": true,
-		"width": "",
-		"height": "",
-		"position": "center",
-		"min_height": 480,
-		"max_height": 1080,
-		"min_width": 640,
-		"max_width": 1920,
-		"fullscreen": true,
-		"show": true,
-		"kiosk": false
-	},
-	"webkit": {
-		"plugin": true
-	},
-	"dependencies": {
-		"coffee-script": "~1.6.3"
-	}
+  "main": "src/index.html",
+  "name": "UNTV",
+  "description": "drm-free media platform for home theater computers",
+  "version": "0.1.0",
+  "author": "Gordon Hall <gordon@gordonwritescode.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gordonwritescode/untv.git"
+  },
+  "license": "GPL",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "keywords": [
+    "untv",
+    "drm-free",
+    "media",
+    "player",
+    "tv"
+  ],
+  "window": {
+    "title": "UNTV",
+    "icon": "src/assets/images/icon.png",
+    "toolbar": true,
+    "frame": true,
+    "width": "",
+    "height": "",
+    "position": "center",
+    "min_height": 480,
+    "max_height": 1080,
+    "min_width": 640,
+    "max_width": 1920,
+    "fullscreen": true,
+    "show": true,
+    "kiosk": false
+  },
+  "webkit": {
+    "plugin": true
+  },
+  "dependencies": {
+    "coffee-script": "~1.6.3",
+    "peerflix": "~0.1.4",
+    "node-torrent": "~0.1.6",
+    "socket.io": "~0.9.16",
+    "request": "~2.29.0",
+    "async": "~0.2.9",
+    "jade": "~0.35.0",
+    "less": "~1.5.1"
+  }
 }
