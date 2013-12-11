@@ -12,15 +12,21 @@ and acts as the communication bus between the remote and tv player
 RemoteInterface = require "./remote-interface"
 socket_io       = require "socket.io"
 jade            = require "jade"
+coffeescript    = require "coffeescript"
 
-class RemoteServer extends EventEmitter
+class Remote extends EventEmitter
   constructor: (@port, data={}) ->
     @server = createServer (req, res) => 
-      # compile view and serve up the new remote instance
+      # get view and serve up the new remote instance
+      remote_lib = coffeescript.compile readFileSync "./remote-interface.coffee"
       view       = readFileSync "../views/remote.jade"
+      # append coffee file for remote interface
+      data.remote_interface remote_lib
+      # compile interface and serve
       @interface = jade.compile view, data
       res.end @interface
-    @sockets   = (socket_io.listen @server).sockets
+
+    @sockets = (socket_io.listen @server).sockets
     do @subscribe
   subscribe: =>
     @sockets.on "connection", (client) =>
@@ -40,7 +46,5 @@ class RemoteServer extends EventEmitter
       client.on "player:pause", (data) => @emit "player:pause", data
       client.on "player:next", (data) => @emit "player:next", data
       client.on "player:prev", (data) => @emit "player:prev", data
-      client.on "player:seek", (data) => @emit "player:seek", data
-
-    
+      client.on "player:seek", (data) => @emit "player:seek", data    
 
