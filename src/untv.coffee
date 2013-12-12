@@ -20,7 +20,7 @@ debug = (message) -> console.debug "UNTV:", message
 
 # create remote control instance
 remote = new Remote()
-remote.listen config.remote_port
+remote.server.listen config.remote_port
 
 # instantiate global menu and give it existing remote context
 menu = new GlobalMenu ($ "#menu-container"), remote
