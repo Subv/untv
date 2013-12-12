@@ -15,7 +15,7 @@ jade            = require "jade"
 coffeescript    = require "coffeescript"
 
 class Remote extends EventEmitter
-  constructor: (@port, data={}) ->
+  constructor: (data={}) ->
     @server = createServer (req, res) => 
       # get view and serve up the new remote instance
       remote_lib = coffeescript.compile readFileSync "./remote-interface.coffee"
@@ -48,3 +48,4 @@ class Remote extends EventEmitter
       client.on "player:prev", (data) => @emit "player:prev", data
       client.on "player:seek", (data) => @emit "player:seek", data    
 
+module.exports = Remote

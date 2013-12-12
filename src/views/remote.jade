@@ -8,3 +8,21 @@ html(lang="en")
 		script(type="application/javascript", src="vendor/jquery-touchswipe-1.6.5.js")
 		script #{remote_interface}
 	body
+    div#trackpad
+      aside.help
+        figure.two-finger-swipe-left
+          figcaption Two finger swipe left to close the menu
+        figure.two-finger-swipe-right
+          figcaption Two finger swipe left to open the menu
+        figure.swipe-vertical
+          figcaption Swipe up and down to scroll
+        figure.swipe-right
+          figcaption Swipe right to select
+        figure.swipe-left
+          figcaption Swipe left to go back
+    div#controls
+      input(data-action="seek", type="range")
+      button(data-action="prev")
+      button(data-action="play")
+      button(data-action="pause")
+      button(data-action="next")
