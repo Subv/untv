@@ -1,0 +1,20 @@
+extends layout
+block content
+  div#trackpad
+    aside.help
+      figure.two-finger-swipe-left
+        figcaption Two finger swipe left to close the menu
+      figure.two-finger-swipe-right
+        figcaption Two finger swipe left to open the menu
+      figure.swipe-vertical
+        figcaption Swipe up and down to scroll
+      figure.swipe-right
+        figcaption Swipe right to select
+      figure.swipe-left
+        figcaption Swipe left to go back
+  div#controls
+    input(data-action="seek", type="range")
+    button(data-action="prev") Back
+    button(data-action="play") Play
+    button(data-action="pause") Pause
+    button(data-action="next") Forward

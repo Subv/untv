@@ -24,15 +24,15 @@
     "icon": "src/assets/images/icon.png",
     "toolbar": true,
     "frame": true,
-    "width": "",
-    "height": "",
+    "width": 900,
+    "height": 400,
     "position": "center",
     "min_height": 480,
     "max_height": 1080,
     "min_width": 640,
     "max_width": 1920,
-    "fullscreen": true,
-    "show": true,
+    "fullscreen": false,
+    "show": false,
     "kiosk": false
   },
   "webkit": {
@@ -46,6 +46,9 @@
     "request": "~2.29.0",
     "async": "~0.2.9",
     "jade": "~0.35.0",
-    "less": "~1.5.1"
+    "less": "~1.5.1",
+    "express": "~3.4.7",
+    "coffeeify": "~0.5.2",
+    "browserify": "~3.2.0"
   }
 }

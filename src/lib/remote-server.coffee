@@ -6,46 +6,74 @@ Sets up HTTP server for delivering the remote control interface
 and acts as the communication bus between the remote and tv player
 ###
 
-{readFileSync}  = require "fs"
-{EventEmitter}  = require "events"
-{createServer}  = require "http"
-RemoteInterface = require "./remote-interface"
-socket_io       = require "socket.io"
-jade            = require "jade"
-coffeescript    = require "coffeescript"
+{readFileSync} = require "fs"
+{EventEmitter} = require "events"
+{createServer} = require "http"
+express        = require "express"
+socket_io      = require "socket.io"
+browserify     = require "browserify"
+coffeeify      = require "coffeeify"
 
 class Remote extends EventEmitter
-  constructor: (data={}) ->
-    @server = createServer (req, res) => 
-      # get view and serve up the new remote instance
-      remote_lib = coffeescript.compile readFileSync "./remote-interface.coffee"
-      view       = readFileSync "../views/remote.jade"
-      # append coffee file for remote interface
-      data.remote_interface remote_lib
-      # compile interface and serve
-      @interface = jade.compile view, data
-      res.end @interface
+  
+  constructor: ->
+    # create express server instance
+    @app    = do express
+    @server = createServer @app
+    # setup express configuration
+    @app.configure =>
+      @app.set "views", "#{__dirname}/remote-client/views"
+      @app.set "view engine", "jade"
+      @app.use do express.bodyParser
+      @app.use do express.methodOverride
+      # @app.use express.favicon """
+      #   #{__dirname}/remote-client/static/images/favicon.png
+      # """
+      @app.use express.static """
+        #{__dirname}/remote-client/static
+      """
 
+    # bind application route
+    @app.get "/", (req, res) ->
+      res.render "remote"
+
+    @app.get "/remote-interface.js", (req, res) ->
+      bundle = browserify "#{__dirname}/remote-client/remote-interface.coffee"
+      bundle.transform coffeeify
+      bundle.bundle (err, file) ->
+        bundle = if file then do file.toString else null
+        res.send err or bundle
+
+    # open socket connection to client
     @sockets = (socket_io.listen @server).sockets
     do @subscribe
+
   subscribe: =>
     @sockets.on "connection", (client) =>
       # inform any subscribers that the remote is connected
-      @emit "remote_connected", client
-      # global menu events
-      client.on "menu:open", (data) => @emit "menu:open", data
-      client.on "menu:close", (data) => @emit "menu:close", data
-      client.on "menu:select", (data) => @emit "menu:select", data
-      # navigation events
-      client.on "scroll:left", (data) => @emit "scroll:left", data
-      client.on "scroll:right", (data) => @emit "scroll:right", data
-      client.on "scroll:up", (data) => @emit "scroll:up", data
-      client.on "scroll:down", (data) => @emit "scroll:down", data
-      # player events
-      client.on "player:play", (data) => @emit "player:play", data
-      client.on "player:pause", (data) => @emit "player:pause", data
-      client.on "player:next", (data) => @emit "player:next", data
-      client.on "player:prev", (data) => @emit "player:prev", data
-      client.on "player:seek", (data) => @emit "player:seek", data    
+      @emit "remote:connected", client
+      # inform when disconnected
+      client.on "disconnect", => @emit "remote:disconnected"
+      # proxy these events back up to our instance listeners
+      for event_type in @events
+        client.on event_type, (data) => @emit event_type, data
+
+  events: [
+    # global menu events
+    "menu:open"
+    "menu:close"
+    "menu:select"
+    # navigation events
+    "scroll:left"
+    "scroll:right"
+    "scroll:up"
+    "scroll:down"
+    # player events
+    "player:play"
+    "player:pause"
+    "player:next"
+    "player:prev"
+    "player:seek"
+  ]
 
 module.exports = Remote

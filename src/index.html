@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
 	<title>UNTV</title>
-	
+	<link rel="stylesheet" type="text/less" href="styles/tv.less" />
+  <link rel="stylesheet" type="text/less" href="styles/tv-globalmenu.less" />
 </head>
 <body>
 	<nav id="menu-container"></nav>
   <div id="extensions-container"></div>
+  <div id="player-container"></div>
+  <div id="init-loader"></div>
   <!-- initialize application -->
   <script type="application/javascript">
-  require('coffee-script');
-  require('./untv');
+    require('coffee-script');
+    require('./untv');
   </script>
 </body>
 </html>
