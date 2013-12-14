@@ -1,6 +1,6 @@
 {
   "name": "Instant Streaming",
   "icon": false,
-  "main": "./extension",
-  "view": "./view"
+  "main": "extension.coffee",
+  "view": "view.jade"
 }

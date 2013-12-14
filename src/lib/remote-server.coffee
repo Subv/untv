@@ -55,8 +55,9 @@ class Remote extends EventEmitter
       # inform when disconnected
       client.on "disconnect", => @emit "remote:disconnected"
       # proxy these events back up to our instance listeners
-      for event_type in @events
-        client.on event_type, (data) => @emit event_type, data
+      bindings = @events.map (event) =>
+        (=> client.on event, (data) => @emit event, data)
+      bindings.forEach (bind) -> do bind
 
   events: [
     # global menu events

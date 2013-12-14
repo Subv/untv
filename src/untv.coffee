@@ -33,8 +33,8 @@ menu   = new GlobalMenu ($ "#menu-container"), remote, player
 ###
 Load Extensions
 ###
-extPath    = "#{__dirname}/lib/extensions"
-extDir     = fs.readdirSync extPath
+extPath = "#{__dirname}/lib/extensions"
+extDir  = fs.readdirSync extPath
 
 checkExtension = (path) ->
   stats = fs.statSync path

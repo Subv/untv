@@ -28,7 +28,7 @@ class GlobalMenu extends EventEmitter
   render: =>
     view_path = "#{__dirname}/../views/globalmenu.jade"
     compiled  = jade.compile fs.readFileSync view_path
-    html      = compiled items: @items
+    html      = compiled items: @extensions
     @container.html? html
     ($ "li:first-of-type", @container).addClass "has-focus"
 
@@ -36,9 +36,11 @@ class GlobalMenu extends EventEmitter
     # check manifest's main file here and store reference to it
     extension        = extend yes, {}, manifest
     init_script_path = "#{path}/#{extension.main}"
-    ext_init         = require init_script_path
-    extension.main   = new (ext_init) @remote, @player, PanelExtension
-    extension.view   = jade.compile "#{path}/#{extension.view}.jade"
+    if fs.existsSync init_script_path
+      ext_init         = require init_script_path
+      extension.main   = new (ext_init) @remote, @player, PanelExtension
+      view_raw         = fs.readFileSync "#{path}/#{extension.view}"
+      extension.view   = jade.compile view_raw.toString()
 
     @extensions.push extension if manifest and manifest.name
     do @render

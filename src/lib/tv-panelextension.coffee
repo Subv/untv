@@ -8,6 +8,8 @@ specified remote instance if given focus.
 This class should be used to inherit from when defining an extension
 ###
 
+{EventEmitter} = require "events"
+$              = require "../vendor/jquery-2.0.3.js"
 
 class PanelExtension extends EventEmitter
   constructor: ->
