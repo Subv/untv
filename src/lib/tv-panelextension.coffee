@@ -19,7 +19,7 @@ class PanelExtension extends EventEmitter
     do @onActivated if typeof @onActivated is "function"
     # figure out how to handle remote bindings here
 
-  container: ($ "#extensions_container")
+  container: ($ "#extensions-container")
   focused: no
   onActivated: null
 
