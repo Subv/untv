@@ -10,7 +10,6 @@ $          = require "./vendor/jquery-2.0.3.js"
 GlobalMenu = require "./lib/tv-globalmenu"
 Player     = require "./lib/tv-player"
 Remote     = require "./lib/remote-server"
-Extension  = require "./lib/tv-panelextension"
 config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
 gui        = global.window.nwDispatcher.requireNwGui()
 win        = gui.Window.get()
@@ -26,14 +25,14 @@ remote.server.listen config.remote_port, ->
   debug "remote listening on port #{config.remote_port}"
 
 ###
-Setup Global Menu
+Setup Global Menu and Player
 ###
-menu = new GlobalMenu ($ "#menu-container"), remote
+player = new Player ($ "#player-container")
+menu   = new GlobalMenu ($ "#menu-container"), remote, player
 
 ###
 Load Extensions
 ###
-extensions = {}
 extPath    = "#{__dirname}/lib/extensions"
 extDir     = fs.readdirSync extPath
 
@@ -49,10 +48,8 @@ registerExtension = (path) ->
   manifest = checkExtension path
   if not manifest then return
   debug "registered extension: #{manifest.name}"
-  # register extension
-  menu.addItem
-    name: manifest.name
-    icon: manifest.icon
+  # register extension with menu
+  menu.addExtension path, manifest
 
 registerExtension "#{extPath}/#{directory}" for directory, index in extDir
 

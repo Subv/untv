@@ -1,4 +1,6 @@
 {
   "name": "Instant Streaming",
-  "icon": false
+  "icon": false,
+  "main": "./extension",
+  "view": "./view"
 }

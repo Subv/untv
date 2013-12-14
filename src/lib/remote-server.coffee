@@ -62,10 +62,10 @@ class Remote extends EventEmitter
     # global menu events
     "menu:open"
     "menu:close"
-    "menu:select"
     # navigation events
-    "scroll:left"
-    "scroll:right"
+    "go:next"
+    "go:back"
+    # scroll events
     "scroll:up"
     "scroll:down"
     # player events
@@ -74,6 +74,10 @@ class Remote extends EventEmitter
     "player:next"
     "player:prev"
     "player:seek"
+    # other actions
+    "prompt:answer" # returned from `prompt:ask`
+    "confirm:answer" # returned from `confirm:ask`
+    "alert:dismissed" # returned from `alert:show`
   ]
 
 module.exports = Remote

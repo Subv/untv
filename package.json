@@ -49,6 +49,7 @@
     "less": "~1.5.1",
     "express": "~3.4.7",
     "coffeeify": "~0.5.2",
-    "browserify": "~3.2.0"
+    "browserify": "~3.2.0",
+    "node.extend": "~1.0.8"
   }
 }
