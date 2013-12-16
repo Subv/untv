@@ -14,27 +14,24 @@ config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
 gui        = global.window.nwDispatcher.requireNwGui()
 win        = gui.Window.get()
 
-# debug log wrapper
-debug = (message) -> console.debug "UNTV:", message
-
 ###
-Register Remote Control
+Setup Remote, Global Menu, and Player
 ###
 remote = new Remote()
-remote.server.listen config.remote_port, -> 
-  debug "remote listening on port #{config.remote_port}"
+player = new Player ($ "#player-container"), remote
+menu   = new GlobalMenu ($ "#menu-container"), remote, player
 
 ###
-Setup Global Menu and Player
+Register Remote Control Server
 ###
-player = new Player ($ "#player-container")
-menu   = new GlobalMenu ($ "#menu-container"), remote, player
+remote.server.listen config.remote_port, -> 
+  console.log "remote listening on port #{config.remote_port}"
 
 ###
 Load Extensions
 ###
-extPath = "#{__dirname}/lib/extensions"
-extDir  = fs.readdirSync extPath
+ext_path = "#{__dirname}/lib/extensions"
+ext_dir  = fs.readdirSync ext_path
 
 checkExtension = (path) ->
   stats = fs.statSync path
@@ -47,16 +44,22 @@ checkExtension = (path) ->
 registerExtension = (path) ->
   manifest = checkExtension path
   if not manifest then return
-  debug "registered extension: #{manifest.name}"
+  console.log "registered extension: #{manifest.name}"
   # register extension with menu
   menu.addExtension path, manifest
 
-registerExtension "#{extPath}/#{directory}" for directory, index in extDir
+registerExtension "#{extPath}/#{directory}" for directory, index in ext_dir
 
 ###
 Get User Notifications
 ###
 
+# here we want to listen for remote connections to alert
+# the user when a remote is connected
+
+# we also want to show the current time, whether or not
+# there is a network connection, and the remote control 
+# ip to use to connect to
 
 # show user interface
 do win.show
