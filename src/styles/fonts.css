@@ -1,0 +1,18 @@
+/*
+** UNTV - fonts.less
+** Author: Gordon Hall
+*/
+
+@font-face {
+  font-family: "Montserrat Subrayada";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../assets/fonts/Montserrat_Subrayada/MontserratSubrayada-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../assets/fonts/Ubuntu/Ubuntu-Regular.ttf");
+}

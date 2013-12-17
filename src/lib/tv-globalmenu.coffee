@@ -46,35 +46,42 @@ class GlobalMenu extends EventEmitter
     do @render
 
   open: =>
-    @container.addClass "visible" if not @visible
+    @container.removeClass "#{@menu_animation_out_classname}" if not @visible
+    @container.addClass "visible #{@menu_animation_in_classname}" if not @visible
     @visible = yes
 
   close: =>
-    @container.removeClass "visible" if @visible
+    @container.removeClass "#{@menu_animation_in_classname}" if @visible
+    @container.addClass "#{@menu_animation_out_classname}" if @visible
     @visible = no
 
   focusNext: =>
     next_item = @current().next()
     if next_item.length and @visible
-      @current().removeClass "has-focus"
-      next_item.addClass "has-focus"
+      @current().removeClass "has-focus #{@item_animation_classname}"
+      next_item.addClass "has-focus #{@item_animation_classname}"
 
   focusPrev: =>
     previous_item = @current().prev()
     if previous_item.length and @visible
-      @current().removeClass "has-focus"
-      previous_item.addClass "has-focus"
+      @current().removeClass "has-focus #{@item_animation_classname}"
+      previous_item.addClass "has-focus #{@item_animation_classname}"
 
   select: =>
     if not @visible then return
     index     = @current().index "li", @container
     extension = @extensions[index]
     # inject view
-    extension.main.container.html extension.view()
+    @extension_container().html extension.view()
     # call init script and close menu
     do @extensions[index].main?.activate
     do @close
 
   current: => $ "li.has-focus", @container
+
+  item_animation_classname: "pulse"
+  menu_animation_in_classname: "slideInLeft"
+  menu_animation_out_classname: "slideOutLeft"
+  extension_container: => $ "#extensions-container"
 
 module.exports = GlobalMenu
