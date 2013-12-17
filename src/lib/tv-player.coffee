@@ -56,6 +56,14 @@ class Player extends EventEmitter
   seek: (time) ->
     @active_player?.fastSeek time if time < duration
 
+  next: =>
+    # seek by increment forward
+
+  prev: =>
+    # seek by increment backward
+
+  seek_increment: 12000 # 12 secs
+
   duration: =>
     @active_player?.duration
 

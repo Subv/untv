@@ -48,7 +48,7 @@ registerExtension = (path) ->
   # register extension with menu
   menu.addExtension path, manifest
 
-registerExtension "#{extPath}/#{directory}" for directory, index in ext_dir
+registerExtension "#{ext_path}/#{directory}" for directory, index in ext_dir
 
 ###
 Get User Notifications
