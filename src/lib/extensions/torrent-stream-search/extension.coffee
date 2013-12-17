@@ -10,6 +10,6 @@ module.exports = (remote, player, PanelExtension) ->
 
   class InstantStream extends PanelExtension
     # figure out how to handle remote event listeners
-    onActivated: ->
+    onactivated: ->
       # do panel initialization here
       alert "activated!"

@@ -11,8 +11,37 @@
 }
 
 @font-face {
+  font-family: "Montserrat Subrayada";
+  font-weight: bold;
+  font-style: normal;
+  src: url("../assets/fonts/Montserrat_Subrayada/MontserratSubrayada-Bold.ttf");
+}
+
+@font-face {
   font-family: "Ubuntu";
   font-weight: normal;
   font-style: normal;
   src: url("../assets/fonts/Ubuntu/Ubuntu-Regular.ttf");
 }
+
+@font-face {
+  font-family: "Ubuntu";
+  font-weight: bold;
+  font-style: normal;
+  src: url("../assets/fonts/Ubuntu/Ubuntu-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  font-weight: normal;
+  font-style: italic;
+  src: url("../assets/fonts/Ubuntu/Ubuntu-Italic.ttf");
+}
+
+@font-face {
+  font-family: "Ubuntu";
+  font-weight: bold;
+  font-style: italic;
+  src: url("../assets/fonts/Ubuntu/Ubuntu-BoldItalic.ttf");
+}
+

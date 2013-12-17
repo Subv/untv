@@ -54,8 +54,16 @@ registerExtension "#{ext_path}/#{directory}" for directory, index in ext_dir
 Get User Notifications
 ###
 
+status_bar = $ "#status-bar"
 # here we want to listen for remote connections to alert
 # the user when a remote is connected
+remote.on "remote:connected", ->
+  ($ ".remote-connection span", status_bar).html "Remote: Connected"
+  do ($ ".remote-connection .notification", status_bar).hide
+
+remote.on "remote:disconnected", ->
+  ($ ".remote-connection span", status_bar).html "Remote: Disonnected"
+  do ($ ".remote-connection .notification", status_bar).show
 
 # we also want to show the current time, whether or not
 # there is a network connection, and the remote control 

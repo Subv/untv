@@ -47,6 +47,7 @@ class Remote extends EventEmitter
     # open socket connection to client
     @sockets = (socket_io.listen @server).sockets
     do @subscribe
+    do @bindKeyboard
 
   subscribe: =>
     @sockets.on "connection", (client) =>
@@ -58,6 +59,21 @@ class Remote extends EventEmitter
       bindings = @events.map (event) =>
         (=> client.on event, (data) => @emit event, data)
       bindings.forEach (bind) -> do bind
+
+  bindKeyboard: =>
+    keyboard = window.Mousetrap
+    if Mousetrap not of window then return
+    # setup keyboard bindings
+    keyboard.bind "up", => @emit "scroll:up"
+    keyboard.bind "down", => @emit "scroll:down"
+    keyboard.bind "left", => @emit "go:back"
+    keyboard.bind "right", => @emit "go:next"
+    keyboard.bind "m", => @emit "menu:open"
+    keyboard.bind "escape", => @emit "menu:close"
+    keyboard.bind "space", => @emit "player:play"
+    keyboard.bind ">", => @emit "player:next"
+    keyboard.bind "<", => @emit "player:prev"
+    keyboard.bind "p", => @emit "player:pause"
 
   events: [
     # global menu events

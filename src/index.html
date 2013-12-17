@@ -13,11 +13,17 @@
   <header id="status-bar">
     <ul>
       <li>12:00 AM</li>
-      <li class="remote-connection">Remote</li>
-      <li class="remote-address">127.0.0.1:8080</li>
-      <li class="internet-connection">Status: Connected</li>
+      <li class="remote-connection">
+        <span>Remote: Disconnected</span>
+        <div class="notification">
+          Connect your smartphone or tablet to continue.
+        </div>
+      </li>
+      <li class="internet-connection">
+        <span>Internet: Disconnected</span>
+        <div class="notification"></div>
+      </li>
     </ul>
-    <section id="notifications"></section>
   </header>
   <div id="extensions-container"></div>
   <div id="player-container"></div>

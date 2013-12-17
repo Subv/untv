@@ -44,14 +44,16 @@ class Player extends EventEmitter
     # otherwise go ahead and resume from where we left off if
     # there is an active media source
     if @active_player.src
+      do @container.show
       # play the media
       do @active_player.play
       # inform listeners
       @inform_interval = setInterval @informTime, 1000
 
-  pause: =>
+  pause: (minimize) =>
     do @active_player?.pause
     clearInterval @inform_interval
+    do @container.hide if minimize
 
   seek: (time) ->
     @active_player?.fastSeek time if time < duration
