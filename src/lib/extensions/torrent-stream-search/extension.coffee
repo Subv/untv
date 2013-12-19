@@ -7,4 +7,4 @@ stream them directly to the global player instance
 ###
 
 module.exports = (manifest, remote, player, view) ->
-  alert "#{manifest.name} extension loaded"
+  window.alert "#{manifest.name} extension loaded"

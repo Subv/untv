@@ -11,7 +11,6 @@ $              = require "../vendor/jquery-2.0.3.js"
 jade           = require "jade"
 fs             = require "fs"
 extend         = require "node.extend"
-PanelExtension = require "./tv-panelextension"
 
 class GlobalMenu extends EventEmitter
 
@@ -38,7 +37,7 @@ class GlobalMenu extends EventEmitter
     init_script_path = "#{path}/#{extension.main}"
     if fs.existsSync init_script_path
       ext_init       = require init_script_path
-      extension.main = ext_init extension, @remote, @player, @extension_container()
+      extension.main = ext_init
       view_raw       = fs.readFileSync "#{path}/#{extension.view}"
       extension.view = jade.compile view_raw.toString()
 
@@ -74,7 +73,8 @@ class GlobalMenu extends EventEmitter
     # inject view
     @extension_container().html extension.view()
     # call init script and close menu
-    do @extensions[index].main
+    @extension_container().html @extensions[index].view
+    @extensions[index].main extension, @remote, @player, @extension_container()
     do @close
 
   current: => $ "li.has-focus", @container

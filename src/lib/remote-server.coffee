@@ -62,7 +62,7 @@ class Remote extends EventEmitter
 
   bindKeyboard: =>
     keyboard = window.Mousetrap
-    if Mousetrap not of window then return
+    if "Mousetrap" not of window then return
     # setup keyboard bindings
     keyboard.bind "up", => @emit "scroll:up"
     keyboard.bind "down", => @emit "scroll:down"
