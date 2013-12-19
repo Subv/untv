@@ -1,4 +1,6 @@
 {
   "name": "Photo Slideshow",
-  "icon": false
+  "icon": false,
+  "main": "extension.coffee",
+  "view": "view.jade"
 }

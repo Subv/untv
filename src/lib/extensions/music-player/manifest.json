@@ -1,4 +1,6 @@
 {
   "name": "Music Player",
-  "icon": false
+  "icon": false,
+  "main": "extension.coffee",
+  "view": "view.jade"
 }
