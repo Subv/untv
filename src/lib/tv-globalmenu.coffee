@@ -79,7 +79,7 @@ class GlobalMenu extends EventEmitter
     # inject new stylesheets for selected extension
     stylesheets = extension.stylesheets or []
     stylesheets.forEach (path) ->
-      stylesheet_path  = "#{extension.path}/#{path}"
+      stylesheet_path = "#{extension.path}/#{path}"
       stylesheet_type = (path.extname stylesheet_path).substr 1
       link            = ($ "<link/>")
 
@@ -91,7 +91,19 @@ class GlobalMenu extends EventEmitter
       ($ "head").append link
     # call init script and close menu
     @extension_container().html @extensions[index].view
-    @extensions[index].main extension, @remote, @player, @extension_container()
+
+    @extension_container().removeClass "visible #{@menu_animation_in_classname}"
+    @extension_container().addClass "#{@menu_animation_out_classname}"
+    do @extension_container().hide
+
+    setTimeout (=> 
+      @extensions[index].main extension, @remote, @player, @extension_container()
+    ), 400
+
+    @extension_container().removeClass "#{@menu_animation_out_classname}"
+    @extension_container().addClass "visible #{@menu_animation_in_classname}"
+    do @extension_container().show
+
     do @close
 
   current: => $ "li.has-focus", @container

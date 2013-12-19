@@ -1,9 +1,9 @@
 ###
-UNTV - torrent-stream-search extension
+UNTV - music player extension
 Author: Gordon Hall
 
-Enables user to search for torrents using the Yifi JSON API and
-stream them directly to the global player instance
+Enables user to play music located on their local drive or
+mounted disks
 ###
 
 module.exports = (manifest, remote, player, view) ->

@@ -1,9 +1,9 @@
 ###
-UNTV - torrent-stream-search extension
+UNTV - photo-slideshow extension
 Author: Gordon Hall
 
-Enables user to search for torrents using the Yifi JSON API and
-stream them directly to the global player instance
+Enables user to view and scroll through directory of photos
+from their local disk or mounted drives
 ###
 
 module.exports = (manifest, remote, player, view) ->
