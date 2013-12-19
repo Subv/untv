@@ -11,6 +11,7 @@ $              = require "../vendor/jquery-2.0.3.js"
 jade           = require "jade"
 fs             = require "fs"
 extend         = require "node.extend"
+path           = require "path"
 
 class GlobalMenu extends EventEmitter
 
@@ -34,6 +35,7 @@ class GlobalMenu extends EventEmitter
   addExtension: (path, manifest) =>
     # check manifest's main file here and store reference to it
     extension        = extend yes, {}, manifest
+    extension.path   = path
     init_script_path = "#{path}/#{extension.main}"
     if fs.existsSync init_script_path
       ext_init       = require init_script_path
@@ -72,6 +74,21 @@ class GlobalMenu extends EventEmitter
     extension = @extensions[index]
     # inject view
     @extension_container().html extension.view()
+    # remove previous extension stylesheets
+    do ($ "link[data-type='extension'][rel='stylesheet']").remove
+    # inject new stylesheets for selected extension
+    stylesheets = extension.stylesheets or []
+    stylesheets.forEach (path) ->
+      stylesheet_path  = "#{extension.path}/#{path}"
+      stylesheet_type = (path.extname stylesheet_path).substr 1
+      link            = ($ "<link/>")
+
+      link.attr "rel", "stylesheet"
+      link.attr "type", "text/#{stylesheet_type}"
+      link.attr "href", stylesheet_path
+      link.data "type", "extension"
+      
+      ($ "head").append link
     # call init script and close menu
     @extension_container().html @extensions[index].view
     @extensions[index].main extension, @remote, @player, @extension_container()

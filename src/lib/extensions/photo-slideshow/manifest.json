@@ -2,5 +2,11 @@
   "name": "Photo Slideshow",
   "icon": false,
   "main": "extension.coffee",
-  "view": "view.jade"
+  "view": "view.jade",
+  "stylesheets": [
+
+  ],
+  "config": {
+    
+  }
 }
