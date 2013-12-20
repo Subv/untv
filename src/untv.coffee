@@ -59,15 +59,30 @@ status_bar = $ "#status-bar"
 # the user when a remote is connected
 remote.on "remote:connected", ->
   ($ ".remote-connection span", status_bar).html "Remote: Connected"
-  do ($ ".remote-connection .notification", status_bar).hide
+  # hide remote notification here
 
 remote.on "remote:disconnected", ->
   ($ ".remote-connection span", status_bar).html "Remote: Disonnected"
-  do ($ ".remote-connection .notification", status_bar).show
+  # show remote notification here
 
-# we also want to show the current time, whether or not
-# there is a network connection, and the remote control 
-# ip to use to connect to
+# we also want to show the current time
+clock = ->
+  time   = new Date do Date.now
+  hour   = do time.getHours
+  mins   = do time.getMinutes
+  suffix = unless (hour > 11) then "AM" else "PM"
+  # format time
+  if hour > 12 then hour = hour - 12
+  if mins.toString().length is 1 then mins = "0#{mins}"
+  clock = "#{hour}:#{mins} #{suffix}"
+
+($ "#status-bar .clock").html do clock
+setInterval -> 
+    ($ "#status-bar .clock").html do clock
+, 60000
+
+# show if there is a network connection
+
 
 # show user interface
 do win.show
