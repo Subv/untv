@@ -3,6 +3,7 @@
   "icon": false,
   "main": "extension.coffee",
   "view": "view.jade",
+  "list_priority": 1,
   "stylesheets": [
 
   ],

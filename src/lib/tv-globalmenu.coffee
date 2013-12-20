@@ -47,6 +47,8 @@ class GlobalMenu extends EventEmitter
       extension.view = jade.compile view_raw.toString()
 
     @extensions.push extension if manifest and manifest.name
+    # filter the list by list priority
+    @extensions.sort (ext1, ext2) -> ext2.list_priority < ext1.list_priority 
     do @render
 
   open: =>

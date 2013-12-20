@@ -7,4 +7,4 @@ devices or mounted disks for videos and play them
 ###
 
 module.exports = (manifest, remote, player, view) ->
-  window.alert "#{manifest.name} extension loaded"
+  # build extension here!

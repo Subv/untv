@@ -7,4 +7,4 @@ from their local disk or mounted drives
 ###
 
 module.exports = (manifest, remote, player, view) ->
-  window.alert "#{manifest.name} extension loaded"
+  # build extension here!

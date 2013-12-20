@@ -7,4 +7,4 @@ mounted disks
 ###
 
 module.exports = (manifest, remote, player, view) ->
-  window.alert "#{manifest.name} extension loaded"
+  # build extension here!
