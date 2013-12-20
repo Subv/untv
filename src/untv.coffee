@@ -85,17 +85,17 @@ clock = ->
   # format time
   if hour > 12 then hour = hour - 12
   if mins.toString().length is 1 then mins = "0#{mins}"
-  clock = "#{hour}:#{mins} #{suffix}"
+  "#{hour}:#{mins} #{suffix}"
 
 ($ "#status-bar .clock").html do clock
 setInterval -> 
-    ($ "#status-bar .clock").html do clock
+  ($ "#status-bar .clock").html do clock
 , 60000
 
 # show if there is a network connection
 dns.resolve "www.google.com", (err) ->
-  ip_status = ($ ".internet-connection .status").html
-  if err then ip_status "Disconnected" else ip_status "Connected"
+  ip_status = ($ ".internet-connection .status")
+  if err then ip_status.html "Disconnected" else ip_status.html "Connected"
 
 # show user interface
 do win.show

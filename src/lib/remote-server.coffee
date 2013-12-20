@@ -80,7 +80,7 @@ class Remote extends EventEmitter
     keyboard.bind "p", => @emit "player:pause"
 
   interfaces: =>
-    interfaces = do os.networkInterfaces
+    interfaces = do networkInterfaces
     possible   = []
     for iface of interfaces
       for details in interfaces[iface]
