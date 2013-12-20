@@ -18,6 +18,9 @@ class GlobalMenu extends EventEmitter
   constructor: (@container, @remote, @player) ->
     @extensions = []
     @visible    = no
+    do @subscribe
+
+  subscribe: =>
     # subscribe to remote events
     @remote.on "menu:open", @open
     @remote.on "menu:close", @close
@@ -81,29 +84,34 @@ class GlobalMenu extends EventEmitter
     stylesheets.forEach (path) ->
       stylesheet_path = "#{extension.path}/#{path}"
       stylesheet_type = (path.extname stylesheet_path).substr 1
-      link            = ($ "<link/>")
+      stylesheet      = ($ "<link/>")
+      stylesheet.attr "rel", "stylesheet"
+      stylesheet.attr "type", "text/#{stylesheet_type}"
+      stylesheet.attr "href", stylesheet_path
+      stylesheet.data "type", "extension"
+      ($ "head").append stylesheet
 
-      link.attr "rel", "stylesheet"
-      link.attr "type", "text/#{stylesheet_type}"
-      link.attr "href", stylesheet_path
-      link.data "type", "extension"
-      
-      ($ "head").append link
     # call init script and close menu
     @extension_container().html @extensions[index].view
-
+    # animate the transition out of the current extension
     @extension_container().removeClass "visible #{@menu_animation_in_classname}"
     @extension_container().addClass "#{@menu_animation_out_classname}"
     do @extension_container().hide
-
+    # after the animation duration, execute the main extension script and
+    # animate the extension view back into the main view
     setTimeout (=> 
       @extensions[index].main extension, @remote, @player, @extension_container()
+      @extension_container().removeClass "#{@menu_animation_out_classname}"
+      @extension_container().addClass "visible #{@menu_animation_in_classname}"
     ), 400
-
-    @extension_container().removeClass "#{@menu_animation_out_classname}"
-    @extension_container().addClass "visible #{@menu_animation_in_classname}"
+    # now remove all the event listeners bound to remote 
+    # this is to get rid of listeners from previously loaded
+    # extensions
+    do @remote.removeAllListeners
+    # re-subscribe the menu so that we always have access to it
+    do @subscribe
+    # no show the rendered extension and hide the menu
     do @extension_container().show
-
     do @close
 
   current: => $ "li.has-focus", @container
@@ -111,6 +119,7 @@ class GlobalMenu extends EventEmitter
   item_animation_classname: "pulse"
   menu_animation_in_classname: "slideInLeft"
   menu_animation_out_classname: "slideOutLeft"
+    
   extension_container: => $ "#extensions-container"
 
 module.exports = GlobalMenu
