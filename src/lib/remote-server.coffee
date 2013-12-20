@@ -6,17 +6,18 @@ Sets up HTTP server for delivering the remote control interface
 and acts as the communication bus between the remote and tv player
 ###
 
-{readFileSync} = require "fs"
-{EventEmitter} = require "events"
-{createServer} = require "http"
-express        = require "express"
-socket_io      = require "socket.io"
-browserify     = require "browserify"
-coffeeify      = require "coffeeify"
+{readFileSync}      = require "fs"
+{EventEmitter}      = require "events"
+{createServer}      = require "http"
+express             = require "express"
+socket_io           = require "socket.io"
+browserify          = require "browserify"
+coffeeify           = require "coffeeify"
+{networkInterfaces} = require "os"
 
 class Remote extends EventEmitter
   
-  constructor: ->
+  constructor: (@port=8080) ->
     # create express server instance
     @app    = do express
     @server = createServer @app
@@ -49,6 +50,9 @@ class Remote extends EventEmitter
     do @subscribe
     do @bindKeyboard
 
+  listen: (callback) =>
+    @server.listen @port, callback
+
   subscribe: =>
     @sockets.on "connection", (client) =>
       # inform any subscribers that the remote is connected
@@ -74,6 +78,14 @@ class Remote extends EventEmitter
     keyboard.bind ">", => @emit "player:next"
     keyboard.bind "<", => @emit "player:prev"
     keyboard.bind "p", => @emit "player:pause"
+
+  interfaces: =>
+    interfaces = do os.networkInterfaces
+    possible   = []
+    for iface of interfaces
+      for details in interfaces[iface]
+        possible.push details if details.family is "IPv4" and not details.internal
+    return possible
 
   events: [
     # global menu events
