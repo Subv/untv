@@ -72,8 +72,9 @@ class Remote extends EventEmitter
     keyboard.bind "down", => @emit "scroll:down"
     keyboard.bind "left", => @emit "go:back"
     keyboard.bind "right", => @emit "go:next"
-    keyboard.bind "m", => @emit "menu:open"
-    keyboard.bind "escape", => @emit "menu:close"
+    keyboard.bind "enter", => @emit "go:select"
+    keyboard.bind "m", => @emit "menu:toggle"
+    # keyboard.bind "escape", => @emit "menu:close"
     keyboard.bind "space", => @emit "player:play"
     keyboard.bind ">", => @emit "player:next"
     keyboard.bind "<", => @emit "player:prev"
@@ -89,11 +90,13 @@ class Remote extends EventEmitter
 
   events: [
     # global menu events
-    "menu:open"
-    "menu:close"
+    # "menu:open"
+    # "menu:close"
+    "menu:toggle"
     # navigation events
     "go:next"
     "go:back"
+    "go:select"
     # scroll events
     "scroll:up"
     "scroll:down"

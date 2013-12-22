@@ -22,9 +22,10 @@ class GlobalMenu extends EventEmitter
 
   subscribe: =>
     # subscribe to remote events
-    @remote.on "menu:open", @open
-    @remote.on "menu:close", @close
-    @remote.on "go:next", @select
+    # @remote.on "menu:open", @open
+    # @remote.on "menu:close", @close
+    @remote.on "menu:toggle", @toggle
+    @remote.on "go:select", @select
     @remote.on "scroll:up", @focusPrev
     @remote.on "scroll:down", @focusNext
 
@@ -60,6 +61,9 @@ class GlobalMenu extends EventEmitter
     @container.removeClass "#{@menu_animation_in_classname}" if @visible
     @container.addClass "#{@menu_animation_out_classname}" if @visible
     @visible = no
+
+  toggle: =>
+    if @visible then do @close else do @open
 
   focusNext: =>
     next_item = @current().next()

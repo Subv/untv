@@ -15,7 +15,11 @@ Setup Interaction Bindings
 ($ document).ready ->
 
   trackpad = $ "#trackpad"
+  dpad     = $ "#dpad"
   controls = $ "#controls"
+  options  = $ "#options"
+
+  ### trackpad bindings? 
 
   trackpad.swipe
     fingers: "all"
@@ -32,10 +36,21 @@ Setup Interaction Bindings
           socket.emit "scroll:down" if direction is "down"
           socket.emit "go:next" if direction is "right"
           socket.emit "go:back" if direction is "left"
+  
+  ###
 
-  ($ "button", controls).click (event) ->
-    action = ($ @).data "action"
-    socket.emit "player:#{action}"
+  ($ "button").bind "touchstart", (event) ->
+    button = $ @
+    action = button.data "action"
+    socket.emit action
+    button.addClass "active"
+
+  ($ "button").bind "touchend", (event) ->
+    button.removeClass "active"
+
+  # ($ "button", controls).click (event) ->
+  #   action = ($ @).data "action"
+  #   socket.emit "player:#{action}"
 
   ($ "[type='range']", controls).change (event) ->
     value = @value

@@ -5,21 +5,17 @@ block content
       button.show-help ?
     li
       button.change-theme Toggle Night Mode
-  div#trackpad
-    aside.help
-      figure.two-finger-swipe-left
-        figcaption Two finger swipe left to close the menu
-      figure.two-finger-swipe-right
-        figcaption Two finger swipe left to open the menu
-      figure.swipe-vertical
-        figcaption Swipe up and down to scroll
-      figure.swipe-right
-        figcaption Swipe right to select
-      figure.swipe-left
-        figcaption Swipe left to go back
+  div#dpad
+    button(data-action="scroll:up") &#8593;
+    button(data-action="go:back") &#8592;
+    button(data-action="go:select") Select
+    button(data-action="go:next") &#8594;
+    button(data-action="scroll:down") &#8595;
+  div#options
+    button(data-action="menu:toggle") Menu
   div#controls
     input(data-action="seek", type="range" value="0")
-    button(data-action="prev") Back
-    button(data-action="play") Play
-    button(data-action="pause") Pause
-    button(data-action="next") Forward
+    button(data-action="player:prev") Back
+    button(data-action="player:play") Play
+    button(data-action="player:pause") Pause
+    button(data-action="player:next") Forward
