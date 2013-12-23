@@ -1,6 +1,7 @@
 {
   "name": "Photo Slideshow",
-  "icon": false,
+  "icon": "icons/icon-white.svg",
+  "description": "Browse pictures and play them in a slideshow.",
   "main": "extension.coffee",
   "view": "view.jade",
   "list_priority": 3,

@@ -16,9 +16,15 @@ path           = require "path"
 class GlobalMenu extends EventEmitter
 
   constructor: (@container, @remote, @player) ->
-    @extensions = []
-    @visible    = no
+    @extensions    = []
+    @visible       = no
+    @window_height = ($ window).height()
+    @ready         = yes
     do @subscribe
+
+    ($ window).bind "resize", => 
+      @window_height = ($ window).height()
+      do @render
 
   subscribe: =>
     # subscribe to remote events
@@ -34,12 +40,14 @@ class GlobalMenu extends EventEmitter
     compiled  = jade.compile fs.readFileSync view_path
     html      = compiled items: @extensions
     @container.html? html
+    ($ "li", @container).height @window_height
     ($ "li:first-of-type", @container).addClass "has-focus"
 
   addExtension: (path, manifest) =>
     # check manifest's main file here and store reference to it
     extension        = extend yes, {}, manifest
     extension.path   = path
+    extension.icon   = "#{path}/#{extension.icon}"
     init_script_path = "#{path}/#{extension.main}"
     if fs.existsSync init_script_path
       ext_init       = require init_script_path
@@ -55,11 +63,13 @@ class GlobalMenu extends EventEmitter
   open: =>
     @container.removeClass "#{@menu_animation_out_classname}" if not @visible
     @container.addClass "visible #{@menu_animation_in_classname}" if not @visible
+    ($ "#app").addClass "blurred"
     @visible = yes
 
   close: =>
     @container.removeClass "#{@menu_animation_in_classname}" if @visible
     @container.addClass "#{@menu_animation_out_classname}" if @visible
+    ($ "#app").removeClass "blurred"
     @visible = no
 
   toggle: =>
@@ -67,15 +77,25 @@ class GlobalMenu extends EventEmitter
 
   focusNext: =>
     next_item = @current().next()
-    if next_item.length and @visible
+    if next_item.length and @visible and @ready
       @current().removeClass "has-focus #{@item_animation_classname}"
       next_item.addClass "has-focus #{@item_animation_classname}"
+      @animateScroll @current_offset() - @window_height
 
   focusPrev: =>
     previous_item = @current().prev()
-    if previous_item.length and @visible
+    if previous_item.length and @visible and @ready
       @current().removeClass "has-focus #{@item_animation_classname}"
       previous_item.addClass "has-focus #{@item_animation_classname}"
+      @animateScroll @current_offset() + @window_height
+
+  current_offset: => parseInt ($ "ul", @container).css "margin-top" 
+
+  animateScroll: (pixels) =>
+    @ready = no
+    ($ "ul", @container).animate
+      "margin-top": "#{pixels}px"
+    , 400, "swing", => @ready = yes
 
   select: =>
     if not @visible then return

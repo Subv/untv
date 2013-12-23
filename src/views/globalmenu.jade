@@ -1,3 +1,17 @@
 ul
   for item in items
-    li.animated #{item.name}
+    li.animated 
+      .menu-item-wrapper  
+        if (item === items[0])
+          span.inactive.up.scroll-indicator &laquo;
+        else
+          span.active.up.scroll-indicator &laquo;
+        .menu-item
+          div
+            img(src="#{item.icon}", width="84", height="84")
+            strong.menu-name #{item.name}
+            p.menu-description #{item.description}
+        if (item === items[items.length -1])
+          span.inactive.down.scroll-indicator &raquo;
+        else
+          span.active.down.scroll-indicator &raquo;

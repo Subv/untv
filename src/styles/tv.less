@@ -11,12 +11,40 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-image: url("../assets/images/backgrounds/glowing-lines.jpg");
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-color: #333;
   margin: 0;
   padding: 0;
+}
+
+#app:before {
+  content: "";  
+  display: block;  
+  position: absolute;  
+  top: 0;  
+  bottom: 0;  
+  left: 0;  
+  right: 0;  
+  background: rgba(0,25,55, 0.6); 
+  -moz-transition: background .3s linear;  
+  -webkit-transition: background .3s linear;  
+  -o-transition: background .3s linear;  
+  transition: background .3s linear;
+}
+
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-image: url("../assets/images/backgrounds/gray-texture.jpg");
+  background-position: top center;
+  background-repeat: repeat-x;
+  background-color: #333;
+}
+
+#app.blurred {
+  -webkit-filter: blur(4px) saturate(50%);
 }
 
 .logo {
@@ -37,10 +65,10 @@ body {
   left: 0;
   width: 100%;
   height: 32px;
-  background: #222;
-  box-shadow: inset 0 -3px 5px #000;
   color: #fff;
-  z-index: 8
+  z-index: 8;
+  background: rgba(0,0,0,0.4);
+  font-size: 14px;
 }
 
 #status-bar ul {
@@ -64,7 +92,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.6);
   z-index: 7;
 }
 
@@ -73,7 +101,7 @@ body {
 }
 
 #extensions-container > * {
-  padding-top: 26px;
+  padding: 48px 24px;
   color: #fff;
 }
 

@@ -1,6 +1,7 @@
 {
   "name": "Video Library",
-  "icon": false,
+  "icon": "icons/icon-white.svg",
+  "description": "Watch movies and shows from your home collection.",
   "main": "extension.coffee",
   "view": "view.jade",
   "list_priority": 1,
