@@ -107,8 +107,8 @@ class GlobalMenu extends EventEmitter
     do ($ "link[data-type='extension'][rel='stylesheet']").remove
     # inject new stylesheets for selected extension
     stylesheets = extension.stylesheets or []
-    stylesheets.forEach (path) ->
-      stylesheet_path = "#{extension.path}/#{path}"
+    stylesheets.forEach (css_path) ->
+      stylesheet_path = "#{extension.path}/#{css_path}"
       stylesheet_type = (path.extname stylesheet_path).substr 1
       stylesheet      = ($ "<link/>")
       stylesheet.attr "rel", "stylesheet"

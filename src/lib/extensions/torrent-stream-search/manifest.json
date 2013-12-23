@@ -6,7 +6,7 @@
   "view": "view.jade",
   "list_priority": 0,
   "stylesheets": [
-
+    "styles/extension.css"
   ],
   "config": {
     
