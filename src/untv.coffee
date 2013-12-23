@@ -11,6 +11,7 @@ $          = require "./vendor/jquery-2.0.3.js"
 GlobalMenu = require "./lib/tv-globalmenu"
 Player     = require "./lib/tv-player"
 Remote     = require "./lib/remote-server"
+Notifier   = require "./lib/notifier"
 config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
 gui        = global.window.nwDispatcher.requireNwGui()
 win        = gui.Window.get()
@@ -18,9 +19,10 @@ win        = gui.Window.get()
 ###
 Setup Remote, Global Menu, and Player
 ###
-remote = new Remote config.remote_port
-player = new Player ($ "#player-container"), remote
-menu   = new GlobalMenu ($ "#menu-container"), remote, player
+notifier = new Notifier()
+remote   = new Remote config.remote_port
+player   = new Player ($ "#player-container"), remote
+menu     = new GlobalMenu ($ "#menu-container"), remote, player
 
 ###
 Register Remote Control Server
@@ -99,3 +101,5 @@ dns.resolve "www.google.com", (err) ->
 
 # show user interface
 do win.show
+do ($ "#init-loader").hide
+do menu.open

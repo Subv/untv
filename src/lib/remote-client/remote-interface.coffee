@@ -46,7 +46,9 @@ Setup Interaction Bindings
     button.addClass "active"
 
   ($ "button").bind "touchend", (event) ->
+    button = $ @
     button.removeClass "active"
+    do button.blur
 
   # ($ "button", controls).click (event) ->
   #   action = ($ @).data "action"

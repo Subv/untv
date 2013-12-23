@@ -11,6 +11,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-image: url("../assets/images/backgrounds/glowing-lines.jpg");
   background-position: top center;
   background-repeat: no-repeat;
   background-color: #333;
@@ -74,4 +75,15 @@ body {
 #extensions-container > * {
   padding-top: 26px;
   color: #fff;
+}
+
+#init-loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../assets/images/loader.gif') center center no-repeat rgba(0,0,0,0.8);
+  background-size: 200px;
 }

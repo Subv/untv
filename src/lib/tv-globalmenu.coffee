@@ -123,8 +123,8 @@ class GlobalMenu extends EventEmitter
   current: => $ "li.has-focus", @container
 
   item_animation_classname: "pulse"
-  menu_animation_in_classname: "slideInLeft"
-  menu_animation_out_classname: "slideOutLeft"
+  menu_animation_in_classname: "fadeIn"
+  menu_animation_out_classname: "fadeOut"
     
   extension_container: => $ "#extensions-container"
 

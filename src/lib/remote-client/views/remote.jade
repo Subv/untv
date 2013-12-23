@@ -1,21 +1,22 @@
 extends layout
 block content
-  ul#options
-    li
-      button.show-help ?
-    li
-      button.change-theme Toggle Night Mode
-  div#dpad
+  //- ul#options
+  //-   li
+  //-     button.show-help ?
+  //-   li
+  //-     button.change-theme Toggle Night Mode
+  #dpad
     button(data-action="scroll:up") &#8593;
-    button(data-action="go:back") &#8592;
-    button(data-action="go:select") Select
-    button(data-action="go:next") &#8594;
+    .middle-row
+      button(data-action="go:back") &#8592;
+      button(data-action="go:select") Select
+      button(data-action="go:next") &#8594;
     button(data-action="scroll:down") &#8595;
-  div#options
+  #options
     button(data-action="menu:toggle") Menu
-  div#controls
-    input(data-action="seek", type="range" value="0")
-    button(data-action="player:prev") Back
-    button(data-action="player:play") Play
-    button(data-action="player:pause") Pause
-    button(data-action="player:next") Forward
+  //- #controls
+  //-   input(data-action="seek", type="range" value="0")
+  //-   button(data-action="player:prev") Back
+  //-   button(data-action="player:play") Play
+  //-   button(data-action="player:pause") Pause
+  //-   button(data-action="player:next") Forward
