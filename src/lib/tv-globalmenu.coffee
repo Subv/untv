@@ -95,7 +95,9 @@ class GlobalMenu extends EventEmitter
     @ready = no
     ($ "ul", @container).animate
       "margin-top": "#{pixels}px"
-    , 400, "swing", => @ready = yes
+    , 400, "swing", => 
+      do @remote.playEventSound
+      @ready = yes
 
   select: =>
     if not @visible then return

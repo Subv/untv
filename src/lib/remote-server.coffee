@@ -14,6 +14,7 @@ socket_io           = require "socket.io"
 browserify          = require "browserify"
 coffeeify           = require "coffeeify"
 {networkInterfaces} = require "os"
+$                   = require "../vendor/jquery-2.0.3"
 
 class Remote extends EventEmitter
   
@@ -52,6 +53,18 @@ class Remote extends EventEmitter
 
   listen: (callback) =>
     @server.listen @port, callback
+
+  playEventSound: (sound = "keypress.ogg") =>
+    player         = window.document.createElement "audio"
+    player.src     = "#{@event_sounds}/#{sound}"
+    player.name    = "remote-event-player"
+    player.volume  = 0.2
+
+    ($ player).bind "ended", -> do ($ player).remove
+    ($ "body").append player
+    do player.play
+
+  event_sounds: "#{__dirname}/../assets/sounds"
 
   subscribe: =>
     @sockets.on "connection", (client) =>
