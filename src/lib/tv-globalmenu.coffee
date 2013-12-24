@@ -73,6 +73,7 @@ class GlobalMenu extends EventEmitter
     @visible = no
 
   toggle: =>
+    @remote.playEventSound "swish"
     if @visible then do @close else do @open
 
   focusNext: =>
@@ -93,14 +94,16 @@ class GlobalMenu extends EventEmitter
 
   animateScroll: (pixels) =>
     @ready = no
+    @remote.playEventSound "woosh"
     ($ "ul", @container).animate
       "margin-top": "#{pixels}px"
     , 400, "swing", => 
-      do @remote.playEventSound
+      @remote.playEventSound "keypress"
       @ready = yes
 
   select: =>
     if not @visible then return
+    @remote.playEventSound "open", 0.8
     index     = @current().index "li", @container
     extension = @extensions[index]
     # inject view
