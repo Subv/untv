@@ -189,7 +189,7 @@ class GlobalMenu extends EventEmitter
   setClock: =>
     ($ "#status-bar .clock").html @time()
     clearInterval @clock if @clock
-    @clock = setInterval -> 
+    @clock = setInterval => 
       ($ "#status-bar .clock").html @time()
     , 60000 
 
@@ -199,7 +199,12 @@ class GlobalMenu extends EventEmitter
     # show if there is a network connection
     dns.resolve "www.google.com", (err) ->
       ip_status = ($ ".internet-connection .status")
-      if err then ip_status.html "Disconnected" else ip_status.html "Connected"
+      if err
+        ip_status.removeClass "connected"
+        ip_status.addClass "disconnected"
+      else 
+        ip_status.addClass "connected"
+        ip_status.removeClass "disconnected"
 
     setInterval @checkInternet, 15000
 
@@ -216,15 +221,20 @@ class GlobalMenu extends EventEmitter
     else 
       @remote_url = "Unavailable"
 
-    ($ ".remote-connection .address", @status_bar()).html @remote_url
+    # let's show the remote connection instructions here...
+
     # here we want to listen for remote connections to alert
     # the user when a remote is connected
-    @remote.on "remote:connected", ->
-      ($ ".remote-connection .address", @status_bar()).html "Connected"
+    @remote.on "remote:connected", =>
+      indicator = ($ ".remote-connection .status", @status_bar())
+      indicator.addClass "connected"
+      indicator.removeClass "disconnected"
       # hide remote notification here
 
-    @remote.on "remote:disconnected", ->
-      ($ ".remote-connection .address", @status_bar()).html @remote_url
+    @remote.on "remote:disconnected", =>
+      indicator = ($ ".remote-connection .status", @status_bar())
+      indicator.addClass "disconnected"
+      indicator.removeClass "connected"
       # show remote notification here
 
 module.exports = GlobalMenu

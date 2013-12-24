@@ -131,14 +131,71 @@
 
 #status-bar li {
   position: absolute;
-  margin: 24px;
+  margin: 32px;
+  opacity: 0.4;
 }
 
 #status-bar .clock {
   bottom: 0;
   right: 0;
   font-size: 48px;
-  opacity: 0.3;
-  margin: 32px;
   font-family: "UbuntuCondensed", Helvetica, sans-serif;
+}
+
+.remote-connection {
+  right: 0;
+  top: 0;
+  width: 132px;
+  height: 48px;
+}
+
+.remote-connection .icon {
+  background: url("../assets/images/icons/remote.svg") center center no-repeat;
+  background-size: 48px;
+}
+
+.internet-connection .icon {
+  background: url("../assets/images/icons/internet.svg") center center no-repeat;
+  background-size: 48px;
+}
+
+.remote-connection .icon,
+.internet-connection .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  text-indent: -9999px;
+}
+
+.remote-connection .status,
+.internet-connection .status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  text-indent: -9999px;
+  background: url("../assets/images/icons/help.svg") center center no-repeat;
+  background-size: 32px;
+}
+
+.remote-connection .status.connected,
+.internet-connection .status.connected {
+  background: url("../assets/images/icons/pass.svg") center center no-repeat;
+  background-size: 32px;
+}
+
+.remote-connection .status.disconnected,
+.internet-connection .status.disconnected {
+  background: url("../assets/images/icons/fail.svg") center center no-repeat;
+  background-size: 32px;
+}
+
+.internet-connection {
+  right: 0;
+  top: 48px;
+  width: 132px;
+  height: 48px;
 }
