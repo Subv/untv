@@ -1,6 +1,6 @@
 # Licenses
 
-## keypress.flac
+## keypress.ogg
 
 > [Keyboard Key Echoing](http://freesound.org/people/qubodup/sounds/211608) 
 > by [Iwan ‘qubodup’ Gabovitch](http://freesound.org/people/qubodup) 
