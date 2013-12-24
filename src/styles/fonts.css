@@ -25,6 +25,13 @@
 }
 
 @font-face {
+  font-family: "UbuntuCondensed";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../assets/fonts/Ubuntu_Condensed/UbuntuCondensed-Regular.ttf");
+}
+
+@font-face {
   font-family: "Ubuntu";
   font-weight: bold;
   font-style: normal;
