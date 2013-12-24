@@ -12,6 +12,7 @@ jade           = require "jade"
 fs             = require "fs"
 extend         = require "node.extend"
 path           = require "path"
+dns            = require "dns"
 
 class GlobalMenu extends EventEmitter
 
@@ -26,6 +27,9 @@ class GlobalMenu extends EventEmitter
       @window_height = ($ window).height()
       do @render
 
+  ###
+  Remote Client Subscriptions
+  ###
   subscribe: =>
     # subscribe to remote events
     # @remote.on "menu:open", @open
@@ -35,6 +39,9 @@ class GlobalMenu extends EventEmitter
     @remote.on "scroll:up", @focusPrev
     @remote.on "scroll:down", @focusNext
 
+  ###
+  Draw Menu Interface
+  ###  
   render: =>
     view_path = "#{__dirname}/../views/globalmenu.jade"
     compiled  = jade.compile fs.readFileSync view_path
@@ -42,6 +49,11 @@ class GlobalMenu extends EventEmitter
     @container.html? html
     ($ "li", @container).height @window_height
     ($ "li:first-of-type", @container).addClass "has-focus"
+
+  ###
+  Extension Registration and Rendering
+  ###
+  extension_loaded: no
 
   addExtension: (path, manifest) =>
     # check manifest's main file here and store reference to it
@@ -60,6 +72,9 @@ class GlobalMenu extends EventEmitter
     @extensions.sort (ext1, ext2) -> ext2.list_priority < ext1.list_priority 
     do @render
 
+  ###
+  Behaviors
+  ###
   open: =>
     @container.removeClass "#{@menu_animation_out_classname}" if not @visible
     @container.addClass "visible #{@menu_animation_in_classname}" if not @visible
@@ -74,7 +89,7 @@ class GlobalMenu extends EventEmitter
 
   toggle: =>
     @remote.playEventSound "swish"
-    if @visible then do @close else do @open
+    if @visible and @extension_loaded then do @close else do @open
 
   focusNext: =>
     next_item = @current().next()
@@ -135,6 +150,8 @@ class GlobalMenu extends EventEmitter
       @extension_container().removeClass "#{@menu_animation_out_classname}"
       @extension_container().addClass "visible #{@menu_animation_in_classname}"
     ), 400
+
+    @extension_loaded = yes
     # now remove all the event listeners bound to remote 
     # this is to get rid of listeners from previously loaded
     # extensions
@@ -152,5 +169,58 @@ class GlobalMenu extends EventEmitter
   menu_animation_out_classname: "fadeOut"
     
   extension_container: => $ "#extensions-container"
+
+  ###
+  Status Indicators
+  ###
+  time: ->
+    time   = new Date do Date.now
+    hour   = do time.getHours
+    mins   = do time.getMinutes
+    suffix = unless (hour > 11) then "AM" else "PM"
+    # format time
+    if hour > 12 then hour = hour - 12
+    if mins.toString().length is 1 then mins = "0#{mins}"
+    "#{hour}:#{mins} #{suffix}"
+
+  clock: =>
+    ($ "#status-bar .clock").html @time()
+    setInterval -> 
+      ($ "#status-bar .clock").html @time()
+    , 60000 
+
+  internet_connected: no
+
+  checkInternet: =>
+    # show if there is a network connection
+    dns.resolve "www.google.com", (err) ->
+      ip_status = ($ ".internet-connection .status")
+      if err then ip_status.html "Disconnected" else ip_status.html "Connected"
+
+    setInterval @checkInternet, 15000
+
+  status_bar: => $ "#status-bar"
+  
+  remote_url: null
+
+  checkRemoteInterface: =>
+    remote_iface = @remote.interfaces()[0]
+    has_iface    = if remote_iface then yes else no
+
+    if has_iface 
+      @remote_url = "http://#{remote_iface.address}:#{@remote.port}/"
+    else 
+      @remote_url = "Unavailable"
+
+    ($ ".remote-connection .address", @status_bar()).html @remote_url
+    # here we want to listen for remote connections to alert
+    # the user when a remote is connected
+    @remote.on "remote:connected", ->
+      ($ ".remote-connection .address", @status_bar()).html "Connected"
+      # hide remote notification here
+
+    @remote.on "remote:disconnected", ->
+      ($ ".remote-connection .address", @status_bar()).html @remote_url
+      # show remote notification here
 
 module.exports = GlobalMenu
