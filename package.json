@@ -24,7 +24,7 @@
     "icon": "src/assets/images/icon.png",
     "toolbar": true,
     "frame": true,
-    "width": 680,
+    "width": 640,
     "height": 480,
     "position": "center",
     "min_height": 480,
