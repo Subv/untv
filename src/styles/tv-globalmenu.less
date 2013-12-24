@@ -19,7 +19,7 @@
   display: block;
 }
 
-#menu-container ul {
+#menu-container > ul {
   color: #fff;
   list-style-type: none;
   padding: 0;
@@ -31,7 +31,7 @@
   margin-left: -25%;
 }
 
-#menu-container ul li {
+#menu-container > ul li {
   font-weight: bold;
   font-size: 24px;
   height: 100%;
@@ -39,12 +39,12 @@
   width: 100%;
 }
 
-#menu-container ul li.has-focus {
+#menu-container > ul li.has-focus {
   // color: #000;
   // background: rgba(255,255,255,0.8);
 }
 
-#menu-container ul li.has-focus::before {
+#menu-container > ul li.has-focus::before {
   // content: "\00bb";
   // padding-right: 8px;
 }
@@ -102,4 +102,43 @@
   position: relative;
   display: table-cell;
   vertical-align: middle;
+}
+
+#status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  color: #fff;
+  z-index: 8;
+  font-size: 14px;
+}
+
+#status-bar ul {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 28px;
+  list-style-type: none;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#status-bar li {
+  position: absolute;
+  margin: 24px;
+}
+
+#status-bar .clock {
+  bottom: 0;
+  right: 0;
+  font-size: 48px;
+  opacity: 0.3;
+  margin: 32px;
+  font-family: "UbuntuCondensed", Helvetica, sans-serif;
 }

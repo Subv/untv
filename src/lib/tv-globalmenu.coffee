@@ -47,8 +47,11 @@ class GlobalMenu extends EventEmitter
     compiled  = jade.compile fs.readFileSync view_path
     html      = compiled items: @extensions
     @container.html? html
-    ($ "li", @container).height @window_height
-    ($ "li:first-of-type", @container).addClass "has-focus"
+    ($ ".menu-list li", @container).height @window_height
+    ($ ".menu-list li:first-of-type", @container).addClass "has-focus"
+    do @setClock
+    do @checkRemoteInterface
+    do @checkInternet
 
   ###
   Extension Registration and Rendering
@@ -105,12 +108,12 @@ class GlobalMenu extends EventEmitter
       previous_item.addClass "has-focus #{@item_animation_classname}"
       @animateScroll @current_offset() + @window_height
 
-  current_offset: => parseInt ($ "ul", @container).css "margin-top" 
+  current_offset: => parseInt ($ "ul.menu-list", @container).css "margin-top" 
 
   animateScroll: (pixels) =>
     @ready = no
     @remote.playEventSound "woosh"
-    ($ "ul", @container).animate
+    ($ "ul.menu-list", @container).animate
       "margin-top": "#{pixels}px"
     , 400, "swing", => 
       @remote.playEventSound "keypress"
@@ -183,9 +186,10 @@ class GlobalMenu extends EventEmitter
     if mins.toString().length is 1 then mins = "0#{mins}"
     "#{hour}:#{mins} #{suffix}"
 
-  clock: =>
+  setClock: =>
     ($ "#status-bar .clock").html @time()
-    setInterval -> 
+    clearInterval @clock if @clock
+    @clock = setInterval -> 
       ($ "#status-bar .clock").html @time()
     , 60000 
 

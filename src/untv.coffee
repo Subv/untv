@@ -53,8 +53,6 @@ registerExtension = (path) ->
 registerExtension "#{ext_path}/#{directory}" for directory, index in ext_dir
 
 # show user interface
-do menu.checkRemoteInterface
-do menu.checkInternet
 do ($ "#init-loader").hide
 do menu.open
 do win.show
