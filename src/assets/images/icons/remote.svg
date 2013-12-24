@@ -1,18 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- License Agreement at http://iconmonstr.com/license/ -->
 
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-<path id="tv-11-icon" d="M462,63.25v280H353.916v-40H422v-200H90v200h69.583v40H50v-280H462z M257.333,359.556
-	c-9.925,0-18,8.074-18,18c0,9.925,8.075,18,18,18c9.926,0,18-8.075,18-18C275.333,367.63,267.259,359.556,257.333,359.556z
-	 M293.058,230.92l14.936-14.936c-12.901-12.9-30.722-20.881-50.41-20.881c-19.686,0-37.508,7.98-50.409,20.881l14.937,14.936
-	c9.079-9.079,21.621-14.693,35.473-14.693C271.437,216.227,283.979,221.841,293.058,230.92z M180.662,189.474l15.31,15.31
-	c15.769-15.769,37.551-25.521,61.613-25.521c24.061,0,45.843,9.752,61.611,25.521l15.31-15.31
-	c-19.687-19.688-46.881-31.862-76.921-31.862C227.544,157.611,200.349,169.786,180.662,189.474z M323.916,279.612V448.75H189.583
-	V279.612C215.538,238.321,297.961,238.321,323.916,279.612z M241.611,296.667c0,9.052,7.337,16.389,16.389,16.389
-	s16.389-7.337,16.389-16.389s-7.337-16.389-16.389-16.389S241.611,287.615,241.611,296.667z M293.333,377.556
-	c0-19.883-16.117-36-36-36c-19.882,0-36,16.117-36,36c0,19.882,16.118,36,36,36C277.216,413.556,293.333,397.438,293.333,377.556z"
-	/>
-</svg>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="512px"
+   height="512px"
+   viewBox="0 0 512 512"
+   enable-background="new 0 0 512 512"
+   xml:space="preserve"
+   id="svg3013"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="remote.svg"><metadata
+     id="metadata3020"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs3018" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3016"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3013" /><path
+     id="tv-11-icon"
+     d="M462,63.25v280H353.916v-40H422v-200H90v200h69.583v40H50v-280H462z M257.333,359.556  c-9.925,0-18,8.074-18,18c0,9.925,8.075,18,18,18c9.926,0,18-8.075,18-18C275.333,367.63,267.259,359.556,257.333,359.556z   M293.058,230.92l14.936-14.936c-12.901-12.9-30.722-20.881-50.41-20.881c-19.686,0-37.508,7.98-50.409,20.881l14.937,14.936  c9.079-9.079,21.621-14.693,35.473-14.693C271.437,216.227,283.979,221.841,293.058,230.92z M180.662,189.474l15.31,15.31  c15.769-15.769,37.551-25.521,61.613-25.521c24.061,0,45.843,9.752,61.611,25.521l15.31-15.31  c-19.687-19.688-46.881-31.862-76.921-31.862C227.544,157.611,200.349,169.786,180.662,189.474z M323.916,279.612V448.75H189.583  V279.612C215.538,238.321,297.961,238.321,323.916,279.612z M241.611,296.667c0,9.052,7.337,16.389,16.389,16.389  s16.389-7.337,16.389-16.389s-7.337-16.389-16.389-16.389S241.611,287.615,241.611,296.667z M293.333,377.556  c0-19.883-16.117-36-36-36c-19.882,0-36,16.117-36,36c0,19.882,16.118,36,36,36C277.216,413.556,293.333,397.438,293.333,377.556z"
+     style="fill:#ffffff" /></svg>
