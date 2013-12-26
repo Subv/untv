@@ -19,25 +19,37 @@ Setup Interaction Bindings
   controls = $ "#controls"
   options  = $ "#options"
 
-  ### trackpad bindings? 
+  swipe_threshold = 75
+  swipe_distance  = 0
 
+  #trackpad navigation
   trackpad.swipe
     fingers: "all"
-    swipe: (event, direction, distance, duration, fingers) ->
-      # handle number of fingers
-      switch fingers
-        # 2 finger swipes
-        when 2
-          socket.emit "menu:open" if direction is "right"
-          socket.emit "menu:close" if direction is "left"
-        # single finger swipes
-        when 1
+    threshold: swipe_threshold
+    maxTimeThreshold: 2500
+    swipeStatus: (event, phase, direction, distance, duration, fingers) ->
+      if phase is "move" and fingers is 1
+        swipe_distance = distance
+        if swipe_distance >= swipe_threshold
+          swipe_distance = 0
           socket.emit "scroll:up" if direction is "up"
           socket.emit "scroll:down" if direction is "down"
           socket.emit "go:next" if direction is "right"
-          socket.emit "go:back" if direction is "left"
-  
-  ###
+          socket.emit "go:back" if direction is "left" 
+
+  selection_check = ->
+    select_ok       = yes
+    select_not_ok   = -> select_ok = no
+    check_select_ok = ->
+      if select_ok then socket.emit "go:select"
+      trackpad.unbind "touchmove", select_not_ok
+      trackpad.unbind "touchend", check_select_ok
+      trackpad.bind "touchstart", bind_selection_checker
+    trackpad.bind "touchmove", select_not_ok
+    trackpad.bind "touchend", check_select_ok
+
+  # trackpad selection
+  trackpad.bind "touchstart", selection_check
 
   ($ "button").bind "touchstart", (event) ->
     button = $ @
