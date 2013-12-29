@@ -14,3 +14,7 @@ module.exports = (manifest, remote, player, view) ->
   torrents = new TorrentSearch()
   # default show list
   torrents.latest (list) -> view.html list
+  # for testing proper rebind of cached remote listeners
+  # during menu toggle
+  remote.on "scroll:up", -> do view.hide
+  remote.on "scroll:down", -> do view.show

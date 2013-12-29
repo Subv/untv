@@ -39,6 +39,15 @@ class GlobalMenu extends EventEmitter
     @remote.on "scroll:up", @focusPrev
     @remote.on "scroll:down", @focusNext
 
+  unsubscribe: =>
+    # subscribe to remote events
+    # @remote.removeListener "menu:open", @open
+    # @remote.removeListener "menu:close", @close
+    @remote.removeListener "menu:toggle", @toggle
+    @remote.removeListener "go:select", @select
+    @remote.removeListener "scroll:up", @focusPrev
+    @remote.removeListener "scroll:down", @focusNext
+
   ###
   Draw Menu Interface
   ###  
@@ -76,19 +85,54 @@ class GlobalMenu extends EventEmitter
     do @render
 
   ###
+  Remote Listener Caching
+  ###
+  cacheRemoteListeners: =>
+    cache = {}
+    for event_type in @remote.events
+      listeners = @remote.listeners event_type
+      cache[event_type] = listeners if listeners.length
+    @cached_remote_listeners = cache if (Object.keys cache).length
+
+  rebindCachedListeners: =>
+    if @cached_remote_listeners
+      for event_type, listeners of @cached_remote_listeners
+        for handler in listeners
+          @remote.on event_type, handler
+      @cached_remote_listeners = null
+
+  cached_remote_listeners: null
+
+  ###
   Behaviors
   ###
   open: =>
-    @container.removeClass "#{@menu_animation_out_classname}" if not @visible
-    @container.addClass "visible #{@menu_animation_in_classname}" if not @visible
-    ($ "#app").addClass "blurred"
-    @visible = yes
+    if not @visible
+      # let's unsubscribe our menu listeners
+      # then store the remaining ones in memory
+      # remove all of them
+      # then resubscribe ours
+      do @unsubscribe
+      do @cacheRemoteListeners
+      do @remote.removeAllListeners
+      do @subscribe
+      # then do teh flashy things
+      @container.removeClass "#{@menu_animation_out_classname}"
+      @container.addClass "visible #{@menu_animation_in_classname}"
+      ($ "#app").addClass "blurred"
+      @visible = yes
 
   close: =>
-    @container.removeClass "#{@menu_animation_in_classname}" if @visible
-    @container.addClass "#{@menu_animation_out_classname}" if @visible
-    ($ "#app").removeClass "blurred"
-    @visible = no
+    if @visible
+      # let's check if there are any listeners
+      # that we need to re-bind from memory
+      # and then do it
+      do @rebindCachedListeners if @cached_remote_listeners
+      # then do teh flashy things
+      @container.removeClass "#{@menu_animation_in_classname}"
+      @container.addClass "#{@menu_animation_out_classname}"
+      ($ "#app").removeClass "blurred"
+      @visible = no
 
   toggle: =>
     @remote.playEventSound "swish"
@@ -124,6 +168,10 @@ class GlobalMenu extends EventEmitter
     @remote.playEventSound "open", 0.8
     index     = @current().index "li", @container
     extension = @extensions[index]
+    # if we are selecting an already loaded extension then just close
+    if extension is @active_extension then return @close()
+    # otherwise move on and set the new active extension
+    @active_extension = extension
     # inject view
     @extension_container().html extension.view()
     # remove previous extension stylesheets
@@ -206,7 +254,7 @@ class GlobalMenu extends EventEmitter
         ip_status.addClass "connected"
         ip_status.removeClass "disconnected"
 
-    setInterval @checkInternet, 15000
+    setTimeout @checkInternet, 15000
 
   status_bar: => $ "#status-bar"
   
