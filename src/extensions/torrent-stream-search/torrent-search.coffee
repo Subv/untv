@@ -6,7 +6,7 @@ Author: Gordon Hall
 request = require "request"
 jade    = require "jade"
 fs      = require "fs"
-qs      = require "querystring"
+qstring = require "querystring"
 
 class TorrentSearch
   constructor: ->
@@ -27,7 +27,7 @@ class TorrentSearch
       if typeof callback is "function" then callback view data
 
   list: (data, callback) =>
-    query = qs.stringify data or {}
+    query = qstring.stringify data or {}
     request "#{@base_url}list.#{@data_type}?#{query}", (err, response, body) =>
       data = JSON.parse body
       view = jade.compile @templates.list

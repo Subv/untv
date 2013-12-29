@@ -12,8 +12,7 @@ Player     = require "./lib/tv-player"
 Remote     = require "./lib/remote-server"
 Notifier   = require "./lib/notifier"
 config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
-gui        = global.window.nwDispatcher.requireNwGui()
-win        = gui.Window.get()
+win        = global.window.nwDispatcher.requireNwGui()?.Window.get()
 
 ###
 Setup Remote, Global Menu, and Player
@@ -32,7 +31,7 @@ remote.listen ->
 ###
 Load Extensions
 ###
-ext_path = "#{__dirname}/lib/extensions"
+ext_path = "#{__dirname}/extensions"
 ext_dir  = fs.readdirSync ext_path
 
 checkExtension = (path) ->
@@ -55,4 +54,4 @@ registerExtension "#{ext_path}/#{directory}" for directory, index in ext_dir
 # show user interface
 do ($ "#init-loader").hide
 do menu.open
-do win.show
+do win?.show
