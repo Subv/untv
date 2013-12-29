@@ -6,6 +6,7 @@ Enables user to search for torrents using the Yifi JSON API and
 stream them directly to the global player instance
 ###
 
+gui           = require "../../lib/gui-kit"
 TorrentSearch = require "./torrent-search"
 
 module.exports = (manifest, remote, player, view) ->
