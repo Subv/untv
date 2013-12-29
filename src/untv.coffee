@@ -13,14 +13,15 @@ Remote     = require "./lib/remote-server"
 Notifier   = require "./lib/notifier"
 config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
 win        = global.window.nwDispatcher.requireNwGui()?.Window.get()
+jade       = require "jade"
 
 ###
 Setup Remote, Global Menu, and Player
 ###
-notifier = new Notifier()
 remote   = new Remote config.remote_port
 player   = new Player ($ "#player-container"), remote
 menu     = new GlobalMenu ($ "#menu-container"), remote, player
+notifier = new Notifier ($ "#notifier-container"), menu, remote
 
 ###
 Register Remote Control Server
@@ -55,3 +56,14 @@ registerExtension "#{ext_path}/#{directory}" for directory, index in ext_dir
 do ($ "#init-loader").hide
 do menu.open
 do win?.show
+
+
+setTimeout ->
+  view    = jade.compile fs.readFileSync "#{__dirname}/views/connect-remote.jade"
+  content = view
+    remote_ip: remote.interfaces()[0]?.address
+    remote_port: config.remote_port
+
+  if not remote.connected then notifier.notify "System Message", content
+  remote.on "remote:connected", -> do notifier.dismiss
+, 1000

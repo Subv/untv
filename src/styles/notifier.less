@@ -1,0 +1,44 @@
+/*
+** UNTV - notifier.css
+** Author: Gordon Hall
+*/
+
+#notifier-container {
+  position: fixed;
+  top: 100%;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  z-index: 9;
+  background: rgba(0,0,0,0.9);
+  box-shadow: inset 0 12px 50px #000;
+}
+
+#notifier-container > h2 {
+  font-size: 42px;
+  color: rgba(255,255,255,0.9);
+  font-weight: normal;
+  margin: 24px 24px 0 24px;
+  padding: 12px 12px 12px 68px;
+  text-shadow: 0 3px 5px #000;
+  background: url('../assets/images/icons/notification.svg') left center no-repeat;
+  background-size: 56px;
+}
+
+#notifier-container > .content {
+  color: #fff;
+  font-size: 22px;
+  line-height: 34px;
+  margin: 0 24px 24px 24px;
+  overflow: hidden;
+  height: 426px;
+}
+
+#notifier-container > aside {
+  color: #fff;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
