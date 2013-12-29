@@ -40,7 +40,7 @@ class GlobalMenu extends EventEmitter
     @remote.on "scroll:down", @focusNext
 
   unsubscribe: =>
-    # subscribe to remote events
+    # unsubscribe from remote events
     # @remote.removeListener "menu:open", @open
     # @remote.removeListener "menu:close", @close
     @remote.removeListener "menu:toggle", @toggle
