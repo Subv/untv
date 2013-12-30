@@ -103,6 +103,21 @@ class GlobalMenu extends EventEmitter
 
   cached_remote_listeners: null
 
+  listenForRemoteConnectivity: =>
+    # here we want to listen for remote connections to alert
+    # the user when a remote is connected
+    @remote.on "remote:connected", =>
+      indicator = ($ ".remote-connection .status", @status_bar())
+      indicator.addClass "connected"
+      indicator.removeClass "disconnected"
+      # hide remote notification here
+
+    @remote.on "remote:disconnected", =>
+      indicator = ($ ".remote-connection .status", @status_bar())
+      indicator.addClass "disconnected"
+      indicator.removeClass "connected"
+      # show remote notification here
+
   ###
   Behaviors
   ###
@@ -168,6 +183,7 @@ class GlobalMenu extends EventEmitter
     @remote.playEventSound "open", 0.8
     index     = @current().index "li", @container
     extension = @extensions[index]
+    container = @extension_container()
     # if we are selecting an already loaded extension then just close
     if extension is @active_extension then return @close()
     # otherwise move on and set the new active extension
@@ -189,17 +205,17 @@ class GlobalMenu extends EventEmitter
       ($ "head").append stylesheet
 
     # call init script and close menu
-    @extension_container().html @extensions[index].view
+    container.html @extensions[index].view
     # animate the transition out of the current extension
-    @extension_container().removeClass "visible #{@menu_animation_in_classname}"
-    @extension_container().addClass "#{@menu_animation_out_classname}"
-    do @extension_container().hide
+    container.removeClass "visible #{@menu_animation_in_classname}"
+    container.addClass "#{@menu_animation_out_classname}"
+    do container.hide
     # after the animation duration, execute the main extension script and
     # animate the extension view back into the main view
     setTimeout (=> 
-      @extensions[index].main extension, @remote, @player, @extension_container()
-      @extension_container().removeClass "#{@menu_animation_out_classname}"
-      @extension_container().addClass "visible #{@menu_animation_in_classname}"
+      extension.main extension, @remote, @player, @notifier, container
+      container.removeClass "#{@menu_animation_out_classname}"
+      container.addClass "visible #{@menu_animation_in_classname}"
     ), 400
 
     @extension_loaded = yes
@@ -210,7 +226,7 @@ class GlobalMenu extends EventEmitter
     # re-subscribe the menu so that we always have access to it
     do @subscribe
     # no show the rendered extension and hide the menu
-    do @extension_container().show
+    do container.show
     do @close
 
   current: => $ "li.has-focus", @container
@@ -268,21 +284,5 @@ class GlobalMenu extends EventEmitter
       @remote_url = "http://#{remote_iface.address}:#{@remote.port}/"
     else 
       @remote_url = "Unavailable"
-
-    # let's show the remote connection instructions here...
-
-    # here we want to listen for remote connections to alert
-    # the user when a remote is connected
-    @remote.on "remote:connected", =>
-      indicator = ($ ".remote-connection .status", @status_bar())
-      indicator.addClass "connected"
-      indicator.removeClass "disconnected"
-      # hide remote notification here
-
-    @remote.on "remote:disconnected", =>
-      indicator = ($ ".remote-connection .status", @status_bar())
-      indicator.addClass "disconnected"
-      indicator.removeClass "connected"
-      # show remote notification here
 
 module.exports = GlobalMenu
