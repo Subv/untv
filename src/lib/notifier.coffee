@@ -61,6 +61,10 @@ class Notifier extends EventEmitter
 
     do @returnRemoteFocus
 
+  scrollDown : =>
+
+  scrollUp: =>
+
   adjustContentHeight: =>
     total  = @container.innerHeight()
     title  = ($ "> h2", @container).outerHeight()
