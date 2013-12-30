@@ -61,6 +61,13 @@ class Notifier extends EventEmitter
 
     do @returnRemoteFocus
 
+  adjustContentHeight: =>
+    total  = @container.innerHeight()
+    title  = ($ "> h2", @container).outerHeight()
+    aside  = ($ "> aside", @container).outerHeight()
+    height = total - (title + aside)
+    ($ ".content", @container).height height
+
   notify: (from = "System Message", content, is_passive) =>
     view    = if is_passive then @view.small.toString() else @view.large.toString()
     view    = jade.compile view
@@ -89,7 +96,7 @@ class Notifier extends EventEmitter
       @container.animate
         top: "10%"
         bottom: "0%"
-      , @animation_time
+      , @animation_time, => do @adjustContentHeight
 
       # steal remote focus
       do @stealRemoteFocus
