@@ -10,9 +10,15 @@ on the user's TV
 fs             = require "fs"
 jade           = require "jade"
 $              = require "../vendor/jquery-2.0.3"
+hat            = require "hat"
 
 class Notifier extends EventEmitter
   constructor: (@container, @menu, @remote) ->
+    @passive_container = $ "<ul/>"
+    @passive_container.attr "id", "passive-notifier"
+    @passive_container.appendTo "body"
+    # attach notifier instance to menu
+    @menu.notifier = @
 
   view:
     large: fs.readFileSync "#{__dirname}/../views/notification-large.jade"
@@ -23,6 +29,7 @@ class Notifier extends EventEmitter
     @menu.cacheRemoteListeners.call @
     # get rid of listeners
     do @remote.removeAllListeners
+    do @menu.listenForRemoteConnectivity
     # bind our own
     @remote.on "go:select", => do @dismiss
     @remote.on "scroll:up", => do @scrollUp
@@ -31,8 +38,10 @@ class Notifier extends EventEmitter
   returnRemoteFocus: =>
     # kill our listeners
     do @remote.removeAllListeners
+    do @menu.listenForRemoteConnectivity
     # borrow from the menu proto and rebind cached ones
     @menu.rebindCachedListeners.call @
+    do @menu.checkRemoteInterface
 
   dismiss: =>
     @menu.container.animate
@@ -58,9 +67,11 @@ class Notifier extends EventEmitter
     content = view 
       initiator: from
       message: content
+
     @container.html content
     # play sound
     @remote.playEventSound "notify"
+
     # handle non-passive behavior
     if not is_passive
       # move the menu outta heeereee
@@ -82,9 +93,22 @@ class Notifier extends EventEmitter
 
       # steal remote focus
       do @stealRemoteFocus
+    # handle passive notifications
+    else
+      notif_id     = do hat
+      notification = $ content
+      notification.attr "data-id", notif_id
+
+      @passive_container.append notification
+      @passive_container.fadeIn 200
+      setTimeout ->
+        ($ "[data-id='#{notif_id}']").fadeOut 200, -> 
+          do ($ "[data-id='#{notif_id}']").remove
+      , @passive_timeout
 
   animation_in: "" #"fadeInUp"
   animation_out: "" #"fadeOutDown"
   animation_time: 300
+  passive_timeout: 4000
 
 module.exports = Notifier

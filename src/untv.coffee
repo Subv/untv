@@ -65,5 +65,8 @@ setTimeout ->
     remote_port: config.remote_port
 
   if not remote.connected then notifier.notify "System Message", content
-  remote.on "remote:connected", -> do notifier.dismiss
+  remote.on "remote:connected", -> 
+    do notifier.dismiss
+    notifier.notify "Remote", "Connected!", yes
+
 , 1000
