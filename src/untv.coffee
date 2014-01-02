@@ -64,9 +64,10 @@ setTimeout ->
     remote_ip: remote.interfaces()[0]?.address
     remote_port: config.remote_port
 
-  if not remote.connected then notifier.notify "System Message", content
-  remote.on "remote:connected", -> 
-    do notifier.dismiss
-    notifier.notify "Remote", "Connected!", yes
+  if config.show_remote_instructions
+    if not remote.connected then notifier.notify "System Message", content
+    remote.on "remote:connected", -> 
+      do notifier.dismiss
+      notifier.notify "Remote", "Connected!", yes
 
 , 1000

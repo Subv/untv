@@ -2,3 +2,19 @@
 ** UNTV - torrent-stream-search styles
 ** Author: Gordon Hall
 */
+
+ul.movie-list {
+  list-style-type: none;
+}
+
+ul.movie-list li {
+  
+}
+
+ul.movie-list li img {
+  
+}
+
+ul.movie-list li strong {
+  
+}

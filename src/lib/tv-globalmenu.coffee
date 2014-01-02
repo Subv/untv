@@ -207,15 +207,15 @@ class GlobalMenu extends EventEmitter
     # call init script and close menu
     container.html @extensions[index].view
     # animate the transition out of the current extension
-    container.removeClass "visible #{@menu_animation_in_classname}"
-    container.addClass "#{@menu_animation_out_classname}"
+    ($ "*", container).removeClass "visible #{@menu_animation_in_classname}"
+    ($ "*", container).addClass "#{@menu_animation_out_classname}"
     do container.hide
     # after the animation duration, execute the main extension script and
     # animate the extension view back into the main view
     setTimeout (=> 
       extension.main extension, @remote, @player, @notifier, container
-      container.removeClass "#{@menu_animation_out_classname}"
-      container.addClass "visible #{@menu_animation_in_classname}"
+      ($ "*", container).removeClass "#{@menu_animation_out_classname}"
+      ($ "*", container).addClass "visible #{@menu_animation_in_classname}"
     ), 400
 
     @extension_loaded = yes
