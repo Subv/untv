@@ -20,8 +20,9 @@ module.exports = (manifest, remote, player, notifier, view) ->
   # get torrent search interface
   torrents = new TorrentSearch()
   # then create a navigable grid
-  grid = new gui.NavigableGrid $ "#torrent-list", view
+  grid = new gui.NavigableGrid ($ "#torrent-list"), remote
   
   # default show list
-  torrents.latest (list) -> 
-    (grid.populate list).removeClass "loader"    
+  torrents.latest (err, list) -> 
+    ($ "#torrent-list").removeClass "loader"
+    list = grid.populate list, torrents.compileTemplate "list"  

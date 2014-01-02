@@ -3,12 +3,20 @@
 ** Author: Gordon Hall
 */
 
-ul.movie-list {
+#torrent-list ul {
   list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
 }
 
-ul.movie-list li {
-  
+#torrent-list li {
+  display: inline-table;
+  width: 120px;
+  padding: 12px;
+}
+
+#torrent-list .poster {
+
 }
 
 ul.movie-list li img {

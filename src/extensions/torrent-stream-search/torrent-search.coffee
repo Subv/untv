@@ -19,24 +19,23 @@ class TorrentSearch
     upcoming: fs.readFileSync "#{__dirname}/views/upcoming-list.jade"
     list: fs.readFileSync "#{__dirname}/views/results-list.jade"
 
+  compileTemplate: (template_name) =>
+    if not template_name in @templates then throw "Invalid Template: #{template_name}"
+    jade.compile @templates[template_name]
+
   upcoming: (callback) =>
     request "#{@base_url}upcoming.#{@data_type}", (err, response, body) =>
-      if response.statusCode isnt 200 then return @error()
       data = results: JSON.parse body
-      view = jade.compile @templates.upcoming
-      if typeof callback is "function" then callback view data
+      if typeof callback is "function" then callback err data
 
   list: (data, callback) =>
     query = qstring.stringify data or {}
     request "#{@base_url}list.#{@data_type}?#{query}", (err, response, body) =>
       data = JSON.parse body
-      view = jade.compile @templates.list
-      if typeof callback is "function" then callback view data
+      if typeof callback is "function" then callback err, data?.MovieList
 
   # latest should get us the default sort 
   latest: (callback) => @list null, callback
 
-
-  error: =>
 
 module.exports = TorrentSearch
