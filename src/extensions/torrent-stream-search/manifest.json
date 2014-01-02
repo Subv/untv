@@ -9,6 +9,6 @@
     "styles/extension.css"
   ],
   "config": {
-    
+    "show_disclaimer": false
   }
 }
