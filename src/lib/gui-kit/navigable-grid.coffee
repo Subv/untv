@@ -71,6 +71,7 @@ class NavigableGrid extends EventEmitter
   nextItem: =>
     adjacent = do @adjacent
     if adjacent.right.length
+      @remote.playEventSound "click", 0.2, 0.3
       @getCurrentItem().removeClass @selected_item_classname
       ($ adjacent.right).addClass @selected_item_classname
     else if @getCurrentRow().next().length
@@ -85,6 +86,7 @@ class NavigableGrid extends EventEmitter
   prevItem: =>
     adjacent = do @adjacent
     if adjacent.left.length
+      @remote.playEventSound "click", 0.2, 0.3
       @getCurrentItem().removeClass @selected_item_classname
       ($ adjacent.left).addClass @selected_item_classname
     else if @getCurrentRow().prev().length
@@ -145,6 +147,7 @@ class NavigableGrid extends EventEmitter
       right: current.next() or null
 
   scroll: (direction = "down") =>
+    @remote.playEventSound "click", 0.2, 0.3
     distance = if direction is "up" then @row_height else -@row_height
     position = parseInt @scroller.css "margin-top"
     @is_scrolling = yes
