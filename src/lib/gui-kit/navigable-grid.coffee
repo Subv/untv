@@ -10,6 +10,9 @@ SmartAdjuster  = require "./smart-adjuster"
 $              = require "../../vendor/jquery-2.0.3"
 {EventEmitter} = require "events"
 
+# import keyframes lib with window scope
+require "../../vendor/jquery-keyframes"
+
 class NavigableGrid extends EventEmitter
   constructor: (@container, @remote, @adjust_x, @adjust_y) ->
     @container = $ @container
@@ -59,15 +62,21 @@ class NavigableGrid extends EventEmitter
       target_row.append "<li>#{@render item}</li>"
 
     ($ "li", @scroller).first().addClass @selected_item_classname
+    # temp hack for extra ul
+    do @pruneRows
+
+  pruneRows: =>
+    ($ "ul", @scroller).each -> do ($ @).remove if ($ @).children().length is 0
 
   nextItem: =>
     adjacent = do @adjacent
     if adjacent.right.length
       @getCurrentItem().removeClass @selected_item_classname
       ($ adjacent.right).addClass @selected_item_classname
-    else if @getCurrentRow().next()
+    else if @getCurrentRow().next().length
       ($ "li", @getCurrentRow().next()).first().addClass @selected_item_classname
       @last_item.removeClass @selected_item_classname
+      @scroll "down"
     else
       @emit "bounds_reached", direction: "right"
     # reference this item as the last one touched
@@ -78,9 +87,10 @@ class NavigableGrid extends EventEmitter
     if adjacent.left.length
       @getCurrentItem().removeClass @selected_item_classname
       ($ adjacent.left).addClass @selected_item_classname
-    else if @getCurrentRow().prev()
+    else if @getCurrentRow().prev().length
       ($ "li", @getCurrentRow().prev()).last().addClass @selected_item_classname
       @last_item.removeClass @selected_item_classname
+      @scroll "up"
     else
       @emit "bounds_reached", direction: "left"
     # reference this item as the last one touched
@@ -138,9 +148,22 @@ class NavigableGrid extends EventEmitter
     distance = if direction is "up" then @row_height else -@row_height
     position = parseInt @scroller.css "margin-top"
     @is_scrolling = yes
-    @scroller.animate 
-      marginTop: "#{position + distance}px"
-    , @scroll_speed, => @is_scrolling = no
+
+    $.keyframe.define
+      name: @scroll_keyframe_name
+      from: "margin-top: #{position}px"
+      to: "margin-top: #{position + distance}px"
+
+    @scroller.playKeyframe
+      name: "navigrid-scroll"
+      duration: @scroll_speed
+      complete: => 
+        @is_scrolling = no
+        do ($ "style##{@scroll_keyframe_name}").remove
+        @scroller.removeAttr "style" # hack to support dynamic keyframe overwrite
+        @scroller.css "margin-top", "#{position + distance}px"
+
+  scroll_keyframe_name: "navigrid-scroll"
 
   bindRemoteControls: =>
     @remote.on "scroll:up", => do @prevRow if @focused
