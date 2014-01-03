@@ -170,13 +170,28 @@ class GlobalMenu extends EventEmitter
   current_offset: => parseInt ($ "ul.menu-list", @container).css "margin-top" 
 
   animateScroll: (pixels) =>
+    list   = ($ "ul.menu-list", @container)
+    position = list.css "margin-top"
     @ready = no
     @remote.playEventSound "woosh"
-    ($ "ul.menu-list", @container).animate
-      "margin-top": "#{pixels}px"
-    , 400, "swing", => 
-      @remote.playEventSound "keypress"
-      @ready = yes
+
+    $.keyframe.define
+      name: @scroll_keyframe_name
+      from: "margin-top: #{position}px"
+      to: "margin-top: #{pixels}px"
+
+    list.playKeyframe
+      name: @scroll_keyframe_name
+      duration: @scroll_speed
+      complete: => 
+        @ready = yes
+        @remote.playEventSound "keypress"
+        do ($ "style##{@scroll_keyframe_name}").remove
+        list.removeAttr "style" # hack to support dynamic keyframe overwrite
+        list.css "margin-top", "#{pixels}px"
+
+  scroll_keyframe_name: "globalmenu-scroll"
+  scroll_speed: 400
 
   select: =>
     if not @visible then return

@@ -54,9 +54,9 @@ class Remote extends EventEmitter
   listen: (callback) =>
     @server.listen @port, callback
 
-  playEventSound: (sound = "keypress", volume = 0.2) =>
+  playEventSound: (sound = "keypress", volume = 0.2, start_at = 0) =>
     player         = window.document.createElement "audio"
-    player.src     = "#{@event_sounds}/#{sound}.ogg"
+    player.src     = "#{@event_sounds}/#{sound}.ogg#t=#{start_at}"
     player.name    = "remote-event-player"
     player.volume  = volume
 

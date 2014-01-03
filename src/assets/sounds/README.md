@@ -29,3 +29,9 @@
 > [Whoosh_Swish_03.wav](http://freesound.org/people/mich3d/sounds/12658/) 
 > by [mich3d](http://freesound.org/people/mich3d/) 
 > under [CC-BY 3.0 License](http://creativecommons.org/licenses/by/3.0/legalcode)
+
+### click.ogg
+
+> [Click](http://freesound.org/people/lebcraftlp/sounds/192277/) 
+> by [lebcraftlp](http://freesound.org/people/lebcraftlp/) 
+> under [CC-BY 3.0 License](http://creativecommons.org/licenses/by/3.0/legalcode)
