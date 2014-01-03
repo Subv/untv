@@ -32,8 +32,18 @@ remote.listen ->
 ###
 Load Extensions
 ###
-ext_path = "#{__dirname}/extensions"
-ext_dir  = fs.readdirSync ext_path
+bundled_ext_path  = "#{__dirname}/extensions"
+bundled_ext_dir   = fs.readdirSync bundled_ext_path
+# User's Home Directory
+home_environment  = if process.platform is "win32" then "USERPROFILE" else "HOME"
+home_dir          = process.env[home_environment]
+installed_ext_dir = "#{home_dir}/.untv/extensions"
+
+getExtensionInstallTarget = ->
+  if not fs.existsSync "#{home_dir}/.untv"
+    fs.mkdirSync "#{home_dir}/.untv"
+    fs.mkdirSync installed_ext_dir
+  fs.readdirSync installed_ext_dir
 
 checkExtension = (path) ->
   stats = fs.statSync path
@@ -50,7 +60,13 @@ registerExtension = (path) ->
   # register extension with menu
   menu.addExtension path, manifest
 
-registerExtension "#{ext_path}/#{directory}" for directory, index in ext_dir
+# Register Bundled Extensions
+for directory, index in bundled_ext_dir
+  registerExtension "#{bundled_ext_path}/#{directory}" 
+
+# Register Third Party Extensions
+for directory, index in do getExtensionInstallTarget
+  registerExtension "#{installed_ext_dir}/#{directory}"
 
 # show user interface
 do ($ "#init-loader").hide

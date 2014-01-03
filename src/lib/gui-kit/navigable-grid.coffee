@@ -10,7 +10,7 @@ SmartAdjuster  = require "./smart-adjuster"
 $              = require "../../vendor/jquery-2.0.3"
 {EventEmitter} = require "events"
 
-# import keyframes lib with window scope
+# import keyframes lib
 require "../../vendor/jquery-keyframes"
 
 class NavigableGrid extends EventEmitter
