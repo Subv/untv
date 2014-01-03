@@ -25,4 +25,5 @@ module.exports = (manifest, remote, player, notifier, view) ->
   # default show list
   torrents.latest (err, list) -> 
     ($ "#torrent-list").removeClass "loader"
-    list = grid.populate list, torrents.compileTemplate "list"  
+    grid.populate list, torrents.compileTemplate "list"
+    do grid.giveFocus

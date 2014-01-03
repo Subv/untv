@@ -3,6 +3,15 @@
 ** Author: Gordon Hall
 */
 
+@-webkit-keyframes select_item {
+  from {
+    -webkit-transform: scale(0.9);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
 #torrent-list ul {
   list-style-type: none;
   margin: 0 auto;
@@ -13,16 +22,28 @@
   display: inline-table;
   width: 120px;
   padding: 12px;
+  -webkit-transform: scale(0.9);
+  opacity: 0.9;
+}
+
+#torrent-list li.navigrid-selected {
+  -webkit-transform: scale(1);
+  opacity: 1;
+  -webkit-animation: select_item .2s;
 }
 
 #torrent-list .poster {
 
 }
 
-ul.movie-list li img {
-  
+#torrent-list li img {
+  border-radius: 4px;
+  border: 1px solid #fff;
+  width: 122px;
+  height: 182px;
 }
 
-ul.movie-list li strong {
-  
+#torrent-list li strong {
+  display: block;
+  text-align: center;
 }
