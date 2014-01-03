@@ -1,13 +1,13 @@
 extends layout
 block content
-  #trackpad
-  //- #dpad
-  //-   button(data-action="scroll:up") &#8593;
-  //-   .middle-row
-  //-     button(data-action="go:back") &#8592;
-  //-     button(data-action="go:select") Select
-  //-     button(data-action="go:next") &#8594;
-  //-   button(data-action="scroll:down") &#8595;
+  //- #trackpad
+  #dpad
+    button(data-action="scroll:up") &#8593;
+    .middle-row
+      button(data-action="go:back") &#8592;
+      button(data-action="go:select") Select
+      button(data-action="go:next") &#8594;
+    button(data-action="scroll:down") &#8595;
   //- #options
   #controls
     input(data-action="seek", type="range" value="0")

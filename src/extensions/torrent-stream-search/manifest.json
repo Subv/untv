@@ -9,6 +9,7 @@
     "styles/extension.css"
   ],
   "config": {
-    "show_disclaimer": false
+    "show_disclaimer": false,
+    "use_test_data": true
   }
 }

@@ -35,6 +35,75 @@ html, body {
   }
 }
 
+#dpad {
+  width: 320px;
+  margin: 32px auto;
+  overflow: hidden;
+
+  button {
+    width: 64px;
+    height: 64px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid #000;
+    text-indent: -9999px;
+    background-size: 32px;
+    box-shadow: 0 1px 2px rgba(255,255,255,0.1);
+  }
+
+  [data-action="scroll:up"] { 
+    background-image: url("../images/scroll-up.png");
+    display: block;
+    margin: auto;
+    border-bottom: none;
+    border-radius: 16px 16px 0 0;
+  }
+
+  [data-action="scroll:down"] { 
+    background-image: url("../images/scroll-down.png");
+    display: block;
+    margin: auto;
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+  }
+
+  [data-action="go:next"] { 
+    background-image: url("../images/go-next.png");
+    border-left: none;
+    border-radius: 0 16px 16px 0;
+  }
+
+  [data-action="go:back"] { 
+    background-image: url("../images/go-back.png");
+    border-right: none;
+    border-radius: 16px 0 0 16px;
+  }
+
+  [data-action="go:select"] { 
+    background-image: url("../images/player-play.png");
+    border: 1px solid #000;
+  }
+
+  [data-action="menu:toggle"] { 
+    background-image: url("../images/menu-toggle.png");
+    border: 1px solid #000;
+    border-radius: 16px;
+    float: left;
+    margin: 0 0 0 32px;
+  }
+
+  .middle-row {
+    width: 192px;
+    margin: auto;
+  }
+
+  button.active {
+    background-color: #1E5799;
+    outline: none;
+  }
+}
+
 #options {
   position: fixed;
   top: 0;

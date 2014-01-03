@@ -1,4 +1,4 @@
 {
   "remote_port": 8080,
-  "show_remote_instructions": false
+  "show_remote_instructions": true
 }
