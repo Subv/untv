@@ -6,13 +6,17 @@ Injects the global menu interface and subscribes to events from
 the remote control bus
 ###
 
-$              = require "../vendor/jquery-2.0.3.js"
+gui            = require "./gui-kit"
+$              = gui.$
 {EventEmitter} = require "events"
 jade           = require "jade"
 fs             = require "fs"
 extend         = require "node.extend"
 path           = require "path"
 dns            = require "dns"
+
+# import keyframes lib
+require "../vendor/jquery-keyframes"
 
 class GlobalMenu extends EventEmitter
 
@@ -228,7 +232,7 @@ class GlobalMenu extends EventEmitter
     # after the animation duration, execute the main extension script and
     # animate the extension view back into the main view
     setTimeout (=> 
-      extension.main extension, @remote, @player, @notifier, container
+      extension.main extension, @remote, @player, @notifier, container, gui
       ($ "*", container).removeClass "#{@menu_animation_out_classname}"
       ($ "*", container).addClass "visible #{@menu_animation_in_classname}"
     ), 400

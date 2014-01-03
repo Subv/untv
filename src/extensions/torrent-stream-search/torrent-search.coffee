@@ -25,13 +25,13 @@ class TorrentSearch
 
   upcoming: (callback) =>
     request "#{@base_url}upcoming.#{@data_type}", (err, response, body) =>
-      data = results: JSON.parse body
+      data = if not err then (results: JSON.parse body) else null
       if typeof callback is "function" then callback err data
 
   list: (data, callback) =>
     query = qstring.stringify data or {}
     request "#{@base_url}list.#{@data_type}?#{query}", (err, response, body) =>
-      data = JSON.parse body
+      data = if not err then (JSON.parse body) else null
       if typeof callback is "function" then callback err, data?.MovieList
 
   # latest should get us the default sort 

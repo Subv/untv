@@ -6,12 +6,10 @@ Enables user to search for torrents using the Yifi JSON API and
 stream them directly to the global player instance
 ###
 
-$             = require "../../vendor/jquery-2.0.3"
 fs            = require "fs"
-gui           = require "../../lib/gui-kit"
 TorrentSearch = require "./torrent-search"
 
-module.exports = (manifest, remote, player, notifier, view) ->
+module.exports = (manifest, remote, player, notifier, view, gui) ->
   config   = manifest.config
   # show disclaimer on launch?
   disclaimer = (fs.readFileSync "#{__dirname}/disclaimer.html").toString()
@@ -20,10 +18,12 @@ module.exports = (manifest, remote, player, notifier, view) ->
   # get torrent search interface
   torrents = new TorrentSearch()
   # then create a navigable grid
-  grid = new gui.NavigableGrid ($ "#torrent-list"), remote
+  grid = new gui.NavigableGrid (gui.$ "#torrent-list"), remote
   
   # default show list
   torrents.latest (err, list) -> 
-    ($ "#torrent-list").removeClass "loader"
+    (gui.$ "#torrent-list").removeClass "loader"
+    
+    if err then return
     grid.populate list, torrents.compileTemplate "list"
     do grid.giveFocus
