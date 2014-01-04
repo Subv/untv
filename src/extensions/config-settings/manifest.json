@@ -1,0 +1,14 @@
+{
+  "name": "Settings & Preferences",
+  "icon": "icons/icon-white.svg",
+  "description": "Configure preferences and extensions.",
+  "main": "extension.coffee",
+  "view": "view.jade",
+  "list_priority": 10,
+  "stylesheets": [
+
+  ],
+  "config": {
+    
+  }
+}
