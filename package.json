@@ -22,8 +22,8 @@
   "window": {
     "title": "UNTV",
     "icon": "src/assets/images/icon.png",
-    "toolbar": true,
-    "frame": true,
+    "toolbar": false,
+    "frame": false,
     "width": 1024,
     "height": 576,
     "position": "center",
@@ -31,7 +31,7 @@
     "max_height": 1080,
     "min_width": 640,
     "max_width": 1920,
-    "fullscreen": false,
+    "fullscreen": true,
     "show": false,
     "kiosk": false
   },

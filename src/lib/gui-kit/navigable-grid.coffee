@@ -79,9 +79,11 @@ class NavigableGrid extends EventEmitter
       @last_item.removeClass @selected_item_classname
       @scroll "down"
     else
-      @emit "bounds_reached", direction: "right"
+      @emit "grid:out_of_bounds", direction: "right"
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
+    # emit event for select
+    @emit "grid:item_focused", @last_item
 
   prevItem: =>
     adjacent = do @adjacent
@@ -94,9 +96,11 @@ class NavigableGrid extends EventEmitter
       @last_item.removeClass @selected_item_classname
       @scroll "up"
     else
-      @emit "bounds_reached", direction: "left"
+      @emit "grid:out_of_bounds", direction: "left"
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
+    # emit event for select
+    @emit "grid:item_focused", @last_item
 
   nextRow: =>
     adjacent = do @adjacent
@@ -106,9 +110,11 @@ class NavigableGrid extends EventEmitter
         ($ adjacent.below).addClass @selected_item_classname
         @scroll "down"
       else
-        @emit "bounds_reached", direction: "down"
+        @emit "grid:out_of_bounds", direction: "down"
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
+    # emit event for select
+    @emit "grid:item_focused", @last_item
 
   prevRow: =>
     adjacent = do @adjacent
@@ -118,9 +124,11 @@ class NavigableGrid extends EventEmitter
         ($ adjacent.above).addClass @selected_item_classname
         @scroll "up"
       else
-        @emit "bounds_reached", direction: "up"
+        @emit "grid:out_of_bounds", direction: "up"
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
+    # emit event for select
+    @emit "grid:item_focused", @last_item
 
   giveFocus: =>
     @focused = yes
