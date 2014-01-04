@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/gordonwritescode/untv.git"
   },
+  "scripts": {
+    "start": "nodewebkit"
+  },
   "license": "GPL",
   "engines": {
     "node": ">=0.8"
@@ -52,6 +55,7 @@
     "browserify": "~3.2.0",
     "node.extend": "~1.0.8",
     "fluent-ffmpeg": "~1.5.2",
-    "hat": "0.0.3"
+    "hat": "0.0.3",
+    "nodewebkit": "~0.8.4"
   }
 }
