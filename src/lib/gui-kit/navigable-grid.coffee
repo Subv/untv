@@ -1,5 +1,5 @@
 ###
-UNTV - navigrid
+UNTV - navigable-grid
 Author: Gordon Hall
 
 Accepts an unordered list selector or element and creates
@@ -10,15 +10,13 @@ SmartAdjuster  = require "./smart-adjuster"
 $              = require "../../vendor/jquery-2.0.3"
 {EventEmitter} = require "events"
 
-# import keyframes lib
-require "../../vendor/jquery-keyframes"
-
 class NavigableGrid extends EventEmitter
   constructor: (@container, @remote, @config) ->
     # handle default config
     @config.adjust_y     ?= 0
     @config.adjust_x     ?= 0
     @config.smart_scroll ?= yes
+    @config.smart_rows   ?= yes
 
     @container = $ @container
     @scroller  = $ "<div class='navigrid'/>"
@@ -33,7 +31,7 @@ class NavigableGrid extends EventEmitter
     @render ?= template_fn or ->
     # use smart adjuster to size the container
     # first get x and y adjuster sizes
-    adjuster = new SmartAdjuster @container, @config.adjust_x, @config.adjust_y
+    adjuster = new SmartAdjuster @container, @config.adjust_y, @config.adjust_x
     # determine the size of a single list item template
     pseudo_item = $ "<li/>"
     # pseudo_item.css opacity: 0
@@ -44,9 +42,9 @@ class NavigableGrid extends EventEmitter
     item_height  = pseudo_item.outerHeight()
     row_items    = Math.floor adjuster.width / item_width
     total_rows   = Math.ceil @data.length / row_items
-    @row_width    = item_width * row_items
+    @row_width   = item_width * row_items
     rows_visible = Math.floor adjuster.height / item_height
-    @row_height   = adjuster.height / rows_visible
+    @row_height  = if @config.smart_rows then (adjuster.height / rows_visible) else item_height + 12 
     # create a set of <ul>'s containing <li>'s consistent
     # with the width of the container
     @scroller.empty()

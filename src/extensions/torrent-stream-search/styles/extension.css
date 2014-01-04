@@ -15,7 +15,8 @@
 #torrent-list {
   background: rgba(0,0,0,0.75);
   position: fixed;
-  top: 50%;
+  top: 40%;
+  left: 20%;
   box-shadow: inset 0 8px 22px #000;
   z-index: 8;
 }
@@ -40,7 +41,7 @@
   -webkit-animation: select_item .2s;
 }
 
-#torrent-list li.navigrid-selected .poster {
+#torrent-list li.navigrid-selected .poster img {
   box-shadow: 0 0 32px #fff;
 }
 
@@ -64,9 +65,9 @@
 #torrent-details {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 20%;
   right: 0;
-  bottom: 50%;
+  bottom: 60%;
   z-index: 1;
   overflow: hidden;
 }
@@ -153,4 +154,15 @@
   line-height: 24px;
   font-size: 18px;
   font-style: italic;
+}
+
+#torrent-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 80%;
+  background: #000;
+  z-index: 9;
+  box-shadow: 14px 0 24px #000;
 }

@@ -20,19 +20,26 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   torrents     = new TorrentSearch()
   container    = (gui.$ "#torrent-list")
   details_view = (gui.$ "#torrent-details")
+  menu_view    = (gui.$ "#torrent-menu")
   # configure grid
   grid_config  = 
-    adjust_x: 0
-    adjust_y: window.height
-    smart_scroll: no # prevents auto row switch on bounds reached left/right
+    adjust_x: menu_view.width()
+    adjust_y: details_view.height()
+    # prevents auto row switch on bounds reached left/right
+    smart_scroll: no 
+    # prevents auto row sizing based on visibility of items
+    smart_rows: no
   # instantiate grid
   grid = new gui.NavigableGrid container, remote, grid_config
-  
   
   # default show list
   torrents.latest (err, list) -> 
     (gui.$ "#torrent-list").removeClass "loader"
     if err then return notifier.notify manifest.name, "Request Failed."
+    # sort list by IMDB user rating
+    list = list.sort (a, b) -> 
+      (parseFloat b.MovieRating) > (parseFloat a.MovieRating)
+    # populate grid view
     grid.populate list, torrents.compileTemplate "list"
     do grid.giveFocus
     grid.emit "item_focused", grid.getCurrentItem()

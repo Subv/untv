@@ -5,14 +5,19 @@ Author: Gordon Hall
 Provides a convenience API for developing extensions
 ###
 
-NavigableGrid = require "./navigable-grid"
-SmartAdjuster = require "./smart-adjuster"
+# import keyframes lib
+require "../../vendor/jquery-keyframes"
+
 $             = require "../../vendor/jquery-2.0.3"
+NavigableGrid = require "./navigable-grid"
+NavigableList = require "./navigable-list"
+SmartAdjuster = require "./smart-adjuster"
 Notifier      = require "./tv-notifier"
 
 # expose API
 module.exports = {
   NavigableGrid
+  NavigableList
   SmartAdjuster
   $
   Notifier
