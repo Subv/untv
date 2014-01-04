@@ -51,18 +51,24 @@ Setup Interaction Bindings
   # trackpad selection
   trackpad.bind "touchstart", selection_check
 
+  scroll_interval = null
+
   ($ "button").bind "touchstart", (event) ->
     button = $ @
     action = button.data "action"
     socket.emit action
+    scroll_interval = setInterval -> 
+      socket.emit action
+    , 800
     button.addClass "active"
 
   ($ "button").bind "touchend", (event) ->
     button = $ @
     button.removeClass "active"
     do button.blur
+    clearInterval scroll_interval
 
-  # ($ "button", controls).click (event) ->
+  # ($ "button").click (event) ->
   #   action = ($ @).data "action"
   #   socket.emit "player:#{action}"
 

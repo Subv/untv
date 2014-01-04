@@ -1,0 +1,18 @@
+.movie-detail(data-id="#{MovieID}", data-torrent="#{TorrentUrl}")
+  .movie-info
+    h2 
+      | #{MovieTitleClean}
+      span.mpaa #{AgeRating}
+    ul
+      li
+        strong Directed by: 
+        - var directors = DirectorList.map(function(d) { return d.DirectorName }).join(", ")
+        span #{directors}
+      li
+        strong Starring: 
+        -var stars = CastList.map(function(d) { return d.ActorName }).join(", ")
+        span #{stars}
+    p.movie-plot #{ShortDescription}
+.loader
+.movie-screen.blurred-less
+  img(src="#{MediumScreenshot2}")
