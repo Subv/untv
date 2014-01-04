@@ -12,5 +12,3 @@ Contained herein are the core classes and extensions required for the UNTV core.
 ### Player
 
 ## Remote Client
-
-## Extensions

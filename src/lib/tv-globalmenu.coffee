@@ -6,17 +6,15 @@ Injects the global menu interface and subscribes to events from
 the remote control bus
 ###
 
-gui            = require "./gui-kit"
-$              = gui.$
-{EventEmitter} = require "events"
-jade           = require "jade"
-fs             = require "fs"
-extend         = require "node.extend"
-path           = require "path"
-dns            = require "dns"
-
-# import keyframes lib
-require "../vendor/jquery-keyframes"
+gui              = require "./gui-kit"
+$                = gui.$
+{EventEmitter}   = require "events"
+jade             = require "jade"
+fs               = require "fs"
+extend           = require "node.extend"
+path             = require "path"
+dns              = require "dns"
+SettingsRegistry = require "./settings-registry"
 
 class GlobalMenu extends EventEmitter
 
@@ -25,6 +23,7 @@ class GlobalMenu extends EventEmitter
     @visible       = no
     @window_height = ($ window).height()
     @ready         = yes
+    @settings      = new SettingsRegistry()
     do @subscribe
 
     ($ window).bind "resize", => 
