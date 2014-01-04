@@ -9,7 +9,7 @@ on the user's TV
 {EventEmitter} = require "events"
 fs             = require "fs"
 jade           = require "jade"
-$              = require "../vendor/jquery-2.0.3"
+$              = require "../../vendor/jquery-2.0.3"
 hat            = require "hat"
 
 class Notifier extends EventEmitter
@@ -21,8 +21,8 @@ class Notifier extends EventEmitter
     @menu.notifier = @
 
   view:
-    large: fs.readFileSync "#{__dirname}/../views/notification-large.jade"
-    small: fs.readFileSync "#{__dirname}/../views/notification-small.jade"
+    large: fs.readFileSync "#{__dirname}/../../views/notification-large.jade"
+    small: fs.readFileSync "#{__dirname}/../../views/notification-small.jade"
 
   stealRemoteFocus: =>
     # borrow from the menu proto
