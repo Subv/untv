@@ -14,7 +14,12 @@ $              = require "../../vendor/jquery-2.0.3"
 require "../../vendor/jquery-keyframes"
 
 class NavigableGrid extends EventEmitter
-  constructor: (@container, @remote, @adjust_x, @adjust_y) ->
+  constructor: (@container, @remote, @config) ->
+    # handle default config
+    @config.adjust_y     ?= 0
+    @config.adjust_x     ?= 0
+    @config.smart_scroll ?= yes
+
     @container = $ @container
     @scroller  = $ "<div class='navigrid'/>"
     @container.append @scroller
@@ -28,7 +33,7 @@ class NavigableGrid extends EventEmitter
     @render ?= template_fn or ->
     # use smart adjuster to size the container
     # first get x and y adjuster sizes
-    adjuster = new SmartAdjuster @container, @adjust_x, @adjust_y
+    adjuster = new SmartAdjuster @container, @config.adjust_x, @config.adjust_y
     # determine the size of a single list item template
     pseudo_item = $ "<li/>"
     # pseudo_item.css opacity: 0
@@ -74,16 +79,19 @@ class NavigableGrid extends EventEmitter
       @remote.playEventSound "click", 0.2, 0.3
       @getCurrentItem().removeClass @selected_item_classname
       ($ adjacent.right).addClass @selected_item_classname
-    else if @getCurrentRow().next().length
+
+    else if @getCurrentRow().next().length and @config.smart_scroll
       ($ "li", @getCurrentRow().next()).first().addClass @selected_item_classname
       @last_item.removeClass @selected_item_classname
       @scroll "down"
+
     else
-      @emit "grid:out_of_bounds", direction: "right"
+      @emit "out_of_bounds", direction: "right"
+
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
     # emit event for select
-    @emit "grid:item_focused", @last_item
+    @emit "item_focused", @last_item
 
   prevItem: =>
     adjacent = do @adjacent
@@ -91,16 +99,19 @@ class NavigableGrid extends EventEmitter
       @remote.playEventSound "click", 0.2, 0.3
       @getCurrentItem().removeClass @selected_item_classname
       ($ adjacent.left).addClass @selected_item_classname
-    else if @getCurrentRow().prev().length
+
+    else if @getCurrentRow().prev().length and @config.smart_scroll
       ($ "li", @getCurrentRow().prev()).last().addClass @selected_item_classname
       @last_item.removeClass @selected_item_classname
       @scroll "up"
+
     else
-      @emit "grid:out_of_bounds", direction: "left"
+      @emit "out_of_bounds", direction: "left"
+      
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
     # emit event for select
-    @emit "grid:item_focused", @last_item
+    @emit "item_focused", @last_item
 
   nextRow: =>
     adjacent = do @adjacent
@@ -110,11 +121,11 @@ class NavigableGrid extends EventEmitter
         ($ adjacent.below).addClass @selected_item_classname
         @scroll "down"
       else
-        @emit "grid:out_of_bounds", direction: "down"
+        @emit "out_of_bounds", direction: "down"
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
     # emit event for select
-    @emit "grid:item_focused", @last_item
+    @emit "item_focused", @last_item
 
   prevRow: =>
     adjacent = do @adjacent
@@ -124,11 +135,11 @@ class NavigableGrid extends EventEmitter
         ($ adjacent.above).addClass @selected_item_classname
         @scroll "up"
       else
-        @emit "grid:out_of_bounds", direction: "up"
+        @emit "out_of_bounds", direction: "up"
     # reference this item as the last one touched
     @last_item = do @getCurrentItem
     # emit event for select
-    @emit "grid:item_focused", @last_item
+    @emit "item_focused", @last_item
 
   giveFocus: =>
     @focused = yes
@@ -181,7 +192,7 @@ class NavigableGrid extends EventEmitter
     @remote.on "scroll:down", => do @nextRow if @focused
     @remote.on "go:next", => do @nextItem if @focused
     @remote.on "go:back", => do @prevItem if @focused
-    @remote.on "go:select", => if @focused then @onselect @getCurrentItem()
+    @remote.on "go:select", => if @focused then @emit "item_selected", @getCurrentItem()
 
   selected_item_classname: "navigrid-selected"
   focused_area_classname: "navigrid-focused"
