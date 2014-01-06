@@ -207,7 +207,7 @@ class GlobalMenu extends EventEmitter
     # otherwise move on and set the new active extension
     @active_extension = extension
     # inject view
-    @extension_container().html extension.view()
+    container.html extension.view extension.locals or {}
     # remove previous extension stylesheets
     do ($ "link[data-type='extension'][rel='stylesheet']").remove
     # inject new stylesheets for selected extension
@@ -222,8 +222,6 @@ class GlobalMenu extends EventEmitter
       stylesheet.data "type", "extension"
       ($ "head").append stylesheet
 
-    # call init script and close menu
-    container.html @extensions[index].view
     # animate the transition out of the current extension
     ($ "*", container).removeClass "visible #{@menu_animation_in_classname}"
     ($ "*", container).addClass "#{@menu_animation_out_classname}"

@@ -5,7 +5,7 @@
 
 @-webkit-keyframes select_item {
   from {
-    -webkit-transform: scale(0.9);
+    -webkit-transform: scale(0.8);
   }
   to {
     -webkit-transform: scale(1);
@@ -31,7 +31,7 @@
   display: inline-table;
   width: 120px;
   padding: 12px;
-  -webkit-transform: scale(0.9);
+  -webkit-transform: scale(0.8);
   opacity: 0.9;
 }
 
@@ -165,4 +165,24 @@
   background: #000;
   z-index: 9;
   box-shadow: 14px 0 24px #000;
+}
+
+#torrent-menu ul {
+  margin: 0;
+  padding: 20px 0;
+  list-style-type: none;
+}
+
+#torrent-menu ul li {
+  padding: 10px 24px;
+  font-size: 22px;
+  -webkit-transform: scale(0.8);
+  opacity: 0.9;
+}
+
+#torrent-menu ul li.navilist-selected {
+  font-weight: bold;
+  -webkit-transform: scale(1);
+  opacity: 1;
+  -webkit-animation: select_item .2s;
 }
