@@ -23,9 +23,8 @@ class NavigableList extends EventEmitter
     @scroller.css 
       overflow: "hidden"
       position: "fixed"
-      width: "#{($ window).width() - @config.adjust_x}px"
-      height: "#{($ window).height() - @config.adjust_y}px"
     @scroller = @list_element.wrap @scroller
+    @adjuster  = new SmartAdjuster @scroller.parent(), @config.adjust_y, @config.adjust_x
 
     ($ window).bind "resize", => do @setScrollPosition
     do @bindRemoteControls
@@ -41,6 +40,7 @@ class NavigableList extends EventEmitter
     if @last_item.next().length
       @last_item.removeClass @selected_item_classname
       @last_item = @last_item.next().addClass @selected_item_classname
+      @setScrollPosition @last_item
     else
       if @config.smart_scroll
         @last_item.removeClass @selected_item_classname
@@ -55,6 +55,7 @@ class NavigableList extends EventEmitter
     if @last_item.prev().length
       @last_item.removeClass @selected_item_classname
       @last_item = @last_item.prev().addClass @selected_item_classname
+      @setScrollPosition @last_item
     else
       if @config.smart_scroll
         @last_item.removeClass @selected_item_classname
@@ -65,7 +66,20 @@ class NavigableList extends EventEmitter
     @emit "item_focused", @last_item
     @remote.playEventSound "click", 0.2, 0.3
 
-  setScrollPosition: (pos) =>
+  setScrollPosition: (item) =>
+    if not item then throw "setScrollPosition() requires a list item."
+    viewport_height = @scroller.parent().height()
+    list_height     = @list_element.height()
+    item_height     = ($ item).outerHeight()
+    current_pos     = parseFloat @list_element.css "margin-top"
+    item_index      = ($ item).index()
+    item_distance   = item_index * item_height + parseInt @list_element.css "margin-top"
+    viewport_range  = 0
+    discrepency     = viewport_height - current_pos
+    # if the distance is beyond the viewport then proceed to scroll
+    console.log viewport_height, item_distance, discrepency
+    if item_distance > discrepency
+      @list_element.animate marginTop: "-#{discrepency}px"
 
 
   giveFocus: (index = 0)=>
