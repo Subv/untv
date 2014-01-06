@@ -13,9 +13,10 @@ $              = require "../../vendor/jquery-2.0.3"
 class NavigableList extends EventEmitter
   constructor: (@list_element, @remote, @config) ->
     # handle default config
-    @config.adjust_y     ?= 0
-    @config.adjust_x     ?= 0
-    @config.smart_scroll ?= no
+    @config.adjust_y         ?= 0
+    @config.adjust_x         ?= 0
+    @config.smart_scroll     ?= no
+    @config.leave_decoration ?= no
     # create scrolling wrapper
     @list_element = $ @list_element
     @scroller     = $ "<div class='navilist'/>"
@@ -48,6 +49,7 @@ class NavigableList extends EventEmitter
       else
         @emit "out_of_bounds", direction: "bottom"
     @emit "item_focused", @last_item
+    @remote.playEventSound "click", 0.2, 0.3
 
   prevItem: =>
     if @last_item.prev().length
@@ -61,6 +63,7 @@ class NavigableList extends EventEmitter
       else
         @emit "out_of_bounds", direction: "top"
     @emit "item_focused", @last_item
+    @remote.playEventSound "click", 0.2, 0.3
 
   setScrollPosition: (pos) =>
 
@@ -78,7 +81,8 @@ class NavigableList extends EventEmitter
   releaseFocus: =>
     @focused = no
     @scroller.removeClass @focused_area_classname
-    if @last_item then @last_item.removeClass @selected_item_classname
+    if @last_item and not @config.leave_decoration 
+      @last_item.removeClass @selected_item_classname
 
   selected_item_classname: "navilist-selected"
   focused_area_classname: "navilist-focused"
