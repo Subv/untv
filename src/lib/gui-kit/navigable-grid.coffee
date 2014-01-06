@@ -9,6 +9,7 @@ a navigable grid instance
 SmartAdjuster  = require "./smart-adjuster"
 $              = require "../../vendor/jquery-2.0.3"
 {EventEmitter} = require "events"
+hat            = require "hat"
 
 class NavigableGrid extends EventEmitter
   constructor: (@container, @remote, @config) ->
@@ -17,6 +18,7 @@ class NavigableGrid extends EventEmitter
     @config.adjust_x     ?= 0
     @config.smart_scroll ?= yes
     @config.smart_rows   ?= yes
+    @config.animation    ?= ""
 
     @container = $ @container
     @scroller  = $ "<div class='navigrid'/>"
@@ -55,6 +57,9 @@ class NavigableGrid extends EventEmitter
     rows = $ "ul", @container
     rows.width @row_width
     rows.height @row_height
+    rows.addClass "animated"
+    # add animation class
+    rows.addClass @config.animation
 
     for item, index in @data
       next_row = index isnt 0 and (index % row_items) is 0
@@ -62,7 +67,11 @@ class NavigableGrid extends EventEmitter
       if next_row then row_counter++
       target_row = $ rows[row_counter]
       # append output to the target row
-      target_row.append "<li>#{@render item}</li>"
+      grid_item = $ "<li />"
+      grid_item.attr "data-navigrid-id", hat()
+      grid_item.html @render item
+      # insert into grid
+      target_row.append grid_item
 
     # temp hack for extra ul
     do @pruneRows
@@ -144,7 +153,8 @@ class NavigableGrid extends EventEmitter
     ($ "li", @scroller).removeClass @selected_item_classname
 
     if @last_item_id
-      ($ "li > div[data-id='#{@last_item_id}']").parent().addClass @selected_item_classname
+      @last_item = ($ "li[data-navigrid-id='#{@last_item_id}']")
+      @last_item.addClass @selected_item_classname
     else
       @last_item = ($ "li", @scroller).first()
       @last_item.addClass @selected_item_classname
@@ -152,7 +162,7 @@ class NavigableGrid extends EventEmitter
 
   releaseFocus: =>
     @focused      = no
-    @last_item_id = ($ "> div", @getCurrentItem()).data "id"
+    @last_item_id = @getCurrentItem().data "navigrid-id"
     @last_item    = @last_item.removeClass @selected_item_classname
     @scroller.removeClass @focused_area_classname
     ($ "li", @scroller).removeClass @selected_item_classname
