@@ -22,7 +22,7 @@ class NavigableGrid extends EventEmitter
     @scroller  = $ "<div class='navigrid'/>"
     @container.append @scroller
     @container.css overflow: "hidden"
-    @onselect = -> # default to empty fn, but should be overridden by user
+
     ($ window).bind "resize", => do @populate
     do @bindRemoteControls
 
@@ -64,7 +64,6 @@ class NavigableGrid extends EventEmitter
       # append output to the target row
       target_row.append "<li>#{@render item}</li>"
 
-    ($ "li", @scroller).first().addClass @selected_item_classname
     # temp hack for extra ul
     do @pruneRows
 
@@ -142,15 +141,23 @@ class NavigableGrid extends EventEmitter
   giveFocus: =>
     @focused = yes
     @scroller.addClass @focused_area_classname
-    if not ($ "li.selected", @scroller).length
-      ($ "li", @scroller).first().addClass @selected_item_classname
+    ($ "li", @scroller).removeClass @selected_item_classname
+
+    if @last_item_id
+      ($ "li > div[data-id='#{@last_item_id}']").parent().addClass @selected_item_classname
+    else
+      @last_item = ($ "li", @scroller).first()
+      @last_item.addClass @selected_item_classname
+      @emit "item_focused", @last_item
 
   releaseFocus: =>
-    @focused = no
+    @focused      = no
+    @last_item_id = ($ "> div", @getCurrentItem()).data "id"
+    @last_item    = @last_item.removeClass @selected_item_classname
     @scroller.removeClass @focused_area_classname
+    ($ "li", @scroller).removeClass @selected_item_classname
 
   getCurrentItem: => $ "li.#{@selected_item_classname}", @container
-  last_item: null
   getCurrentRow: => @getCurrentItem().parent()
 
   adjacent: =>

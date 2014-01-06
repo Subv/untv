@@ -2,30 +2,10 @@
 #torrent-menu
   ul
     li.search-torrents(data-list-action="search", data-list-param="") 
-      input#torrent-search(type="text", placeholder="Search Movies")
-    li.list-heading Browse by Genre
-    li(data-list-action="browse", data-list-param="Action") Action
-    li(data-list-action="browse", data-list-param="Adventure") Adventure
-    li(data-list-action="browse", data-list-param="Animation") Animation
-    li(data-list-action="browse", data-list-param="Biography") Biography
-    li(data-list-action="browse", data-list-param="Comedy") Comedy
-    li(data-list-action="browse", data-list-param="Crime") Crime
-    li(data-list-action="browse", data-list-param="Documentary") Documentary
-    li(data-list-action="browse", data-list-param="Drama") Drama
-    li(data-list-action="browse", data-list-param="Family") Family
-    li(data-list-action="browse", data-list-param="Fantasy") Fantasy
-    li(data-list-action="browse", data-list-param="Film-Noir") Film-Noir
-    li(data-list-action="browse", data-list-param="History") History
-    li(data-list-action="browse", data-list-param="Horror") Horror
-    li(data-list-action="browse", data-list-param="Music") Music
-    li(data-list-action="browse", data-list-param="Musical") Musical
-    li(data-list-action="browse", data-list-param="Mystery") Mystery
-    li(data-list-action="browse", data-list-param="Romance") Romance
-    li(data-list-action="browse", data-list-param="Sci-Fi") Sci-Fi
-    li(data-list-action="browse", data-list-param="Sport") Sport
-    li(data-list-action="browse", data-list-param="Thriller") Thriller
-    li(data-list-action="browse", data-list-param="War") War
-    li(data-list-action="browse", data-list-param="Western") Western
+      input#torrent-search.mousetrap(type="text", placeholder="Search Movies")
+    li(data-list-action="browse", data-list-param="") Latest Movies
+    for genre in genres
+      li(data-list-action="browse", data-list-param="#{genre}") #{genre}
 //- details container
 #torrent-details
 //- grid container

@@ -12,7 +12,7 @@
         strong Starring: 
         -var stars = CastList.map(function(d) { return d.ActorName }).join(", ")
         span #{stars}
-    p.movie-plot #{ShortDescription}
+    p.movie-plot !{ShortDescription}
 .loader
 .movie-screen.blurred-less
   img(src="#{MediumScreenshot2}")

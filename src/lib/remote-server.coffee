@@ -19,6 +19,8 @@ $                   = require "../vendor/jquery-2.0.3"
 class Remote extends EventEmitter
   
   constructor: (@port=8080) ->
+    # allow unlimited event listeners
+    @setMaxListeners 0
     # create express server instance
     @app    = do express
     @server = createServer @app
