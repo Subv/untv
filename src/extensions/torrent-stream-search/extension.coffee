@@ -8,6 +8,7 @@ stream them directly to the global player instance
 
 fs            = require "fs"
 TorrentSearch = require "./torrent-search"
+TorrentStream = require "./torrent-stream"
 torrents      = new TorrentSearch()
 localStorage  = window.localStorage
 
@@ -90,7 +91,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     details_view.addClass "loading"
     torrents.list query, (err, list) ->
       if err or not list
-        notifier.notify manifest.name, err or "No Results", yes
+        notifier.notify "", err or "No Results", yes
       else
         do menu.unlock
         grid.populate list, torrents.compileTemplate "list"
@@ -137,16 +138,21 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     item_data    = (gui.$ ".movie", item).data()
     torrent_url  = item_data.torrent
     torrent_hash = item_data.hash
+    torrent      = new TorrentStream torrent_url
 
-    window.alert "#{torrent_url}\n#{torrent_hash}"
-    # call an external function from here...
-    # show a status indicator for the following steps...
-    # - download the torrent to a temp directory 
-    # - get metadata, make sure filetype is supported
-    # - hash check the torrent file
-    # - start peerflix server
-    # - wait for stream to become ready
-    # - pass stream url to Player instance
+    torrent.on "error", (err) ->
+      # show error message
+      notifier.notify "", err
+
+    torrent.on "ready", (file_info) ->
+      # check codec support and open stream
+      do torrent.stream
+      console.log "waiting for stream..."
+
+    torrent.on "stream", (stream_info) ->
+      # pass `stream_url` to the player and show
+      url = stream_info.stream_url
+      player.play url, "video"
 
   grid.on "out_of_bounds", (data) ->
     switch data.direction

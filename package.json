@@ -44,7 +44,6 @@
   "dependencies": {
     "coffee-script": "~1.6.3",
     "peerflix": "~0.1.4",
-    "node-torrent": "~0.1.6",
     "socket.io": "~0.9.16",
     "request": "~2.29.0",
     "async": "~0.2.9",
@@ -56,6 +55,7 @@
     "node.extend": "~1.0.8",
     "fluent-ffmpeg": "~1.5.2",
     "hat": "0.0.3",
-    "nodewebkit": "~0.8.4"
+    "nodewebkit": "~0.8.4",
+    "nt": "~0.3.1"
   }
 }
