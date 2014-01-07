@@ -21,37 +21,40 @@ class NavigableGrid extends EventEmitter
     @config.animation    ?= ""
 
     @container = $ @container
-    @scroller  = $ "<div class='navigrid'/>"
-    @container.append @scroller
     @container.css overflow: "hidden"
 
     ($ window).bind "resize", => do @populate
     do @bindRemoteControls
 
   populate: (list_data, template_fn) =>
-    @data   ?= list_data
-    @render ?= template_fn or ->
-    # use smart adjuster to size the container
-    # first get x and y adjuster sizes
-    adjuster = new SmartAdjuster @container, @config.adjust_y, @config.adjust_x
+    @data         = list_data
+    @render      ?= template_fn or ->
+    @last_item_id = null
+
+    @container.empty()
+    @scroller  = $ "<div class='navigrid'/>"
+    @container.append @scroller
     # determine the size of a single list item template
-    pseudo_item = $ "<li/>"
+    pseudo_item   = $ "<li/>"
     # pseudo_item.css opacity: 0
     pseudo_item.html @render @data[0]
     @scroller.append pseudo_item
+    # use smart adjuster to size the container
+    # first get x and y adjuster sizes
+    @adjuster = new SmartAdjuster @container, @config.adjust_y, @config.adjust_x
     # determine size of container and items
     item_width   = pseudo_item.outerWidth()
     item_height  = pseudo_item.outerHeight()
-    row_items    = Math.floor adjuster.width / item_width
+    row_items    = Math.floor @adjuster.width / item_width
     total_rows   = Math.ceil @data.length / row_items
     @row_width   = item_width * row_items
-    rows_visible = Math.floor adjuster.height / item_height
-    @row_height  = if @config.smart_rows then (adjuster.height / rows_visible) else item_height + 12 
+    rows_visible = Math.floor @adjuster.height / item_height
+    @row_height  = if @config.smart_rows then (@adjuster.height / rows_visible) else item_height + 12 
     # create a set of <ul>'s containing <li>'s consistent
     # with the width of the container
-    @scroller.empty()
     row_counter = 0
     # for every row we expect, create an <ul>
+    @scroller.empty()
     @scroller.append $ "<ul/>" for row in [0..total_rows]
     # setup width and height of rows
     rows = $ "ul", @container
@@ -126,12 +129,12 @@ class NavigableGrid extends EventEmitter
         @getCurrentItem().removeClass @selected_item_classname
         ($ adjacent.below).addClass @selected_item_classname
         @scroll "down"
+        # reference this item as the last one touched
+        @last_item = do @getCurrentItem
+        # emit event for select
+        @emit "item_focused", @last_item
       else
         @emit "out_of_bounds", direction: "down"
-    # reference this item as the last one touched
-    @last_item = do @getCurrentItem
-    # emit event for select
-    @emit "item_focused", @last_item
 
   prevRow: =>
     adjacent = do @adjacent
@@ -140,12 +143,12 @@ class NavigableGrid extends EventEmitter
         @getCurrentItem().removeClass @selected_item_classname
         ($ adjacent.above).addClass @selected_item_classname
         @scroll "up"
+        # reference this item as the last one touched
+        @last_item = do @getCurrentItem
+        # emit event for select
+        @emit "item_focused", @last_item
       else
         @emit "out_of_bounds", direction: "up"
-    # reference this item as the last one touched
-    @last_item = do @getCurrentItem
-    # emit event for select
-    @emit "item_focused", @last_item
 
   giveFocus: =>
     @focused = yes
@@ -156,6 +159,7 @@ class NavigableGrid extends EventEmitter
       @last_item = ($ "li[data-navigrid-id='#{@last_item_id}']")
       @last_item.addClass @selected_item_classname
     else
+      @scroller.css "margin-top", "0px"
       @last_item = ($ "li", @scroller).first()
       @last_item.addClass @selected_item_classname
       @emit "item_focused", @last_item
@@ -164,6 +168,7 @@ class NavigableGrid extends EventEmitter
     @focused      = no
     @last_item_id = @getCurrentItem().data "navigrid-id"
     @last_item    = @last_item.removeClass @selected_item_classname
+
     @scroller.removeClass @focused_area_classname
     ($ "li", @scroller).removeClass @selected_item_classname
 
@@ -182,23 +187,24 @@ class NavigableGrid extends EventEmitter
 
   scroll: (direction = "down") =>
     @remote.playEventSound "click", 0.2, 0.3
-    distance = if direction is "up" then @row_height else -@row_height
-    position = parseInt @scroller.css "margin-top"
+    distance      = if direction is "up" then @row_height else -@row_height
+    position      = if @last_item?.length then parseInt @scroller.css "margin-top" else 0
     @is_scrolling = yes
+    target_margin = if @last_item?.length then position + distance else 0
 
     $.keyframe.define
       name: @scroll_keyframe_name
       from: "margin-top: #{position}px"
-      to: "margin-top: #{position + distance}px"
+      to: "margin-top: #{target_margin}px"
 
     @scroller.playKeyframe
-      name: "navigrid-scroll"
+      name: @scroll_keyframe_name
       duration: @scroll_speed
       complete: => 
         @is_scrolling = no
         do ($ "style##{@scroll_keyframe_name}").remove
         @scroller.removeAttr "style" # hack to support dynamic keyframe overwrite
-        @scroller.css "margin-top", "#{position + distance}px"
+        @scroller.css "margin-top", "#{target_margin}px"
 
   scroll_keyframe_name: "navigrid-scroll"
 

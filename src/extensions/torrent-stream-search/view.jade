@@ -1,11 +1,11 @@
 //- menu list
 #torrent-menu
   ul
-    li.search-torrents(data-list-action="search", data-list-param="") 
+    li.search-torrents(data-list-action="search", data-list-param="", data-param-name="keywords") 
       input#torrent-search.mousetrap(type="text", placeholder="Search Movies")
-    li(data-list-action="browse", data-list-param="") Latest Movies
+    li(data-list-action="browse", data-list-param="", data-param-name="genre") Latest Movies
     for genre in genres
-      li(data-list-action="browse", data-list-param="#{genre}") #{genre}
+      li(data-list-action="browse", data-list-param="#{genre}", data-param-name="genre") #{genre}
 //- details container
 #torrent-details
 //- grid container

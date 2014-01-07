@@ -26,15 +26,19 @@ class NavigableList extends EventEmitter
     @scroller = @list_element.wrap @scroller
     @adjuster  = new SmartAdjuster @scroller.parent(), @config.adjust_y, @config.adjust_x
 
-    ($ window).bind "resize", => do @setScrollPosition
+    ($ window).bind "resize", => 
+      if @last_item then @setScrollPosition @last_item 
+      do @adjuster.adjust
     do @bindRemoteControls
 
   bindRemoteControls: =>
     @remote.on "go:next", => (@emit "out_of_bounds", direction: "right") if @focused
     @remote.on "go:back", => (@emit "out_of_bounds", direction: "left") if @focused
-    @remote.on "go:select", => (@emit "item_selected", @last_item) if @focused
-    @remote.on "scroll:up", => do @prevItem if @focused
-    @remote.on "scroll:down", => do @nextItem if @focused
+    @remote.on "go:select", => 
+      @selected = @last_item
+      (@emit "item_selected", @last_item) if @focused
+    @remote.on "scroll:up", => do @prevItem if @focused # and not @scrolling
+    @remote.on "scroll:down", => do @nextItem if @focused # and not @scrolling
 
   nextItem: =>
     if @last_item.next().length
@@ -68,38 +72,64 @@ class NavigableList extends EventEmitter
 
   setScrollPosition: (item) =>
     if not item then throw "setScrollPosition() requires a list item."
+    total_items     = item.siblings().length + 1
+    item_height     = item.outerHeight()
+    list_height     = item.parent().outerHeight()
+    item_index      = item.index()
     viewport_height = @scroller.parent().height()
-    list_height     = @list_element.height()
-    item_height     = ($ item).outerHeight()
-    current_pos     = parseFloat @list_element.css "margin-top"
-    item_index      = ($ item).index()
-    item_distance   = item_index * item_height + parseInt @list_element.css "margin-top"
-    viewport_range  = 0
-    discrepency     = viewport_height - current_pos
-    # if the distance is beyond the viewport then proceed to scroll
-    console.log viewport_height, item_distance, discrepency
-    if item_distance > discrepency
-      @list_element.animate marginTop: "-#{discrepency}px"
+    items_in_view   = Math.floor viewport_height / item_height
+    view_set        = (Math.ceil (item_index + 1) / items_in_view)
+    view_set        = view_set - 1 if view_set isnt 0
+    scroll_distance = "-#{view_set * viewport_height}px"
+    current_pos     = @list_element.css "margin-top"
 
+    $.keyframe.define
+      name: @scroll_keyframe_name
+      from: "margin-top: #{current_pos}"
+      to: "margin-top: #{scroll_distance}"
+
+    @scrolling = yes
+    @list_element.playKeyframe
+      name: @scroll_keyframe_name
+      duration: @scroll_speed
+      complete: => 
+        do ($ "style##{@scroll_keyframe_name}").remove
+        @scroller.removeAttr "style" # hack to support dynamic keyframe overwrite
+        @scroller.css "margin-top", "#{scroll_distance}"
+        @scrolling = no
 
   giveFocus: (index = 0)=>
-    @focused = yes
-    @scroller.addClass @focused_area_classname
-    if index
-      item = ($ "li", @scroller)[index]
-      @last_item = ($ item).addClass @selected_item_classname if item
-    else
-      if @last_item then @last_item.addClass @selected_item_classname
-      else @last_item = ($ "li", @scroller).first().addClass @selected_item_classname
+    if not @locked
+      @focused = yes
+      @scroller.addClass @focused_area_classname
+      if index
+        item = ($ "li", @scroller)[index]
+        @last_item = ($ item).addClass @selected_item_classname if item
+      else
+        if @last_item then @last_item.addClass @selected_item_classname
+        else @last_item = ($ "li", @scroller).first().addClass @selected_item_classname
+      @selected = @last_item
 
   releaseFocus: =>
     @focused = no
     @scroller.removeClass @focused_area_classname
     if @last_item and not @config.leave_decoration 
       @last_item.removeClass @selected_item_classname
+    else
+      @last_item.removeClass @selected_item_classname
+      if @selected then @last_item = @selected
+      @last_item.addClass @selected_item_classname
+
+  lock: => 
+    @locked = yes
+    do @releaseFocus
+  
+  unlock: =>
+    @locked = no
 
   selected_item_classname: "navilist-selected"
   focused_area_classname: "navilist-focused"
   scroll_speed: 200
+  scroll_keyframe_name: "navilist-scroll"
 
 module.exports = NavigableList
