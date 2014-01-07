@@ -47,7 +47,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     smart_rows: no
     animation: "fadeInUp"
   # instantiate grid
-  grid = window.grid = new gui.NavigableGrid container, remote, grid_config
+  grid = new gui.NavigableGrid container, remote, grid_config
   
   ###
   Configure Menu List
