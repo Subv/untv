@@ -27,8 +27,13 @@ class Player extends EventEmitter
     # listen for remote events
     do @subscribe
 
-  width: 1920
-  height: 1080
+    # resize the video player
+    ($ window).on "resize", =>
+      @video.height = @height
+      @video.width  = @width
+
+  width: window.width
+  height: window.height
   active_player: null
 
   play: (src, media_type) =>

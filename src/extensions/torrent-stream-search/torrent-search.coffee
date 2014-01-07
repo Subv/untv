@@ -47,6 +47,4 @@ class TorrentSearch
       data = if not err then (JSON.parse body) else null
       if typeof callback is "function" then callback err, data
 
-
-
 module.exports = TorrentSearch
