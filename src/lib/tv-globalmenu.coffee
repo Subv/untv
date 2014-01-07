@@ -126,6 +126,8 @@ class GlobalMenu extends EventEmitter
   ###
   open: =>
     if not @visible
+      # pause an playing movie
+      do @player.pause 
       # let's unsubscribe our menu listeners
       # then store the remaining ones in memory
       # remove all of them
@@ -198,6 +200,7 @@ class GlobalMenu extends EventEmitter
 
   select: =>
     if not @visible then return
+    @player.pause yes
     @remote.playEventSound "open", 0.8
     index     = @current().index "li", @container
     extension = @extensions[index]

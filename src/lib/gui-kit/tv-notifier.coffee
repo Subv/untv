@@ -110,16 +110,18 @@ class Notifier extends EventEmitter
       notification = $ content
       notification.attr "data-id", notif_id
 
-      @passive_container.append notification
+      @passive_container.html notification
       @passive_container.fadeIn 200
-      setTimeout ->
+
+      clearTimeout @passive_timeout
+      @passive_timeout = setTimeout ->
         ($ "[data-id='#{notif_id}']").fadeOut 200, -> 
           do ($ "[data-id='#{notif_id}']").remove
-      , @passive_timeout
+      , @passive_timeout_length
 
   animation_in: "" #"fadeInUp"
   animation_out: "" #"fadeOutDown"
   animation_time: 300
-  passive_timeout: 4000
+  passive_timeout_length: 4000
 
 module.exports = Notifier
