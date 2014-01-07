@@ -47,7 +47,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     smart_rows: no
     animation: "fadeInUp"
   # instantiate grid
-  grid = new gui.NavigableGrid container, remote, grid_config
+  grid = window.grid = new gui.NavigableGrid container, remote, grid_config
   
   ###
   Configure Menu List
@@ -79,9 +79,23 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       do input.focus
       remote.sockets.emit "prompt:ask", message: input.attr "placeholder"
 
-
   menu.on "item_selected", (item) ->
+    do menu.lock
+    key   = item.attr "data-param-name"
+    param = item.attr "data-list-param"
+
+    query = quality: "1080p", limit: 50
+    query[key] = param
     # load torrent list
+    details_view.addClass "loading"
+    torrents.list query, (err, list) ->
+      if err or not list
+        notifier.notify manifest.name, err or "No Results", yes
+      else
+        do menu.unlock
+        grid.populate list, torrents.compileTemplate "list"
+        do grid.giveFocus
+      details_view.removeClass "loading"
 
   menu.on "out_of_bounds", (data) ->
     switch data.direction
@@ -121,8 +135,10 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
 
   grid.on "item_selected", (item) ->
     item_data    = (gui.$ ".movie", item).data()
-    torrent_url  = data.torrent
-    torrent_hash = data.hash
+    torrent_url  = item_data.torrent
+    torrent_hash = item_data.hash
+
+    window.alert "#{torrent_url}\n#{torrent_hash}"
     # call an external function from here...
     # show a status indicator for the following steps...
     # - download the torrent to a temp directory 

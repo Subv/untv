@@ -16,7 +16,10 @@ module.exports = class SmartAdjuster
     # ($ window).bind "resize", @adjust
     do @adjust
 
-  adjust: (event) =>
+  adjust: (less_y, less_x) =>
+    @less_y ?= less_y
+    @less_x ?= less_x
+
     win_height = ($ window).height()
     win_width  = ($ window).width()
     # set target height less specified 
