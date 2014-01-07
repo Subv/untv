@@ -135,6 +135,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         (gui.$ "#torrent-details").html details data
 
   grid.on "item_selected", (item) ->
+    do grid.releaseFocus
+    notifier.notify manifest.name, "Preparing...", yes
+
     item_data    = (gui.$ ".movie", item).data()
     torrent_url  = item_data.torrent
     torrent_hash = item_data.hash
@@ -143,11 +146,11 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     torrent.on "error", (err) ->
       # show error message
       notifier.notify "", err
+      do grid.giveFocus
 
     torrent.on "ready", (file_info) ->
       # check codec support and open stream
       do torrent.stream
-      console.log "waiting for stream..."
 
     torrent.on "stream", (stream_info) ->
       # pass `stream_url` to the player and show
