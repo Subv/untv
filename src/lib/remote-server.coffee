@@ -88,11 +88,12 @@ class Remote extends EventEmitter
     keyboard.bind "left", => @emit "go:back"
     keyboard.bind "right", => @emit "go:next"
     keyboard.bind "enter", => @emit "go:select"
+    keyboard.bind "space", => @emit "go:select"
     keyboard.bind "escape", => @emit "menu:toggle"
-    # keyboard.bind "space", => @emit "player:play"
-    # keyboard.bind ">", => @emit "player:next"
-    # keyboard.bind "<", => @emit "player:prev"
-    # keyboard.bind "p", => @emit "player:pause"
+    keyboard.bind "ctrl+enter", => @emit "player:toggle"
+    keyboard.bind "ctrl+space", => @emit "player:toggle"
+    keyboard.bind "ctrl+right", => @emit "player:next"
+    keyboard.bind "ctrl+left", => @emit "player:prev"
 
   interfaces: =>
     interfaces = do networkInterfaces
@@ -104,8 +105,6 @@ class Remote extends EventEmitter
 
   events: [
     # global menu events
-    # "menu:open"
-    # "menu:close"
     "menu:toggle"
     # navigation events
     "go:next"
@@ -115,8 +114,7 @@ class Remote extends EventEmitter
     "scroll:up"
     "scroll:down"
     # player events
-    "player:play"
-    "player:pause"
+    "player:toggle"
     "player:next"
     "player:prev"
     "player:seek"

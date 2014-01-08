@@ -156,6 +156,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       # pass `stream_url` to the player and show
       url = stream_info.stream_url
       player.play url, "video"
+      player.on "player:progress", (progress) -> # use for updating custom controls?
 
   grid.on "out_of_bounds", (data) ->
     switch data.direction

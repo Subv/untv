@@ -206,7 +206,7 @@ class GlobalMenu extends EventEmitter
     extension = @extensions[index]
     container = @extension_container()
     # if we are selecting an already loaded extension then just close
-    if extension is @active_extension then return @close()
+    # if extension is @active_extension then return @close()
     # otherwise move on and set the new active extension
     @active_extension = extension
     # inject view
