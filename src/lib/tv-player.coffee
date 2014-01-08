@@ -11,32 +11,36 @@ $              = require "../vendor/jquery-2.0.3.js"
 class Player extends EventEmitter
   constructor: (@container, @remote) ->
     # create audio player
-    @audio          = window.document.createElement "audio"
-    @audio.controls = off
-    @audio.autoplay = on
-    @audio.src      = null
-
+    @audio            = window.document.createElement "audio"
+    @audio.controls   = off
+    @audio.autoplay   = on
+    @audio.src        = null
+    @audio.onprogress = @informTime
+    
     # create video player
-    @video          = window.document.createElement "video"
-    @video.controls = off
-    @video.autoplay = on
-    @video.height   = @height
-    @video.width    = @width
-    @video.src      = null
+    @video            = window.document.createElement "video"
+    @video.controls   = on
+    @video.autoplay   = on
+    @video.height     = @height()
+    @video.width      = @width()
+    @video.src        = null
+    @video.onprogress = @informTime
 
     # listen for remote events
     do @subscribe
 
     # resize the video player
     ($ window).on "resize", =>
-      @video.height = @height
-      @video.width  = @width
+      @video.height = @height()
+      @video.width  = @width()
 
-  width: window.width
-  height: window.height
+  width: -> ($ window).width()
+  height: -> ($ window).height()
   active_player: null
 
   play: (src, media_type) =>
+    @video.height = @height()
+    @video.width  = @width()
     # if src and media type are passed, then update the player
     if src and media_type
       if media_type not in @media_types then throw "#{media_type} not supported"
@@ -48,7 +52,7 @@ class Player extends EventEmitter
         @container.html @active_player
     # otherwise go ahead and resume from where we left off if
     # there is an active media source
-    if @active_player.src
+    if @active_player?.src
       do @container.show
       # play the media
       do @active_player.play
@@ -61,13 +65,17 @@ class Player extends EventEmitter
     do @container.hide if minimize
 
   seek: (time) ->
-    @active_player?.fastSeek time if time < duration
+    @active_player?.currentTime time if time isnt @duration()
 
   next: =>
     # seek by increment forward
+    @remote.emit "player:seek", 
+      position: @active_player?.currentTime + @seek_increment
 
   prev: =>
     # seek by increment backward
+    @remote.emit "player:seek", 
+      position: @active_player?.currentTime - @seek_increment
 
   seek_increment: 12000 # 12 secs
 
@@ -75,21 +83,25 @@ class Player extends EventEmitter
     @active_player?.duration
 
   informTime: =>
-    time = @active_player?.currentTime
-    @emit "player:progress", 
-      duration: @duration()
-      position: time
+    new_time = @active_player?.currentTime
+    if @time < new_time
+      @is_playing = yes
+      @time       = new_time
+      @emit "player:progress", 
+        duration: @duration()
+        position: time
+    else
+      @is_playing = no
 
   inform_interval: null
 
   subscribe: =>
-    @remote.on "player:play", @play
-    @remote.on "player:pause", @pause
+    @remote.on "player:toggle", =>
+      if @is_playing then do @pause else do @play
     @remote.on "player:next", @next
     @remote.on "player:prev", @prev
-    # remote should pass a fastSeek parameter
-    @remote.on "player:seek", (data) =>
-      @active_player?.fastSeek data.position
+    # remote should pass a `position` parameter
+    @remote.on "player:seek", (data) => @seek data.position
       
   media_types: [
     "video"
