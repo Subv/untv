@@ -15,11 +15,7 @@ localStorage  = window.localStorage
 ###
 Pre-emptively Load Latest Movies and Cache
 ###
-torrents.latest (err, list) -> 
-  if err then return
-  # sort list by IMDB user rating
-  localStorage.setItem "movies:latest:all", JSON.stringify list.sort (a, b) -> 
-    (parseFloat b.MovieRating) > (parseFloat a.MovieRating)
+do torrents.latest
 
 ###
 Initialize Extension 
