@@ -3,10 +3,11 @@ UNTV - torrent-search class
 Author: Gordon Hall
 ###
 
-request = require "request"
-jade    = require "jade"
-fs      = require "fs"
-qstring = require "querystring"
+request      = require "request"
+jade         = require "jade"
+fs           = require "fs"
+qstring      = require "querystring"
+localStorage = window.localStorage
 
 class TorrentSearch
   constructor: ->
@@ -40,7 +41,10 @@ class TorrentSearch
     @list 
       quality: "1080p"
       limit: 50
-    , callback
+    , (err, list) ->
+      if callback then callback err, list
+      if not err and list
+        localStorage.setItem "movies:latest:all", JSON.stringify list
 
   get: (id, callback) =>
     request "#{@base_url}movie.#{@data_type}?id=#{id}", (err, response, body) =>

@@ -27,7 +27,7 @@ class NavigableGrid extends EventEmitter
     do @bindRemoteControls
 
   populate: (list_data, template_fn) =>
-    @data         = list_data
+    @data         = list_data if list_data
     @render      ?= template_fn or ->
     @last_item_id = null
 
@@ -37,7 +37,7 @@ class NavigableGrid extends EventEmitter
     # determine the size of a single list item template
     pseudo_item   = $ "<li/>"
     # pseudo_item.css opacity: 0
-    pseudo_item.html @render @data[0]
+    pseudo_item.html @render @data?[0]
     @scroller.append pseudo_item
     # use smart adjuster to size the container
     # first get x and y adjuster sizes
