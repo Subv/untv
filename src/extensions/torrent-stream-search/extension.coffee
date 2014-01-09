@@ -86,10 +86,11 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     # load torrent list
     details_view.addClass "loading"
     torrents.list query, (err, list) ->
+      do menu.unlock
       if err or not list
-        notifier.notify "", err or "No Results", yes
+        notifier.notify manifest.name, err or "No Results", yes
+        do menu.giveFocus
       else
-        do menu.unlock
         grid.populate list, torrents.compileTemplate "list"
         do grid.giveFocus
       details_view.removeClass "loading"
@@ -141,7 +142,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
 
     torrent.on "error", (err) ->
       # show error message
-      notifier.notify "", err
+      notifier.notify manifest.name, err, yes
       do grid.giveFocus
 
     torrent.on "ready", (file_info) ->
