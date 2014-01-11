@@ -9,7 +9,7 @@
     "url": "https://github.com/gordonwritescode/untv.git"
   },
   "scripts": {
-    "start": "bin/nw-0.8.4-custom/nw"
+    "start": "bin/nw-0.8.4-custom/nw ."
   },
   "license": "GPL",
   "engines": {
