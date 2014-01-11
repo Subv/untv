@@ -8,7 +8,7 @@ evolving wiki](https://github.com/gordonwritescode/untv/wiki).
 ## Getting Started
 
 Since UNTV is very much in infancy, I do not provide pre-built binaries (yet). 
-UNTV also depends on a custom build of [Node-Webkit]() 
+UNTV also depends on a custom build of [Node-Webkit](https://github.com/rogerwang/node-webkit) 
 which I have only compiled for GNU/Linux systems so far.
 
 1. Clone the repository:
