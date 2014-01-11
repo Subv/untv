@@ -9,7 +9,7 @@
     "url": "https://github.com/gordonwritescode/untv.git"
   },
   "scripts": {
-    "start": "nodewebkit"
+    "start": "bin/nw-0.8.4-custom/nw"
   },
   "license": "GPL",
   "engines": {
@@ -25,8 +25,8 @@
   "window": {
     "title": "UNTV",
     "icon": "src/assets/images/icon.png",
-    "toolbar": true,
-    "frame": true,
+    "toolbar": false,
+    "frame": false,
     "width": 1024,
     "height": 576,
     "position": "center",
@@ -34,7 +34,7 @@
     "max_height": 1080,
     "min_width": 640,
     "max_width": 1920,
-    "fullscreen": false,
+    "fullscreen": true,
     "show": false,
     "kiosk": false
   },
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "coffee-script": "~1.6.3",
-    "peerflix": "~0.1.4",
+    "peerflix": "git+https://github.com/gordonwritescode/peerflix.git",
     "socket.io": "~0.9.16",
     "request": "~2.29.0",
     "async": "~0.2.9",
@@ -55,7 +55,6 @@
     "node.extend": "~1.0.8",
     "fluent-ffmpeg": "~1.5.2",
     "hat": "0.0.3",
-    "nt": "~0.3.1",
-    "nodewebkit": "~0.8.4"
+    "nt": "~0.3.1"
   }
 }

@@ -10,6 +10,7 @@ fs            = require "fs"
 TorrentSearch = require "./torrent-search"
 TorrentStream = require "./torrent-stream"
 torrents      = new TorrentSearch()
+torrent       = new TorrentStream()
 localStorage  = window.localStorage
 
 ###
@@ -138,12 +139,13 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     item_data    = (gui.$ ".movie", item).data()
     torrent_url  = item_data.torrent
     torrent_hash = item_data.hash
-    torrent      = new TorrentStream torrent_url
+
+    torrent.consume torrent_url
 
     torrent.on "error", (err) ->
       # show error message
-      notifier.notify manifest.name, err, yes
-      do grid.giveFocus
+      # notifier.notify manifest.name, err, yes
+      # do grid.giveFocus
 
     torrent.on "ready", (file_info) ->
       # check codec support and open stream
