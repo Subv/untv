@@ -13,7 +13,9 @@ peerflix       = require "peerflix"
 path           = require "path"
 
 class TorrentStream extends EventEmitter
-  constructor: (@torrent_location) ->
+  constructor: ->
+
+  consume: (@torrent_location) =>
     # torrent_location may be a url to download
     # or it may be a local file path from which to read
     switch @determineType()
@@ -45,7 +47,8 @@ class TorrentStream extends EventEmitter
         metadata: torrent.metadata
 
   stream: =>
-    peerflix @target_path, @options, (err) => 
+    if @video_stream and @video_stream.destroy then do @video_stream.destroy
+    @video_stream = peerflix @target_path, @options, (err) => 
       if err then @emit "error", err
       else
         @emit "stream", stream_url: "http://localhost:#{@options.port}"

@@ -25,6 +25,7 @@ class Player extends EventEmitter
     @video.width      = @width()
     @video.src        = null
     @video.onprogress = @informTime
+    @video.poster     = "/assets/images/loader.gif"
 
     # listen for remote events
     do @subscribe
@@ -56,16 +57,18 @@ class Player extends EventEmitter
       do @container.show
       # play the media
       do @active_player.play
+      @is_playing = yes
       # inform listeners
       @inform_interval = setInterval @informTime, 1000
 
   pause: (minimize) =>
     do @active_player?.pause
+    @is_playing = no
     clearInterval @inform_interval
     do @container.hide if minimize
 
   seek: (time) ->
-    @active_player?.currentTime time if time isnt @duration()
+    @active_player?.currentTime = time if time isnt @duration()
 
   next: =>
     # seek by increment forward
