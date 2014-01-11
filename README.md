@@ -13,11 +13,11 @@ which I have only compiled for GNU/Linux systems so far.
 
 1. Clone the repository:
 
-  ~# git clone https://github.com/gordonwritescode/untv.git
+    ~# git clone https://github.com/gordonwritescode/untv.git
 
 2. Install dependencies using Node Package Manager:
 
-  ~# cd untv && sudo npm install
+    ~# cd untv && sudo npm install
 
 3. Download the custom build of node-webkit here: https://www.dropbox.com/sh/3ne1qsdxtc848z6/Rx4dnzgu5S
 
