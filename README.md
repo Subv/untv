@@ -23,8 +23,16 @@ which I have only compiled for GNU/Linux systems so far.
 ~# cd untv && sudo npm install
 ```
 
-3. Download the custom build of node-webkit here: https://www.dropbox.com/sh/3ne1qsdxtc848z6/Rx4dnzgu5S
+3. Make sure you have CoffeeScript installed globall (we use `cake` for tasks):
 
-4. Unzip and place contents in the `bin/nw-0.8.4-custom` directory.
+```
+~# sudo npm install coffee-script -g
+```
 
-5. Run `npm start` from the project root.
+4. Run `cake setup` from the project root
+
+> Alternatively download the custom build of node-webkit here: 
+> https://www.dropbox.com/sh/3ne1qsdxtc848z6/Rx4dnzgu5S 
+> Then, unzip and place contents in the `bin/nw-0.8.4-custom` directory.
+
+5. Run `cake start` from the project root.
