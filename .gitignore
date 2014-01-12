@@ -14,4 +14,7 @@ results
 npm-debug.log
 node_modules
 
-bin/nw-0.8.4-custom/nw
+bin/*
+!bin/nw-0.8.4-custom
+bin/nw-0.8.4-custom/*
+!bin/nw-0.8.4-custom/README.md
