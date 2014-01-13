@@ -1,0 +1,6 @@
+ul.file-selector
+  for file in files
+    if file.stats.isDirectory()
+      li.directory(data-list-action="navigate", data-list-param="#{file.path}", data-param-name="path") #{file.name}
+    else
+      li.file(data-list-action="navigate", data-list-param="#{file.path}", data-param-name="path") #{file.name}
