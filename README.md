@@ -7,6 +7,20 @@ evolving wiki](https://github.com/gordonwritescode/untv/wiki).
 
 ## Getting Started
 
+### End Users
+
+Download the latest bundled application for your platform:
+
+> **UNTV bundled applications are not yet available.**
+
+* GNU/Linux: [64bit](#) | [32bit](#)
+* Mac OSX 10.7+: [32bit](#)
+* Windows: [32bit](#)
+
+Place in your Applications directory (or equivalent) and launch as usual. 
+
+### Developers
+
 Since UNTV is very much in infancy, I do not provide pre-built binaries (yet). 
 UNTV also depends on a custom build of [Node-Webkit](https://github.com/rogerwang/node-webkit) 
 which I have only compiled for GNU/Linux systems so far.
