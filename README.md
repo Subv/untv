@@ -11,25 +11,25 @@ Since UNTV is very much in infancy, I do not provide pre-built binaries (yet).
 UNTV also depends on a custom build of [Node-Webkit](https://github.com/rogerwang/node-webkit) 
 which I have only compiled for GNU/Linux systems so far.
 
-1. Clone the repository:
+* Clone the repository:
 
 ```
 ~# git clone https://github.com/gordonwritescode/untv.git
 ```
 
-2. Install dependencies using Node Package Manager:
+* Install dependencies using Node Package Manager:
 
 ```
 ~# cd untv && sudo npm install
 ```
 
-3. Make sure you have CoffeeScript installed globall (we use `cake` for tasks):
+* Make sure you have CoffeeScript installed globally (we use `cake` for tasks):
 
 ```
 ~# sudo npm install coffee-script -g
 ```
 
-4. Run `cake setup` from the project root
+* Run `cake setup` from the project root
 
 > Alternatively download the custom build of node-webkit here: 
 > https://www.dropbox.com/sh/3ne1qsdxtc848z6/Rx4dnzgu5S 
