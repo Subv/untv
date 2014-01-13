@@ -13,6 +13,7 @@ NavigableGrid = require "./navigable-grid"
 NavigableList = require "./navigable-list"
 SmartAdjuster = require "./smart-adjuster"
 Notifier      = require "./tv-notifier"
+FileSelector  = require "./file-selector"
 
 # expose API
 module.exports = {
@@ -21,4 +22,5 @@ module.exports = {
   SmartAdjuster
   $
   Notifier
+  FileSelector
 }
