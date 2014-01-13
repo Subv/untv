@@ -18,6 +18,10 @@ class FileSelector
     @home_dir     = process.env[home_env]
     @current_path = starting_path or home_dir
     @parent_dir   = path.join @current_path, "../"
+    do @updatePath
+
+  # call this when selecting an item
+  updatePath: =>
     @current_tree = fs.readdirSync @current_path
     # add parent as item to current tree
     @current_tree.unshift @parent_dir
