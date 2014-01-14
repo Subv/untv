@@ -53,7 +53,7 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
 
   # input checking
   if platform not of platforms
-    throw "'#{platform}' is not supported."
+    console.error "'#{platform}' is not supported."
     process.exit -1
 
   if not binary_loc
