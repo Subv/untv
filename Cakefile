@@ -9,11 +9,11 @@ path          = require "path"
 {exec, spawn} = require "child_process"
 readline      = require "readline"
 
-current_build = "nw-0.8.4-custom"
-
 ################################################################################
 ### Globals
 ################################################################################
+current_build = "nw-0.8.4-custom"
+
 platforms  = 
   linux32: """
     #{__dirname}/bin/#{current_build}/linux32/nw
