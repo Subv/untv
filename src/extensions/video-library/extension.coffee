@@ -12,4 +12,4 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   Load FileSelector
   ###
   selector_container = (gui.$ "#files", view)
-  file_selector      = new gui.FileSelector selector_container, remote
+  file_selector      = new gui.FileSelector selector_container, remote, ["*"]

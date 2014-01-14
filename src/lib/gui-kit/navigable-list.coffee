@@ -103,7 +103,8 @@ class NavigableList extends EventEmitter
       @focused = yes
       @scroller.addClass @focused_area_classname
       if index
-        item = ($ "li", @scroller)[index]
+        items = ($ "li", @scroller)
+        item  = items[index] or items[0]
         @last_item = ($ item).addClass @selected_item_classname if item
       else
         if @last_item then @last_item.addClass @selected_item_classname
