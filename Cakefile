@@ -11,9 +11,9 @@ readline      = require "readline"
 
 current_build = "nw-0.8.4-custom"
 
-###
-Supported Platforms
-###
+################################################################################
+### Globals
+################################################################################
 platforms  = 
   linux32: "#{__dirname}/bin/#{current_build}/linux32/nw"
   linux64: "#{__dirname}/bin/#{current_build}/linux64/nw"
@@ -26,16 +26,16 @@ downloads =
   darwin32: "http://untv.gordonwritescode.com/nw-custom-0.8.4/darwin32.tar.gz"
   win32: "" # not built yet
 
-###
-Options
-###
+################################################################################
+### Options
+################################################################################
 option "-p", "--platform [name]", "platform: (linux64|linux32|darwin32|win32)"
 option "-o", "--output [dir]", "output directory for build task"
 option "-f", "--force", "i sure hope you know what you are doing"
 
-###
-Tasks
-###
+################################################################################
+### Tasks
+################################################################################
 task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   platform   = options.platform or os.platform()
   only_32    = platform is "win" or platform is "darwin"
