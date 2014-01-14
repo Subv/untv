@@ -15,10 +15,18 @@ current_build = "nw-0.8.4-custom"
 ### Globals
 ################################################################################
 platforms  = 
-  linux32: "#{__dirname}/bin/#{current_build}/linux32/nw"
-  linux64: "#{__dirname}/bin/#{current_build}/linux64/nw"
-  darwin32: "#{__dirname}/bin/#{current_build}/darwin32/nw.app/Contents/MacOS/node-webkit"
-  win32: "#{__dirname}\\bin\\#{current_build}\\win32\\nw"
+  linux32: """
+    #{__dirname}/bin/#{current_build}/linux32/nw
+  """
+  linux64: """
+    #{__dirname}/bin/#{current_build}/linux64/nw
+  """
+  darwin32: """
+    #{__dirname}/bin/#{current_build}/darwin32/nw.app/Contents/MacOS/node-webkit
+  """
+  win32: """
+    #{__dirname}\\bin\\#{current_build}\\win32\\nw
+  """
 
 downloads =
   linux32: "" # not built yet
@@ -42,10 +50,19 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   arch       = if only_32 then "32" else os.arch().match /\d+/
   platform   = "#{platform}#{arch}"
   binary_loc = downloads[platform]
+
   # input checking
-  if platform not of platforms then throw "'#{platform}' is not supported."
-  if not binary_loc then throw "'#{platform}' custom nw binary not yet available."
-  if options.force then console.warn "Using --force flag. I sure hope you know what you are doing!\n"
+  if platform not of platforms
+    throw "'#{platform}' is not supported."
+    process.exit -1
+
+  if not binary_loc
+    console.log "'#{platform}' custom nw binary not yet available."
+    process.exit -1
+
+  if options.force
+    console.log "Using --force flag. I sure hope you know what you are doing!\n"
+
   # download archive
   filename    = path.basename binary_loc
   tmp_loc     = "#{os.tmpdir()}/#{filename}"
@@ -98,9 +115,16 @@ task 'start', 'starts untv application', (options) ->
   arch       = if only_32 then "32" else os.arch().match /\d+/
   platform   = "#{platform}#{arch}"
   binary_loc = platforms[platform]
+
   # input checking
-  if platform not of platforms then throw "'#{platform}' is not supported."
-  if not binary_loc then throw "'#{platform}' custom nw binary not yet available."
+  if platform not of platforms 
+    console.log "'#{platform}' is not supported."
+    process.exit -1
+
+  if not binary_loc
+    console.log "'#{platform}' custom nw binary not yet available."
+    process.exit -1
+
   # spawn the untv process
   untv = exec "#{binary_loc} #{__dirname}"
   # pipe untv output to console
