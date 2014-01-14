@@ -15,15 +15,21 @@ $              = require "../../vendor/jquer-2.0.3"
 
 class FileSelector extends EventEmitter
   constructor: (@container, @remote, @ignore_types) ->
+    ###
+    ignore_types is an array or file extensions like ".txt"
+    passing an empty string as an item will ignore all files
+    and only honor directories
+    ###
     home_env      = if process.platform is "win32" then "USERPROFILE" else "HOME"
     @home_dir     = process.env[home_env]
     @current_path = @home_dir
     @parent_dir   = path.join @current_path, "../"
     do @update
 
-  # call this when selecting an item
+  # call this when selecting a directory item
   update: (@current_path = @current_path) =>
     @current_tree = fs.readdirSync @current_path
+    @parent_dir   = path.join @current_path, "../"
     # add parent as item to current tree
     @current_tree.unshift @parent_dir
     # stat all the contents
@@ -38,6 +44,7 @@ class FileSelector extends EventEmitter
     # render the instance
     do @render
 
+  # draw interface
   render: =>
     ($ @container).html @template @current_tree
     # configure list
@@ -51,12 +58,14 @@ class FileSelector extends EventEmitter
     @selector.giveFocus 1
     do @subscribe
   
+  # compiles view template
   template: (data) =>
-    file     = fs.readFileSync "#{__dirname}/../../views/file-selector.jade"
-    template = jade.compile file.toString()
+    @template_file ?= fs.readFileSync "#{__dirname}/../../views/file-selector.jade"
+    template        = jade.compile file.toString()
     # return compiled template
     template files: data or @current_tree
 
+  # set up events
   subscribe: =>
     # subscribe to events from NavigableList instance
     if not @selector then throw """
@@ -70,6 +79,7 @@ class FileSelector extends EventEmitter
       item_path = item.attr "data-path"
       # if it's a directory, set the current path and update
       if item_type is "directory" then @update item_path
+      # otherwise, notify listeners of the file selected
       else if item_type is "file" then @emit "file_selected", path: item_path
       else throw "'#{item_type}' is not a valid parameter"
 
