@@ -29,8 +29,9 @@ downloads =
 ###
 Options
 ###
-option '-p', '--platform [name]', 'platform: (linux64|linux32|darwin32|win32)'
-option '-o', '--output [dir]', 'output directory for build task'
+option "-p", "--platform [name]", "platform: (linux64|linux32|darwin32|win32)"
+option "-o", "--output [dir]", "output directory for build task"
+option "-f", "--force", "i sure hope you know what you are doing"
 
 ###
 Tasks
@@ -44,6 +45,7 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   # input checking
   if platform not of platforms then throw "'#{platform}' is not supported."
   if not binary_loc then throw "'#{platform}' custom nw binary not yet available."
+  if options.force then console.warn "Using --force flag. I sure hope you know what you are doing!\n"
   # download archive
   filename    = path.basename binary_loc
   tmp_loc     = "#{os.tmpdir()}/#{filename}"
@@ -51,6 +53,13 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   archive     = fs.createWriteStream tmp_loc
   download    = request binary_loc
   bytes_recd  = 0
+  # alert user if there is already a build downloaded
+  if (fs.existsSync destination) and not options.force
+    console.error """
+      There is already a Node-Webkit build located at #{destination}.
+      If you wish to blast it and download a new version, use the --force flag.
+    """
+    process.exit -1
   # create readline interface
   rl = readline.createInterface
     input: process.stdin
