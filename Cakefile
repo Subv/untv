@@ -66,7 +66,7 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   # download archive
   filename    = path.basename binary_loc
   tmp_loc     = "#{os.tmpdir()}/#{filename}"
-  destination = "#{__dirname}/bin/#{current_build}"
+  destination = "#{__dirname.replace(/\s/g,'\\ ')}/bin/#{current_build}"
   archive     = fs.createWriteStream tmp_loc
   download    = request binary_loc
   bytes_recd  = 0
