@@ -1,0 +1,52 @@
+/*
+** UNTV - video-library styles
+** Author: Gordon Hall
+*/
+
+@-webkit-keyframes select_item {
+  from {
+    -webkit-transform: scale(0.9);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+#files {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 80%;
+  background: #000;
+  z-index: 9;
+  box-shadow: 14px 0 24px #000;
+}
+
+#files ul {
+  opacity: 0.75;
+  margin: 0;
+  padding: 0;
+  padding: 20px 0;
+  list-style-type: none;
+}
+
+#files ul.navilist-focused {
+  opacity: 1;
+}
+
+#files ul li {
+  padding: 10px 24px;
+  font-size: 22px;
+  -webkit-transform: scale(0.9);
+  opacity: 0.9;
+}
+
+#files ul li.navilist-selected {
+  font-weight: bold;
+  -webkit-transform: scale(1);
+  opacity: 1;
+  -webkit-animation: select_item .2s;
+  background: url("../../../assets/images/tick-white.svg") left center no-repeat;
+  background-size: 10px 20px;
+}
