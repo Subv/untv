@@ -16,33 +16,40 @@ $              = require "../../vendor/jquery-2.0.3"
 class FileSelector extends EventEmitter
   constructor: (@container, @remote, @ignore_types = []) ->
     ###
-    ignore_types is an array or file extensions like ".txt"
-    passing an empty string as an item will ignore all files
-    and only honor directories
+    ignore_types is an array of file extensions like ".txt"
+    passing an empty string as an item will ignore all directories
+    and only honor files, while passing a wildcard *, only directories
+    will be honored
     ###
     home_env      = if process.platform is "win32" then "USERPROFILE" else "HOME"
     @home_dir     = process.env[home_env]
     @current_path = @home_dir
-    @parent_dir   = path.join @current_path, "../.."
     do @update
 
   # call this when selecting a directory item
   update: (@current_path = @current_path) =>
     @current_tree = fs.readdirSync @current_path
-    @parent_dir   = path.join @current_path, "../.."
-    # add parent as item to current tree
-    @current_tree.unshift @parent_dir
+    @parent_dir   = path.join @current_path, ".."
     # stat all the contents
     @current_tree = @current_tree.map (file) =>
+      # get file stats
+      stats = fs.statSync path.join @current_path, file
       # ignore types
       if (path.extname file) in @ignore_types then no
+      # check if ignore all files (wildcard)
+      else if "*" in @ignore_types and stats.isFile() then no
       # ignore hidden
       else if (file.charAt 0) is "." then no
       # otherwise add to list
       else data = 
-        path: "#{@current_path}/#{file}"
+        path: path.join @current_path, file
         name: file
-        stats: fs.statSync "#{@current_path}/#{file}"
+        stats: stats
+    # add parent as item to current tree
+    @current_tree.unshift 
+      path: @parent_dir
+      name: "Up To Parent"
+      stats: fs.statSync @parent_dir
     # clean the tree array
     do @pruneTree
     # emit an event alerting listeners that we have file contents
@@ -59,6 +66,16 @@ class FileSelector extends EventEmitter
       adjust_x: 0
       smart_scroll: yes 
       leave_decoration: yes
+    ###
+    we had a performance problem here...
+    seems as if the NavigableList instances from previous
+    calls to this render method were lost in memory somewhere
+    but still listening for events
+
+    at least calling `lock()` removed the visible performance hit
+    but we need to manually collect the garbage i think...
+    ###
+    do @selector?.lock
     # create selector instance
     @selector = new NavigableList ($ "ul", @container), @remote, selector_config
     @selector.giveFocus 1
