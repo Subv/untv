@@ -246,6 +246,9 @@ class GlobalMenu extends EventEmitter
     do @subscribe
     # no show the rendered extension and hide the menu
     do container.show
+    # before we call close(), make sure we empty the cached listeners
+    # otherwise the previous extension's remote bindings will get re-bound
+    @cached_remote_listeners = null
     do @close
 
   current: => $ "li.has-focus", @container
