@@ -108,9 +108,16 @@ class FileSelector extends EventEmitter
       item_type = item.attr "data-type"
       item_path = item.attr "data-path"
       # if it's a directory, set the current path and update
-      if item_type is "directory" then @update item_path
+      if item_type is "directory"
+        @update item_path
+        @emit "dir_selected", path: item_path
       # otherwise, notify listeners of the file selected
       else if item_type is "file" then @emit "file_selected", path: item_path
       else throw "'#{item_type}' is not a valid parameter"
+    # proxy the out of bounds event
+    @selector.on "out_of_bounds", (data) => @emit "out_of_bounds", data
+
+  proxyListEvents: =>
+
 
 module.exports = FileSelector
