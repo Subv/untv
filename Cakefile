@@ -30,9 +30,9 @@ platforms  =
 
 downloads =
   linux32: "" # not built yet
-  linux64: "http://untv.gordonwritescode.com/nw-custom-0.8.4/linux64.tar.gz"
-  darwin32: "http://untv.gordonwritescode.com/nw-custom-0.8.4/darwin32.tar.gz"
-  win32: "" # not built yet
+  linux64: "https://file.ac/Ayxb2UM40pg/linux64.tar.gz"
+  darwin32: "https://file.ac/8v7SRJ7Xa6A/darwin32.tar.gz"
+  win32: "https://file.ac/0FNox66LTbA/win32.zip" 
 
 ################################################################################
 ### Options
@@ -42,10 +42,10 @@ option "-o", "--output [dir]", "output directory for build task"
 option "-f", "--force", "i sure hope you know what you are doing"
 
 ################################################################################
-### Tasks
+### Setup Custom Node-Webkit Build
 ################################################################################
 task 'setup', 'downloads node-webkit custom build for platform', (options) ->
-  platform   = options.platform or os.platform()
+  platform   = (options.platform or os.platform()).match /^[A-z]+/
   only_32    = platform is "win" or platform is "darwin"
   arch       = if only_32 then "32" else os.arch().match /\d+/
   platform   = "#{platform}#{arch}"
@@ -106,11 +106,22 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
     command = """
       tar -xvf #{tmp_loc} -C "#{destination}"
     """
-    exec command, (err, stdout, stderr) ->
-      if err then throw "Error unpacking #{current_build} build: #{err}"
-      console.log stdout
-      console.log "Setup complete! Run `cake start` to launch UNTV."
+    # check if we are on windows... these fools gotta unzip the files on their
+    # own, since we don't have a solid way of knowing how to extract archive
+    unless platform is "win32"
+      exec command, (err, stdout, stderr) ->
+        if err then throw "Error unpacking #{current_build} build: #{err}"
+        console.log stdout
+        console.log "Setup complete! Run `cake start` to launch UNTV."
+    else
+      console.log """
+        Archive downloaded to #{tmp_loc}! Windows users need to extract this 
+        archive to #{destination} before running `cake start` to launch UNTV.
+      """
 
+################################################################################
+### Start UNTV Using this Platform's Executable
+################################################################################
 task 'start', 'starts untv application', (options) ->
   platform   = options.platform or os.platform()
   only_32    = platform is "win" or platform is "darwin"
@@ -138,5 +149,8 @@ task 'start', 'starts untv application', (options) ->
   untv.on "close", (code) -> console.log "untv: exited with code #{code}"
   untv.on "error", (err) -> console.log "untv: #{err}"
 
+################################################################################
+### Package UNTV Bundle for Specified Platform
+################################################################################
 task 'build', 'builds platform specific package(s) for untv', (options) ->
   console.log "Build task not yet available."
