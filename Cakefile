@@ -22,10 +22,10 @@ platforms  =
     #{__dirname}/bin/#{current_build}/linux64/nw
   """
   darwin32: """
-    #{__dirname}/bin/#{current_build}/darwin32/nw.app/Contents/MacOS/node-webkit
+    "#{__dirname}"/bin/#{current_build}/darwin32/nw.app/Contents/MacOS/node-webkit
   """
   win32: """
-    #{__dirname}\\bin\\#{current_build}\\win32\\nw
+    "#{__dirname}"\\bin\\#{current_build}\\win32\\nw
   """
 
 downloads =
@@ -103,7 +103,9 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   archive.on "finish", -> 
     console.log "\nGot it! Extracting archive to #{destination}..."
     # run tar command
-    command = "tar -xvf #{tmp_loc} -C #{destination}"
+    command = """
+      tar -xvf #{tmp_loc} -C "#{destination}"
+    """
     exec command, (err, stdout, stderr) ->
       if err then throw "Error unpacking #{current_build} build: #{err}"
       console.log stdout
@@ -126,7 +128,10 @@ task 'start', 'starts untv application', (options) ->
     process.exit -1
 
   # spawn the untv process
-  untv = exec "#{binary_loc} #{__dirname}"
+  command = """
+    #{binary_loc} "#{__dirname}"
+  """
+  untv = exec command
   # pipe untv output to console
   untv.stdout.on "data", (data) -> console.log "untv: #{data}"
   untv.stderr.on "data", (data) -> console.error "untv: #{data}"
