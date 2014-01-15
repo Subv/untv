@@ -52,6 +52,7 @@ class NavigableList extends EventEmitter
         @setScrollPosition @last_item
       else
         @emit "out_of_bounds", direction: "bottom"
+        
     @emit "item_focused", @last_item
     @remote.playEventSound "click", 0.2, 0.3
 
