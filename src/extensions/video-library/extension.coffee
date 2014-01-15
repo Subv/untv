@@ -9,8 +9,21 @@ devices or mounted disks for videos and play them
 ffmpeg = require "fluent-ffmpeg"
 fs     = require "fs"
 jade   = require "jade"
+async  = require "async"
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
+
+  ###
+  Supported File Type
+  ###
+  supported_types = [
+    ".mp4"
+    ".m4v"
+    ".mov"
+    ".mkv"
+    ".avi"
+    ".webm"
+  ]
 
   ###
   Load FileSelector
@@ -32,6 +45,12 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # create new movie_list
   movie_grid = new gui.NavigableGrid grid_container, remote, movie_grid_config
 
+  # when selecting a movie file, go ahead and load it and pass it's 
+  # absolute path to the player instance
+  movie_grid.on "item_selected", (item) ->
+    console.log item
+
+
   # when navigating out of bounds left from movie grid, focus on the
   # file selector
   movie_grid.on "out_of_bounds", (data) ->
@@ -44,10 +63,24 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # in another NavigableList, and use ffmpeg to generate thumbs
   file_selector.on "dir_selected", (data) ->
     dir_path = data.path
-    # load movie list
-    list_data = []
-    # compile template and replace container contents
-    movie_grid.populate list_data, grid_template
+    # load movie list and get it's metadata
+    contents = fs.readdirSync dir_path
+    # filter by supported types
+    movies   = contents.filter (mov) -> path.extname file in supported_types
+    # transform movie data to get more info
+    movies.map (movie) ->
+      stats: fs.statSync movie
+      name: path.basename movie
+      path: movie
+    # movie data retrieval function
+    getMovieData = (movie) ->
+      
+    # now build an async map to add screenshots and metadata, before passing to
+    # the movie grid's populate template
+    async.map movies, getMovieData, (err, list_data) ->
+      if err then return err
+      # compile template and replace container contents
+      movie_grid.populate list_data, grid_template
     
   # when navigating right, switch focus to the movie grid
   file_selector.on "out_of_bounds", (data) ->
