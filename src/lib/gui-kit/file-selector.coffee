@@ -25,6 +25,9 @@ class FileSelector extends EventEmitter
     home_env      = if process.platform is "win32" then "USERPROFILE" else "HOME"
     @home_dir     = process.env[home_env]
     @current_path = @home_dir
+    # override if needed
+    @current_path = @list_config.initial_path if @list_config.initial_path 
+    window.alert @current_path
     do @update
 
   # call this when selecting a directory item
@@ -119,8 +122,5 @@ class FileSelector extends EventEmitter
       else throw "'#{item_type}' is not a valid parameter"
     # proxy the out of bounds event
     @selector.on "out_of_bounds", (data) => @emit "out_of_bounds", data
-
-  proxyListEvents: =>
-
 
 module.exports = FileSelector

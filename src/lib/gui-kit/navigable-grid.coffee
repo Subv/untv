@@ -32,6 +32,11 @@ class NavigableGrid extends EventEmitter
     @last_item_id = null
 
     @container.empty()
+
+    # check if there are items in the list data
+    # and if not, then just return and emit an event
+    if not @data or not @data.length then return @emit "emptied", @container
+
     @scroller  = $ "<div class='navigrid'/>"
     @container.append @scroller
     # determine the size of a single list item template

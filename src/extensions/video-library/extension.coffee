@@ -6,18 +6,19 @@ Enables user to browse their local hard disk or attached
 devices or mounted disks for videos and play them
 ###
 
-ffmpeg    = require "fluent-ffmpeg"
-{Metadata} = ffmpeg
-fs        = require "fs"
-jade      = require "jade"
-async     = require "async"
-path      = require "path"
-os        = require "os"
+ffmpeg       = require "fluent-ffmpeg"
+{Metadata}   = ffmpeg
+fs           = require "fs"
+jade         = require "jade"
+async        = require "async"
+path         = require "path"
+os           = require "os"
+localStorage = window.localStorage
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
 
   selector_view = (gui.$ "#files", view)
-  grid_view     = (gui.$ "#movie_files")
+  grid_view     = (gui.$ "#movie-files")
 
   ###
   Supported File Type
@@ -62,12 +63,15 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     smart_scroll: yes 
     # leaves the selection class on focus removal
     leave_decoration: yes
+    # set initial path to last one
+    initial_path: localStorage.getItem "videos:last_directory"
   file_selector = new gui.FileSelector selector_view, remote, ["*"], file_config
 
   # when a directory is opened, we should load up the videos
   # in another NavigableList, and use ffmpeg to generate thumbs
   file_selector.on "dir_selected", (data) ->
-
+    # remember path
+    localStorage.setItem "videos:last_directory", data.path
     # show loading indicator
 
     dir_path = data.path
@@ -86,7 +90,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       console.log list_data
       if err then return err
       # compile template and replace container contents
-      movie_grid.populate list_data, grid_template
+      movie_grid.populate list_data or [], grid_template
 
       # hide loading indicator
     
@@ -95,7 +99,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     switch data.direction
       when "right"
         do file_selector.selector.releaseFocus
-        do movie_list?.giveFocus
+        do movie_grid?.giveFocus
 
   ###
   Load Movie Grid
@@ -110,6 +114,11 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # create new movie_list
   movie_grid = new gui.NavigableGrid grid_view, remote, movie_grid_config
 
+  # if we empty the grid by populating with no movies, then show an
+  # appropriate message in the container
+  movie_grid.on "emptied", (container) ->
+    container.html "No movies to show..."
+
   # when selecting a movie file, go ahead and load it and pass it's 
   # absolute path to the player instance
   movie_grid.on "item_selected", (item) ->
@@ -122,4 +131,8 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     switch data.direction
       when "left"
         do movie_grid.releaseFocus
-        do file_selector.selector.giveFocus 1
+        file_selector.selector.giveFocus 1
+
+  # when the extension loads, go ahead and load the current directory movies
+  file_selector.emit "dir_selected", 
+    path: file_selector.current_path
