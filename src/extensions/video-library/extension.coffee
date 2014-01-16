@@ -7,11 +7,12 @@ devices or mounted disks for videos and play them
 ###
 
 ffmpeg    = require "fluent-ffmpeg"
-{MetaLib} = ffmpeg
+{Metadata} = ffmpeg
 fs        = require "fs"
 jade      = require "jade"
 async     = require "async"
 path      = require "path"
+os        = require "os"
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
 
@@ -32,7 +33,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   ###
   getMovieData = (movie, done) ->
     # get metadata
-    meta = new MetaLib movie.path, (data, err) ->
+    meta = new Metadata movie.path, (data, err) ->
       if err then return done err
       movie.metadata = data
       # generate thumbnail
@@ -42,8 +43,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         count: 3
         timemarks: ["0.25", "0.5", "0.75"]
       , os.tmpdir(), (err, filenames) ->
-        if err then return done err
-        movie.screenshots = filenames
+        if err then console.log err
+        movie.screenshots = filenames or []
+        movie.error       = err or null
         done null, movie
 
   ###
@@ -55,23 +57,28 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # when a directory is opened, we should load up the videos
   # in another NavigableList, and use ffmpeg to generate thumbs
   file_selector.on "dir_selected", (data) ->
+
+    # show loading indicator
+
     dir_path = data.path
     # load movie list and get it's metadata
     contents = fs.readdirSync dir_path
     # filter by supported types
-    movies   = contents.filter (mov) -> path.extname mov in supported_types
+    movies   = contents.filter (mov) -> (path.extname mov) in supported_types
     # transform movie data to get more info
-    movies.map (movie) ->
-      stats: fs.statSync movie
-      name: path.basename movie
-      path: movie
-
+    movies   = movies.map (movie) ->
+      stats: fs.statSync "#{dir_path}/#{movie}"
+      name: path.basename movie, path.extname movie
+      path: "#{dir_path}/#{movie}"
     # now build an async map to add screenshots and metadata, before passing to
     # the movie grid's populate template
     async.map movies, getMovieData, (err, list_data) ->
+      console.log list_data
       if err then return err
       # compile template and replace container contents
       movie_grid.populate list_data, grid_template
+
+      # hide loading indicator
     
   # when navigating right, switch focus to the movie grid
   file_selector.on "out_of_bounds", (data) ->
