@@ -11,6 +11,7 @@ ffmpeg    = require "fluent-ffmpeg"
 fs        = require "fs"
 jade      = require "jade"
 async     = require "async"
+path      = require "path"
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
 
