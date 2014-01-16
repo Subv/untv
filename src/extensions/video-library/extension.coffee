@@ -16,6 +16,9 @@ os        = require "os"
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
 
+  selector_view = (gui.$ "#files", view)
+  grid_view     = (gui.$ "#movie_files")
+
   ###
   Supported File Type
   ###
@@ -44,15 +47,22 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         timemarks: ["0.25", "0.5", "0.75"]
       , os.tmpdir(), (err, filenames) ->
         if err then console.log err
-        movie.screenshots = filenames or []
+        movie.screenshots = (filenames or []).map (screen) -> 
+          "#{os.tmpdir()}/#{screen}"
         movie.error       = err or null
         done null, movie
 
   ###
   Load FileSelector
   ###
-  selector_container = (gui.$ "#files", view)
-  file_selector      = new gui.FileSelector selector_container, remote, ["*"]
+  file_config =
+    adjust_y: 0
+    adjust_x: grid_view.width()
+    # enables scroll to top/bottom when scrolling past bottom/top
+    smart_scroll: yes 
+    # leaves the selection class on focus removal
+    leave_decoration: yes
+  file_selector = new gui.FileSelector selector_view, remote, ["*"], file_config
 
   # when a directory is opened, we should load up the videos
   # in another NavigableList, and use ffmpeg to generate thumbs
@@ -92,14 +102,13 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   ###
   movie_grid_config = 
     adjust_y: 0
-    adjust_x: 0
+    adjust_x: selector_view.width()
     smart_scroll: yes 
     smart_rows: yes
-  grid_container = (gui.$ "#movie_files")
   grid_view_raw  = fs.readFileSync "#{__dirname}/views/movie-files.jade"
   grid_template  = jade.compile grid_view_raw.toString()
   # create new movie_list
-  movie_grid = new gui.NavigableGrid grid_container, remote, movie_grid_config
+  movie_grid = new gui.NavigableGrid grid_view, remote, movie_grid_config
 
   # when selecting a movie file, go ahead and load it and pass it's 
   # absolute path to the player instance

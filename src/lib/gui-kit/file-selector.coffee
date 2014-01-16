@@ -12,9 +12,10 @@ jade           = require "jade"
 NavigableList  = require "./navigable-list"
 $              = require "../../vendor/jquery-2.0.3"
 {EventEmitter} = require "events"
+extend         = require "node.extend"
 
 class FileSelector extends EventEmitter
-  constructor: (@container, @remote, @ignore_types = []) ->
+  constructor: (@container, @remote, @ignore_types = [], @list_config = {}) ->
     ###
     ignore_types is an array of file extensions like ".txt"
     passing an empty string as an item will ignore all directories
@@ -66,6 +67,8 @@ class FileSelector extends EventEmitter
       adjust_x: 0
       smart_scroll: yes 
       leave_decoration: yes
+    # extend default config
+    selector_config = extend selector_config, @list_config
     ###
     we had a performance problem here...
     seems as if the NavigableList instances from previous

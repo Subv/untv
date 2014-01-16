@@ -1,1 +1,15 @@
-div I'm a movie
+.local-movie(data-path="#{path}")
+  .screenshots
+    for screenshot in screenshots
+      img(width="150", height="100", src="#{screenshot}")
+  h3 #{name}
+  .metadata
+    strong
+      | Time:
+      span #{metadata.durationraw}
+    strong
+      | Codec:
+      span #{metadata.video.codec}
+    strong
+      | Resolution:
+      span #{metadata.video.resolution.w} x #{metadata.video.resolution.h}
