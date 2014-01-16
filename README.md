@@ -61,4 +61,4 @@ custom build of the node-webkit executable and decided that was silly. So I did
 a `filter-branch` to remove it on one machine and force pushed it here (I know, 
 I will burn in Git hell), then I pulled from another machine and forced pushed 
 again, which duplicated the history. Instead of rewriting history again, I 
-decided to leave even though it's ugly. Sorry.
+decided to leave it alone even though it's ugly. Sorry.
