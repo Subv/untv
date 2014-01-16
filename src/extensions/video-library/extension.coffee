@@ -59,7 +59,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     # load movie list and get it's metadata
     contents = fs.readdirSync dir_path
     # filter by supported types
-    movies   = contents.filter (mov) -> path.extname file in supported_types
+    movies   = contents.filter (mov) -> path.extname mov in supported_types
     # transform movie data to get more info
     movies.map (movie) ->
       stats: fs.statSync movie
