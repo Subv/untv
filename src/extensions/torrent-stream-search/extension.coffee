@@ -32,13 +32,14 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   details_view = (gui.$ "#torrent-details")
   menu_view    = (gui.$ "#torrent-menu")
   search       = (gui.$ "#torrent-search")
+  header       = (gui.$ "header")
   
   ###
   Configure Movie Grid
   ###
   grid_config  = 
     adjust_x: menu_view.width()
-    adjust_y: details_view.height()
+    adjust_y: details_view.height() - header.outerHeight()
     # prevents auto row switch on bounds reached left/right
     smart_scroll: no 
     # prevents auto row sizing based on visibility of items
@@ -51,7 +52,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   Configure Menu List
   ###
   menu_config  = 
-    adjust_y: 0
+    adjust_y: header.outerHeight()
     adjust_x: details_view.width()
     # enables scroll to top/bottom when scrolling past bottom/top
     smart_scroll: yes 

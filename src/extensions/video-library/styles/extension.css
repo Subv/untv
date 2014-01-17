@@ -12,9 +12,16 @@
   }
 }
 
+header.extension-header {
+  background-image: url("../icons/icon-white.svg");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  background-size: 32px;
+}
+
 #files {
   position: fixed;
-  top: 0;
+  top: 65px;
   bottom: 0;
   left: 0;
   right: 70%;
@@ -54,7 +61,7 @@
 #movie-files {
   background-color: rgba(0,0,0,0.25);
   position: fixed;
-  top: 0;
+  top: 65px;
   left: 30%;
   right: 0;
   bottom: 0;
@@ -116,4 +123,16 @@
 
 .local-movie .metadata strong span {
   font-weight: normal;
+}
+
+.no-movies {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 412px;
+  height: 200px;
+  margin: -100px 0 0 -206px;
+  font-size: 36px;
+  text-align: center;
+  text-shadow: 0 3px 5px #000;
 }

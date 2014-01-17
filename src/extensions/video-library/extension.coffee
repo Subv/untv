@@ -19,6 +19,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
 
   selector_view = (gui.$ "#files", view)
   grid_view     = (gui.$ "#movie-files")
+  header        = (gui.$ "header")
 
   ###
   Supported File Type
@@ -58,7 +59,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   Load FileSelector
   ###
   file_config =
-    adjust_y: 0
+    adjust_y: header.outerHeight()
     adjust_x: grid_view.width()
     # enables scroll to top/bottom when scrolling past bottom/top
     smart_scroll: yes 
@@ -108,7 +109,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   Load Movie Grid
   ###
   movie_grid_config = 
-    adjust_y: 0
+    adjust_y: header.outerHeight()
     adjust_x: selector_view.width()
     smart_scroll: no 
     smart_rows: yes
@@ -120,7 +121,8 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # if we empty the grid by populating with no movies, then show an
   # appropriate message in the container
   movie_grid.on "emptied", (container) ->
-    container.html "No movies to show..."
+    view = fs.readFileSync "#{__dirname}/views/no-movies.jade"
+    container.html do jade.compile view
 
   # when selecting a movie file, go ahead and load it and pass it's 
   # absolute path to the player instance

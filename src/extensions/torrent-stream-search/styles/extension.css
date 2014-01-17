@@ -12,6 +12,13 @@
   }
 }
 
+header.extension-header {
+  background-image: url("../icons/icon-white.svg");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  background-size: 32px;
+}
+
 #torrent-list {
   background-color: rgba(0,0,0,0.75);
   position: fixed;
@@ -64,7 +71,7 @@
 
 #torrent-details {
   position: absolute;
-  top: 0;
+  top: 65px;
   left: 20%;
   right: 0;
   bottom: 60%;
@@ -159,7 +166,7 @@
 
 #torrent-menu {
   position: fixed;
-  top: 0;
+  top: 65px;
   bottom: 0;
   left: 0;
   right: 80%;
