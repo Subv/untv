@@ -61,3 +61,59 @@
   box-shadow: inset 0 8px 22px #000;
   z-index: 8;
 }
+
+
+#movie-files.loading {
+  background: url("../../../assets/images/loader.gif") center center no-repeat rgba(0,0,0,0.25);
+}
+
+#movie-files ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0
+}
+
+#movie-files ul li {
+  opacity: 0.9;
+  -webkit-transform: scale(0.9);
+  background-color: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+#movie-files ul li.navigrid-selected {
+  -webkit-transform: scale(1);
+  opacity: 1;
+  -webkit-animation: select_item .2s;
+}
+
+.local-movie {
+  margin: 24px 24px 12px 24px;
+  padding: 12px; 
+}
+
+.local-movie .screenshots {
+  float: left;
+  margin: 0 24px 0 0;
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px #000;
+}
+
+.local-movie .screenshots img {
+  
+}
+
+.local-movie h3 {
+  margin: 0;
+}
+
+.local-movie .metadata {
+  margin: 12px 0;
+}
+
+.local-movie .metadata strong {
+  display: block;
+}
+
+.local-movie .metadata strong span {
+  font-weight: normal;
+}

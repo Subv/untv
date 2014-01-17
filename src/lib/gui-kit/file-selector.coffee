@@ -27,7 +27,6 @@ class FileSelector extends EventEmitter
     @current_path = @home_dir
     # override if needed
     @current_path = @list_config.initial_path if @list_config.initial_path 
-    window.alert @current_path
     do @update
 
   # call this when selecting a directory item

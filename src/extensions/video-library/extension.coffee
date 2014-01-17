@@ -44,8 +44,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       proc = new ffmpeg source: movie.path
       proc.withSize "150x100"
       proc.takeScreenshots
-        count: 3
-        timemarks: ["0.25", "0.5", "0.75"]
+        count: 1
+        timemarks: ["25%", "50%", "75%"]
+        filename: "%b_screenshot_%w_%i"
       , os.tmpdir(), (err, filenames) ->
         if err then console.log err
         movie.screenshots = (filenames or []).map (screen) -> 
@@ -73,7 +74,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     # remember path
     localStorage.setItem "videos:last_directory", data.path
     # show loading indicator
-
+    do movie_grid.container.empty
+    movie_grid.container.addClass "loading"
+    # get movies from directory
     dir_path = data.path
     # load movie list and get it's metadata
     contents = fs.readdirSync dir_path
@@ -91,8 +94,8 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       if err then return err
       # compile template and replace container contents
       movie_grid.populate list_data or [], grid_template
-
       # hide loading indicator
+      movie_grid.container.removeClass "loading"
     
   # when navigating right, switch focus to the movie grid
   file_selector.on "out_of_bounds", (data) ->
@@ -107,7 +110,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   movie_grid_config = 
     adjust_y: 0
     adjust_x: selector_view.width()
-    smart_scroll: yes 
+    smart_scroll: no 
     smart_rows: yes
   grid_view_raw  = fs.readFileSync "#{__dirname}/views/movie-files.jade"
   grid_template  = jade.compile grid_view_raw.toString()
@@ -122,7 +125,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # when selecting a movie file, go ahead and load it and pass it's 
   # absolute path to the player instance
   movie_grid.on "item_selected", (item) ->
-    movie_file_path = item.attr "data-movie-path"
+    movie_file_path = (gui.$ ".local-movie", item).attr "data-path"
     player.play movie_file_path, "video"
 
   # when navigating out of bounds left from movie grid, focus on the
