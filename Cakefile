@@ -45,7 +45,7 @@ option "-f", "--force", "i sure hope you know what you are doing"
 ### Setup Custom Node-Webkit Build
 ################################################################################
 task 'setup', 'downloads node-webkit custom build for platform', (options) ->
-  platform   = (options.platform or os.platform()).match /^[A-z]+/
+  platform   = (options.platform or os.platform()).match(/^[A-z]+/)[0]
   only_32    = platform is "win" or platform is "darwin"
   arch       = if only_32 then "32" else os.arch().match /\d+/
   platform   = "#{platform}#{arch}"
