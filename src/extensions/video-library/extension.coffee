@@ -19,7 +19,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
 
   selector_view = (gui.$ "#files", view)
   grid_view     = (gui.$ "#movie-files")
-  header        = (gui.$ "header")
+  header        = (gui.$ "header", view)
 
   ###
   Supported File Type
@@ -59,7 +59,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   Load FileSelector
   ###
   file_config =
-    adjust_y: header.outerHeight()
+    adjust_y: 0
     adjust_x: grid_view.width()
     # enables scroll to top/bottom when scrolling past bottom/top
     smart_scroll: yes 

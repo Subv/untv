@@ -32,13 +32,13 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   details_view = (gui.$ "#torrent-details")
   menu_view    = (gui.$ "#torrent-menu")
   search       = (gui.$ "#torrent-search")
-  header       = (gui.$ "header")
+  header       = (gui.$ "header", view)
   
   ###
   Configure Movie Grid
   ###
   grid_config  = 
-    adjust_x: menu_view.width()
+    adjust_x: menu_view.outerWidth()
     adjust_y: details_view.height() - header.outerHeight()
     # prevents auto row switch on bounds reached left/right
     smart_scroll: no 
@@ -79,6 +79,11 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       remote.sockets.emit "prompt:ask", message: input.attr "placeholder"
 
   menu.on "item_selected", (item) ->
+    action = item.attr "data-list-action"
+    # handle search with vkeyboard here
+    if action is "search"
+      return notifier.notify manifest.name, "Search Not Implemented", yes
+
     do menu.lock
     key   = item.attr "data-param-name"
     param = item.attr "data-list-param"
