@@ -91,7 +91,7 @@ class GlobalMenu extends EventEmitter
     # put passive extensions on their own
     if extension.passive
       # themes maybe?
-      @injectStyleSheets extension
+      @injectStyleSheets extension, "theme"
       # keep track...
       @passive_extensions.push extension if manifest and manifest.name
       # also go ahead and execute the passive extension without view and guikit
@@ -102,7 +102,7 @@ class GlobalMenu extends EventEmitter
     @extensions.sort (ext1, ext2) -> ext2.list_priority < ext1.list_priority 
     do @render
 
-  injectStyleSheets: (extension) =>
+  injectStyleSheets: (extension, type="extension") =>
     stylesheets = extension.stylesheets or []
     stylesheets.forEach (css_path) ->
       stylesheet_path = "#{extension.path}/#{css_path}"
@@ -111,7 +111,7 @@ class GlobalMenu extends EventEmitter
       stylesheet.attr "rel", "stylesheet"
       stylesheet.attr "type", "text/#{stylesheet_type}"
       stylesheet.attr "href", stylesheet_path
-      stylesheet.data "type", "extension"
+      stylesheet.data "type", type
       ($ "head").append stylesheet
 
   ###
