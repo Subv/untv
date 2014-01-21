@@ -95,7 +95,7 @@ class GlobalMenu extends EventEmitter
       # keep track...
       @passive_extensions.push extension if manifest and manifest.name
       # also go ahead and execute the passive extension without view and guikit
-      extension.main extension, @remote, @player, @notifier, null, null
+      extension.main? extension, @remote, @player, @notifier, null, null
     else
       @extensions.push extension if manifest and manifest.name
     # filter the list by list priority
