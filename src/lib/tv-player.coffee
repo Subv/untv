@@ -37,6 +37,7 @@ class Player extends EventEmitter
 
   width: -> ($ window).width()
   height: -> ($ window).height()
+
   active_player: null
 
   play: (src, media_type) =>
@@ -110,6 +111,21 @@ class Player extends EventEmitter
     "video"
     "audio"
   ]
+
+  # set up playlist subset
+  playlist:
+    items: []
+    current_track: null
+
+    add: (item, media_type) =>
+
+    remove: (item) =>
+
+    next: =>
+
+    prev: =>
+
+    empty: =>
 
 
 module.exports = Player

@@ -38,7 +38,7 @@ a pleasant cover-flow style interface.
 
 ## Extension Manager
 
-The Extension Manager extension allows users to search and browse thrid party 
+The Extension Manager extension allows users to search and browse third party 
 extensions, install or remove them, and keep them up to date.
 
 ## Settings & Preferences

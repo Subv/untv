@@ -19,11 +19,13 @@ SettingsRegistry = require "./settings-registry"
 class GlobalMenu extends EventEmitter
 
   constructor: (@container, @remote, @player) ->
-    @extensions    = []
-    @visible       = no
-    @window_height = ($ window).height()
-    @ready         = yes
-    @settings      = new SettingsRegistry()
+    @extensions         = []
+    @passive_extensions = []
+    @visible            = no
+    @window_height      = ($ window).height()
+    @ready              = yes
+    @settings           = new SettingsRegistry()
+    
     do @subscribe
 
     ($ window).bind "resize", => 
@@ -76,16 +78,38 @@ class GlobalMenu extends EventEmitter
     extension.path   = path
     extension.icon   = "#{path}/#{extension.icon}"
     init_script_path = "#{path}/#{extension.main}"
+
     if fs.existsSync init_script_path
       ext_init       = require init_script_path
       extension.main = ext_init
-      view_raw       = fs.readFileSync "#{path}/#{extension.view}"
-      extension.view = jade.compile view_raw.toString()
+      # check if the extension is passive and if so then don't compile
+      # a view at all...
+      if not extension.passive
+        view_raw       = fs.readFileSync "#{path}/#{extension.view}"
+        extension.view = jade.compile view_raw.toString()
 
-    @extensions.push extension if manifest and manifest.name
+    # put passive extensions on their own
+    if extension.passive
+      @passive_extensions.push extension if manifest and manifest.name
+      # also go ahead and execute the passive extension without view and guikit
+      extension.main extension, @remote, @player, @notifier, null, null
+    else
+      @extensions.push extension if manifest and manifest.name
     # filter the list by list priority
     @extensions.sort (ext1, ext2) -> ext2.list_priority < ext1.list_priority 
     do @render
+
+  injectStyleSheets: (extension) =>
+    stylesheets = extension.stylesheets or []
+    stylesheets.forEach (css_path) ->
+      stylesheet_path = "#{extension.path}/#{css_path}"
+      stylesheet_type = (path.extname stylesheet_path).substr 1
+      stylesheet      = ($ "<link/>")
+      stylesheet.attr "rel", "stylesheet"
+      stylesheet.attr "type", "text/#{stylesheet_type}"
+      stylesheet.attr "href", stylesheet_path
+      stylesheet.data "type", "extension"
+      ($ "head").append stylesheet
 
   ###
   Remote Listener Caching
@@ -214,16 +238,7 @@ class GlobalMenu extends EventEmitter
     # remove previous extension stylesheets
     do ($ "link[data-type='extension'][rel='stylesheet']").remove
     # inject new stylesheets for selected extension
-    stylesheets = extension.stylesheets or []
-    stylesheets.forEach (css_path) ->
-      stylesheet_path = "#{extension.path}/#{css_path}"
-      stylesheet_type = (path.extname stylesheet_path).substr 1
-      stylesheet      = ($ "<link/>")
-      stylesheet.attr "rel", "stylesheet"
-      stylesheet.attr "type", "text/#{stylesheet_type}"
-      stylesheet.attr "href", stylesheet_path
-      stylesheet.data "type", "extension"
-      ($ "head").append stylesheet
+    @injectStyleSheets extension
 
     # animate the transition out of the current extension
     ($ "*", container).removeClass "visible #{@menu_animation_in_classname}"
