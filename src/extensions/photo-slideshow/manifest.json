@@ -1,14 +1,17 @@
 {
-  "name": "Photo Slideshow",
+  "name": "Photo Gallery",
   "icon": "icons/icon-white.svg",
   "description": "Browse pictures and play them in a slideshow.",
   "main": "extension.coffee",
   "view": "view.jade",
   "list_priority": 3,
   "stylesheets": [
-
+    "styles/extension.css"
   ],
   "config": {
     
+  },
+  "locals": {
+
   }
 }

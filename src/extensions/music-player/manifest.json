@@ -6,9 +6,12 @@
   "view": "view.jade",
   "list_priority": 2,
   "stylesheets": [
-
+    "styles/extension.css"
   ],
   "config": {
     
+  },
+  "locals": {
+
   }
 }
