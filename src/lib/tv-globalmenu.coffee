@@ -90,6 +90,9 @@ class GlobalMenu extends EventEmitter
 
     # put passive extensions on their own
     if extension.passive
+      # themes maybe?
+      @injectStyleSheets extension
+      # keep track...
       @passive_extensions.push extension if manifest and manifest.name
       # also go ahead and execute the passive extension without view and guikit
       extension.main extension, @remote, @player, @notifier, null, null
