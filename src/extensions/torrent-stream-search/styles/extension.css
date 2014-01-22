@@ -215,7 +215,6 @@ header.extension-header {
 }
 
 .navigrid.loading {
-  margin-top: -2385px;
   padding-bottom: 48px;
   background: url("../../../assets/images/loader.gif") bottom center no-repeat;
   background-size: 48px;
