@@ -137,6 +137,38 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         details = torrents.compileTemplate "details"
         # render view
         (gui.$ "#torrent-details").html details data
+      
+      # if this is the last row in the grid, load the next 50 movies
+      current_row   = grid.getCurrentRow()
+      current_pos   = current_row.outerHeight() * current_row.siblings().length
+      current_item  = grid.getCurrentItem()
+      current_index = (gui.$ "li", grid.scroller).index current_item 
+
+      if not current_row.next().length
+        item       = menu.last_item
+        key        = item.attr "data-param-name"
+        param      = item.attr "data-list-param"
+        query      = 
+          quality: "1080p"
+          limit: 50
+          set: (grid.data.length / 50) + 1
+        query[key] = param
+
+        # load torrent list
+        grid.scroller.addClass "loading"
+        torrents.list query, (err, list) ->
+          if err or not list
+            notifier.notify manifest.name, err or "No more movies to load.", yes
+          else
+            list = grid.data.concat list
+            grid.populate list, torrents.compileTemplate "list"
+          
+          grid.scroller.removeClass "loading"
+          grid.scroller.css "margin-top", "-#{current_pos}px"
+
+          last_item = (gui.$ "li", grid.scroller)[current_index]
+          grid.last_item_id = (gui.$ last_item).attr "data-navigrid-id"
+          do grid.giveFocus
 
   grid.on "item_selected", (item) ->
     do grid.releaseFocus

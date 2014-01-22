@@ -26,7 +26,8 @@ class FileSelector extends EventEmitter
     @home_dir     = process.env[home_env]
     @current_path = @home_dir
     # override if needed
-    @current_path = @list_config.initial_path if @list_config.initial_path 
+    if @list_config.initial_path and fs.existsSync @list_config.initial_path
+      @current_path = @list_config.initial_path
     do @update
 
   # call this when selecting a directory item
