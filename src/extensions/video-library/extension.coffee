@@ -17,6 +17,7 @@ localStorage = window.localStorage
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
 
+  conf          = manifest.config
   selector_view = (gui.$ "#files", view)
   grid_view     = (gui.$ "#movie-files")
   header        = (gui.$ "header", view)
@@ -36,6 +37,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   ###
   Movie File Data Retrieval
   ###
+  active_ffmpeg_procs = 0
+  queued_ffmpeg_procs = []
+
   getMovieData = (movie, done) ->
     # get metadata
     meta = new Metadata movie.path, (data, err) ->
@@ -50,9 +54,11 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         filename: "%b_screenshot_%w_%i"
       , os.tmpdir(), (err, filenames) ->
         if err then console.log err
+
         movie.screenshots = (filenames or []).map (screen) -> 
           "#{os.tmpdir()}/#{screen}"
-        movie.error       = err or null
+
+        movie.error = err or null
         done null, movie
 
   ###
@@ -90,7 +96,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       path: "#{dir_path}/#{movie}"
     # now build an async map to add screenshots and metadata, before passing to
     # the movie grid's populate template
-    async.map movies, getMovieData, (err, list_data) ->
+    async.mapLimit movies, conf.ffmpeg_procs, getMovieData, (err, list_data) ->
       console.log list_data
       if err then return err
       # compile template and replace container contents
