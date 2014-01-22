@@ -44,26 +44,29 @@ class Notifier extends EventEmitter
     do @menu.checkRemoteInterface
 
   dismiss: =>
-    @menu.container.animate
-      top: "0%"
-      bottom: "0%"
-    , @animation_time, => @menu.container.removeClass "notifier-open"
 
-    ($ "> *", @menu.container).animate
-      top: "0%"
-      bottom: "0%"
-    , @animation_time, => ($ "> *", @menu.container).removeClass "notifier-open"
+    # notification keyframe set
+    $.keyframe.define
+      name: @dismiss_keyframe_name
+      from: "top: 10%; bottom: 0%;"
+      to: "top: 100%; bottom: -100%;"
 
-    @container.animate
-      top: "100%"
-      bottom: "-100%"
-    , @animation_time, => do @container.hide
+    # menu keyframe set
+    $.keyframe.define
+      name: @menu_reset_keyframe_name
+      from: "top: -90%; bottom: 90%;"
+      to: "top: 0%; bottom: 0%;"
+
+    @container.playKeyframe
+      name: @dismiss_keyframe_name
+      duration: @animation_time
+
+    @menu.container.playKeyframe
+      name: @menu_reset_keyframe_name
+      duration: @animation_time
+      complete: => @menu.container.removeClass "notifier-open"
 
     do @returnRemoteFocus
-
-  scrollDown : =>
-
-  scrollUp: =>
 
   adjustContentHeight: =>
     total  = @container.innerHeight()
@@ -85,22 +88,28 @@ class Notifier extends EventEmitter
 
     # handle non-passive behavior
     if not is_passive
-      # move the menu outta heeereee
-      @menu.container.animate
-        top: "-90%"
-        bottom: "90%"
-      , @animation_time, => @menu.container.addClass "notifier-open"
 
-      ($ "> *", @menu.container).animate
-        top: "-90%"
-        bottom: "90%"
-      , @animation_time, => ($ "> *", @menu.container).addClass "notifier-open"
+      # notification keyframe set
+      $.keyframe.define
+        name: @notify_keyframe_name
+        from: "top: 100%; bottom: -100%;"
+        to: "top: 10%; bottom: 0%;"
 
-      do @container.show
-      @container.animate
-        top: "10%"
-        bottom: "0%"
-      , @animation_time, => do @adjustContentHeight
+      # menu keyframe set
+      $.keyframe.define 
+        name: @menu_aside_keyframe_name
+        from: "top: 0%; bottom: 0%;"
+        to: "top: -90%; bottom: 90%;"
+
+      @container.playKeyframe
+        name: @notify_keyframe_name
+        duration: @animation_time
+        complete: => do @adjustContentHeight
+
+      @menu.container.playKeyframe
+        name: @menu_aside_keyframe_name
+        duration: @animation_time
+        complete: => @menu.container.addClass "notifier-open"
 
       # steal remote focus
       do @stealRemoteFocus
@@ -123,5 +132,9 @@ class Notifier extends EventEmitter
   animation_out: "" #"fadeOutDown"
   animation_time: 300
   passive_timeout_length: 4000
+  dismiss_keyframe_name: "dismiss_notification"
+  notify_keyframe_name: "show_notification"
+  menu_reset_keyframe_name: "reset_menu"
+  menu_aside_keyframe_name: "aside_menu"
 
 module.exports = Notifier
