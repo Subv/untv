@@ -22,6 +22,9 @@ player   = new Player ($ "#player-container"), remote
 menu     = new GlobalMenu ($ "#menu-container"), remote, player
 notifier = new Notifier ($ "#notifier-container"), menu, remote
 
+# give the player the notifier instance
+player.notifier = notifier
+
 ###
 Register Remote Control Server
 ###

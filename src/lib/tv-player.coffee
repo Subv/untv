@@ -7,6 +7,7 @@ Defines a "player" instance that can be passed media for playback
 
 {EventEmitter} = require "events"
 $              = require "../vendor/jquery-2.0.3.js"
+path           = require "path"
 
 class Player extends EventEmitter
   constructor: (@container, @remote) ->
@@ -35,6 +36,10 @@ class Player extends EventEmitter
       @video.height = @height()
       @video.width  = @width()
 
+    # handle errors
+    ($ @video).on "error", (err) => do @showErrorMessage
+    ($ @audio).on "error", (err) => do @showErrorMessage
+
   width: -> ($ window).width()
   height: -> ($ window).height()
 
@@ -49,6 +54,7 @@ class Player extends EventEmitter
       # set the active player
       @active_player     = @[media_type]
       @active_player.src = src
+      extension_name     = (path.extname src).substr 1
       # inject the active player into the container
       if not (@container.children media_type).length
         @container.html @active_player
@@ -111,6 +117,10 @@ class Player extends EventEmitter
     "video"
     "audio"
   ]
+
+  showErrorMessage: (message) =>
+    @notifier?.notify "Player", message or "Failed to play media.", yes
+    @pause yes
 
   # set up playlist subset
   playlist:
