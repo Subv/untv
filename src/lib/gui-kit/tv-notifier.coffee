@@ -64,7 +64,9 @@ class Notifier extends EventEmitter
     @menu.container.playKeyframe
       name: @menu_reset_keyframe_name
       duration: @animation_time
-      complete: => @menu.container.removeClass "notifier-open"
+      complete: => 
+        @menu.container.removeClass "notifier-open"
+        @menu.container.removeAttr "style"
 
     do @returnRemoteFocus
 
@@ -109,7 +111,8 @@ class Notifier extends EventEmitter
       @menu.container.playKeyframe
         name: @menu_aside_keyframe_name
         duration: @animation_time
-        complete: => @menu.container.addClass "notifier-open"
+        complete: => 
+          @menu.container.addClass "notifier-open"
 
       # steal remote focus
       do @stealRemoteFocus
@@ -130,7 +133,7 @@ class Notifier extends EventEmitter
 
   animation_in: "" #"fadeInUp"
   animation_out: "" #"fadeOutDown"
-  animation_time: 300
+  animation_time: 400
   passive_timeout_length: 4000
   dismiss_keyframe_name: "dismiss_notification"
   notify_keyframe_name: "show_notification"
