@@ -37,9 +37,6 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   ###
   Movie File Data Retrieval
   ###
-  active_ffmpeg_procs = 0
-  queued_ffmpeg_procs = []
-
   getMovieData = (movie, done) ->
     # get metadata
     meta = new Metadata movie.path, (data, err) ->
