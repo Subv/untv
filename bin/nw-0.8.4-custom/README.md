@@ -4,7 +4,7 @@ In order to support as many video/audio formats as possible, UNTV depends on a
 custom patched build of node-webkit.
 
 Since the binary is too large for us to commit, you will need to download it 
-from: https://www.dropbox.com/sh/3ne1qsdxtc848z6/Rx4dnzgu5S
+from: https://file.ac/HLDVJiP1XzY/
 
 Select the directory for your target platform and copy that directory into here.
 
