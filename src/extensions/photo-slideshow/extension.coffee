@@ -6,10 +6,11 @@ Enables user to view and scroll through directory of photos
 from their local disk or mounted drives
 ###
 
-path      = require "path"
-fs        = require "fs"
-SlideShow = require "./slideshow"
-jade      = require "jade"
+path         = require "path"
+fs           = require "fs"
+SlideShow    = require "./slideshow"
+jade         = require "jade"
+localStorage = window.localStorage
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
   
@@ -23,7 +24,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     ".jpg"
     ".jpeg"
     ".png"
-    ."gif"
+    ".gif"
     ".bmp"
   ]
 
