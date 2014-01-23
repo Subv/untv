@@ -5,14 +5,15 @@ Author: Gordon Hall
 Initializes application
 ###
 
-fs            = require "fs"
-{$, Notifier} = require "./lib/gui-kit"
-GlobalMenu    = require "./lib/tv-globalmenu"
-Player        = require "./lib/tv-player"
-Remote        = require "./lib/remote-server"
-config        = JSON.parse fs.readFileSync "#{__dirname}/config.json"
-win           = global.window.nwDispatcher.requireNwGui()?.Window.get()
-jade          = require "jade"
+fs         = require "fs"
+{$}        = require "./lib/gui-kit"
+Notifier   = require "./lib/tv-notifier"
+GlobalMenu = require "./lib/tv-globalmenu"
+Player     = require "./lib/tv-player"
+Remote     = require "./lib/remote-server"
+config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
+win        = global.window.nwDispatcher.requireNwGui()?.Window.get()
+jade       = require "jade"
 
 ###
 Setup Remote, Global Menu, and Player

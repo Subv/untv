@@ -12,7 +12,6 @@ $             = require "../../vendor/jquery-2.0.3"
 NavigableGrid = require "./navigable-grid"
 NavigableList = require "./navigable-list"
 SmartAdjuster = require "./smart-adjuster"
-Notifier      = require "./tv-notifier"
 FileSelector  = require "./file-selector"
 
 # expose API
@@ -21,6 +20,5 @@ module.exports = {
   NavigableList
   SmartAdjuster
   $
-  Notifier
   FileSelector
 }
