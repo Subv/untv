@@ -2,8 +2,8 @@ UNTV - *Free Your Media*
 =====================
 
 UNTV is a cross platform DRM-free media platform for home theater computers. 
-This project is very new, so right now your best bet is to check out the [ever 
-evolving wiki](https://github.com/gordonwritescode/untv/wiki).
+This project is very new, so right now your best bet is to check out the `docs/`
+directory.
 
 ## Getting Started
 
@@ -22,8 +22,9 @@ Place in your Applications directory (or equivalent) and launch as usual.
 ### Developers
 
 Since UNTV is very much in infancy, I do not provide pre-built binaries (yet). 
-UNTV also depends on a custom build of [Node-Webkit](https://github.com/rogerwang/node-webkit) 
-which I have compiled for linux64, darwin32, and win32.
+UNTV also depends on a custom build of 
+[Node-Webkit](https://github.com/rogerwang/node-webkit) which I have compiled 
+for linux64, darwin32, and win32.
 
 ##### Clone the repository:
 
