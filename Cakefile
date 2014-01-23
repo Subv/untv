@@ -71,7 +71,7 @@ task 'setup', 'downloads node-webkit custom build for platform', (options) ->
   download    = request binary_loc
   bytes_recd  = 0
   # alert user if there is already a build downloaded
-  if (fs.existsSync destination) and not options.force
+  if (fs.existsSync "#{destination}/#{platform}") and not options.force
     console.error """
       There is already a Node-Webkit build located at #{destination}.
       If you wish to blast it and download a new version, use the --force flag.
