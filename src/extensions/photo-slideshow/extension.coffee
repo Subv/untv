@@ -20,7 +20,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   header        = (gui.$ "header", view)
   slideshow     = (gui.$ "#slideshow", view)
 
-  supported_type = [
+  supported_types = [
     ".jpg"
     ".jpeg"
     ".png"
@@ -47,9 +47,6 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   file_selector.on "dir_selected", (data) ->
     # remember path
     localStorage.setItem "photos:last_directory", data.path
-    # show loading indicator
-    do photo_grid.container.empty
-    photo_grid.container.addClass "loading"
     # get photos from directory
     dir_path = data.path
     # load photo list
@@ -57,7 +54,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     # filter by supported types
     photos   = contents.filter (pic) -> (path.extname pic) in supported_types
     # create a data object for the photos
-    photos   = photos.map (pic) -> path: pic
+    photos   = photos.map (pic) -> path: "#{dir_path}/#{pic}"
+    # populate photo grid
+    photo_grid.populate photos or [], grid_template
 
   # when navigating right, switch focus to the movie grid
   file_selector.on "out_of_bounds", (data) ->
@@ -95,3 +94,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       when "left"
         do photo_grid.releaseFocus
         file_selector.selector.giveFocus 1
+
+  # when the extension loads, go ahead and load the current directory movies
+  file_selector.emit "dir_selected", 
+    path: file_selector.current_path

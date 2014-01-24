@@ -18,3 +18,90 @@ header.extension-header {
   background-position: 12px center;
   background-size: 32px;
 }
+
+#files {
+  position: fixed;
+  top: 65px;
+  bottom: 0;
+  left: 0;
+  right: 80%;
+  background: #000;
+  z-index: 9;
+  /*box-shadow: 14px 0 24px #000;*/
+  border-right: 1px solid rgba(255,255,255,0.8);
+}
+
+#files ul {
+  opacity: 0.75;
+  margin: 0;
+  padding: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#files ul.navilist-focused {
+  opacity: 1;
+}
+
+#files ul li {
+  padding: 10px 24px;
+  font-size: 22px;
+  -webkit-transform: scale(0.9);
+  opacity: 0.9;
+}
+
+#files ul li.navilist-selected {
+  font-weight: bold;
+  -webkit-transform: scale(1);
+  opacity: 1;
+  -webkit-animation: select_item .2s;
+  background: url("../../../assets/images/tick-white.svg") left center no-repeat;
+  background-size: 10px 20px;
+}
+
+#photos {
+  background-color: rgba(0,0,0,0.25);
+  position: fixed;
+  top: 65px;
+  left: 20%;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 8px 22px #000;
+  z-index: 8;
+}
+
+
+#photos.loading {
+  background: url("../../../assets/images/loader.gif") center center no-repeat rgba(0,0,0,0.25);
+}
+
+#photos ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#photos ul li {
+  padding: 20px;
+  opacity: 0.7;
+  -webkit-transform: scale(0.9);
+  overflow: hidden;
+  width: 240px;
+  float: left;
+  height: 120px;
+}
+
+#photos ul li.navigrid-selected {
+  -webkit-transform: scale(1);
+  opacity: 1;
+  -webkit-animation: select_item .2s;
+}
+
+.photo {
+  float: left;
+}
+
+.photo img {
+  width: 240px;
+}
