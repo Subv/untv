@@ -8,17 +8,15 @@ from their local disk or mounted drives
 
 path         = require "path"
 fs           = require "fs"
-SlideShow    = require "./slideshow"
 jade         = require "jade"
 localStorage = window.localStorage
 
 module.exports = (manifest, remote, player, notifier, view, gui) ->
   
-  conf          = manifest.config
-  selector_view = (gui.$ "#files", view)
-  grid_view     = (gui.$ "#photos", view)
-  header        = (gui.$ "header", view)
-  slideshow     = (gui.$ "#slideshow", view)
+  conf           = manifest.config
+  selector_view  = (gui.$ "#files", view)
+  grid_view      = (gui.$ "#photos", view)
+  header         = (gui.$ "header", view)
 
   supported_types = [
     ".jpg"
@@ -72,7 +70,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     adjust_y: header.outerHeight()
     adjust_x: selector_view.width()
     smart_scroll: no 
-    smart_rows: yes
+    smart_rows: no
   grid_view_raw  = fs.readFileSync "#{__dirname}/views/photos.jade"
   grid_template  = jade.compile grid_view_raw.toString()
   # create new movie_list
@@ -84,8 +82,9 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     view = fs.readFileSync "#{__dirname}/views/no-photos.jade"
     container.html do jade.compile view
 
-  photo_grid.on "item_selected", (item) ->
-    # init slideshow
+  photo_grid.on "item_focused", (item) ->
+    source = (gui.$ "img", item).attr "src"
+    grid_view.css "background-image", "url('#{source}')"
 
   # when navigating out of bounds left from photo grid, focus on the
   # file selector

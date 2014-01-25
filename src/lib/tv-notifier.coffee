@@ -32,8 +32,8 @@ class Notifier extends EventEmitter
     do @menu.listenForRemoteConnectivity
     # bind our own
     @remote.on "go:select", => do @dismiss
-    @remote.on "scroll:up", => do @scrollUp
-    @remote.on "scroll:down", => do @scrollDown
+    # @remote.on "scroll:up", => do @scrollUp
+    # @remote.on "scroll:down", => do @scrollDown
 
   returnRemoteFocus: =>
     # kill our listeners

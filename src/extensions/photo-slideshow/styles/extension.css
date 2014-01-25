@@ -68,6 +68,8 @@ header.extension-header {
   bottom: 0;
   box-shadow: inset 0 8px 22px #000;
   z-index: 8;
+  background-position: center center;
+  background-size: 100%;
 }
 
 
@@ -80,6 +82,7 @@ header.extension-header {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  width: 280px !important;
 }
 
 #photos ul li {
@@ -89,7 +92,7 @@ header.extension-header {
   overflow: hidden;
   width: 240px;
   float: left;
-  height: 120px;
+  height: 160px;
 }
 
 #photos ul li.navigrid-selected {
@@ -99,9 +102,25 @@ header.extension-header {
 }
 
 .photo {
-  float: left;
+  display: inline-block;
+  box-shadow: 0 0 12px #000;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .photo img {
   width: 240px;
+  min-height: 140px;
+}
+
+.no-photos {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 412px;
+  height: 200px;
+  margin: -100px 0 0 -206px;
+  font-size: 36px;
+  text-align: center;
+  text-shadow: 0 3px 5px #000;
 }
