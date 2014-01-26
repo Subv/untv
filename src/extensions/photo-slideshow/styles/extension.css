@@ -103,8 +103,7 @@ header.extension-header {
 
 .photo {
   display: inline-block;
-  box-shadow: 0 0 12px #000;
-  border-radius: 8px;
+  border-top: 2px solid #fff;
   overflow: hidden;
 }
 
