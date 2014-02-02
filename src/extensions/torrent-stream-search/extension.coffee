@@ -31,7 +31,6 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   container    = (gui.$ "#torrent-list")
   details_view = (gui.$ "#torrent-details")
   menu_view    = (gui.$ "#torrent-menu")
-  search       = (gui.$ "#torrent-search")
   header       = (gui.$ "header", view)
   
   ###
@@ -82,7 +81,10 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     action = item.attr "data-list-action"
     # handle search with vkeyboard here
     if action is "search"
-      return notifier.notify manifest.name, "Search Not Implemented", yes
+      do menu.lock
+      return keyboard.prompt "Search by movie title or keyword...", (text) =>
+        # for now just alert query
+        window.alert text
 
     do menu.lock
     key   = item.attr "data-param-name"
@@ -109,16 +111,6 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       when "right"
         do menu.releaseFocus
         do grid.giveFocus
-
-  ###
-  Menu Search Bindings
-  ###
-  search.bind "keydown", (e) ->
-    if e.keyCode in [38, 40] then (gui.$ @).trigger "blur"
-
-  search.bind "keyup", (e) -> 
-    item = (gui.$ @).parent()
-    item.attr "data-list-param", @value
 
   ###
   Grid Event Handlers
