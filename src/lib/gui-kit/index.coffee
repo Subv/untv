@@ -8,11 +8,12 @@ Provides a convenience API for developing extensions
 # import keyframes lib
 require "../../vendor/jquery-keyframes"
 
-$             = require "../../vendor/jquery-2.0.3"
-NavigableGrid = require "./navigable-grid"
-NavigableList = require "./navigable-list"
-SmartAdjuster = require "./smart-adjuster"
-FileSelector  = require "./file-selector"
+$               = require "../../vendor/jquery-2.0.3"
+NavigableGrid   = require "./navigable-grid"
+NavigableList   = require "./navigable-list"
+SmartAdjuster   = require "./smart-adjuster"
+FileSelector    = require "./file-selector"
+VirtualKeyboard = require "./virtual-keyboard"
 
 # expose API
 module.exports = {
@@ -21,4 +22,5 @@ module.exports = {
   SmartAdjuster
   $
   FileSelector
+  VirtualKeyboard
 }
