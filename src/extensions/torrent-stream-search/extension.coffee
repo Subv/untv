@@ -32,6 +32,17 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   details_view = (gui.$ "#torrent-details")
   menu_view    = (gui.$ "#torrent-menu")
   header       = (gui.$ "header", view)
+
+  ###
+  Configure Virtual Keyboard
+  ###
+  keyboard_config = 
+    default: "alphanum"
+    allow: [
+      "alphanum"
+      "symbols"
+    ]
+  keyboard = new gui.VirtualKeyboard remote, keyboard_config
   
   ###
   Configure Movie Grid
