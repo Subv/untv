@@ -34,8 +34,8 @@ Setup Interaction Bindings
           swipe_distance = 0
           socket.emit "scroll:up" if direction is "up"
           socket.emit "scroll:down" if direction is "down"
-          socket.emit "go:next" if direction is "right"
-          socket.emit "go:back" if direction is "left" 
+          socket.emit "scroll:right" if direction is "right"
+          socket.emit "scroll:left" if direction is "left" 
 
   selection_check = ->
     select_ok       = yes

@@ -116,8 +116,8 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # then just force the remote to emit it's normal set of events
   ir_remote.on "input", (button) ->
     switch button
-      when "left" then remote.emit "go:back"
-      when "right" then remote.emit "go:next"
+      when "left" then remote.emit "scroll:left"
+      when "right" then remote.emit "scroll:right"
       when "up" then remote.emit "scroll:up"
       when "down" then remote.emit "scroll:down"
       when "select" then remote.emit "go:select"
