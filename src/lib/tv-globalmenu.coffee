@@ -15,6 +15,7 @@ extend           = require "node.extend"
 path             = require "path"
 dns              = require "dns"
 SettingsRegistry = require "./settings-registry"
+common           = require "./common"
 
 class GlobalMenu extends EventEmitter
 
@@ -117,21 +118,9 @@ class GlobalMenu extends EventEmitter
   ###
   Remote Listener Caching
   ###
-  cacheRemoteListeners: ->
-    cache = {}
-    for event_type in @remote.events
-      listeners = @remote.listeners event_type
-      cache[event_type] = listeners if listeners.length
-    @cached_remote_listeners = cache if (Object.keys cache).length
+  cacheRemoteListeners: common.cacheRemoteListeners 
 
-  rebindCachedListeners: ->
-    if @cached_remote_listeners
-      for event_type, listeners of @cached_remote_listeners
-        for handler in listeners
-          @remote.on event_type, handler
-      @cached_remote_listeners = null
-
-  cached_remote_listeners: null
+  rebindCachedListeners: common.rebindCachedListeners
 
   listenForRemoteConnectivity: =>
     # here we want to listen for remote connections to alert

@@ -216,8 +216,8 @@ class NavigableGrid extends EventEmitter
   bindRemoteControls: =>
     @remote.on "scroll:up", => do @prevRow if @focused
     @remote.on "scroll:down", => do @nextRow if @focused
-    @remote.on "go:next", => do @nextItem if @focused
-    @remote.on "go:back", => do @prevItem if @focused
+    @remote.on "scroll:right", => do @nextItem if @focused
+    @remote.on "scroll:left", => do @prevItem if @focused
     @remote.on "go:select", => if @focused then @emit "item_selected", @getCurrentItem()
 
   selected_item_classname: "navigrid-selected"

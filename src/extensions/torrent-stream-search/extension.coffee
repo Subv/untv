@@ -22,6 +22,7 @@ do torrents.latest
 Initialize Extension 
 ###
 module.exports = (manifest, remote, player, notifier, view, gui) ->
+
   config     = manifest.config
   disclaimer = (fs.readFileSync "#{__dirname}/disclaimer.html").toString()
   # show disclaimer
@@ -94,7 +95,10 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     if action is "search"
       do menu.lock
       return keyboard.prompt "Search by movie title or keyword...", (text) =>
-        # for now just alert query
+        if not text 
+          do menu.unlock
+          return do menu.giveFocus
+        # if we have text input then search
         window.alert text
 
     do menu.lock

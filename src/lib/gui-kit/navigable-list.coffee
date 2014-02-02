@@ -32,8 +32,8 @@ class NavigableList extends EventEmitter
     do @bindRemoteControls
 
   bindRemoteControls: =>
-    @remote.on "go:next", => (@emit "out_of_bounds", direction: "right") if @focused
-    @remote.on "go:back", => (@emit "out_of_bounds", direction: "left") if @focused
+    @remote.on "scroll:right", => (@emit "out_of_bounds", direction: "right") if @focused
+    @remote.on "scroll:left", => (@emit "out_of_bounds", direction: "left") if @focused
     @remote.on "go:select", => 
       @selected = @last_item
       (@emit "item_selected", @last_item) if @focused

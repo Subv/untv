@@ -85,9 +85,10 @@ class Remote extends EventEmitter
     # setup keyboard bindings
     keyboard.bind "up", => @emit "scroll:up"
     keyboard.bind "down", => @emit "scroll:down"
-    keyboard.bind "left", => @emit "go:back"
-    keyboard.bind "right", => @emit "go:next"
+    keyboard.bind "left", => @emit "scroll:left"
+    keyboard.bind "right", => @emit "scroll:right"
     keyboard.bind "enter", => @emit "go:select"
+    keyboard.bind "backspace", => @emit "go:back"
     keyboard.bind "space", => @emit "go:select"
     keyboard.bind "escape", => @emit "menu:toggle"
     keyboard.bind "ctrl+enter", => @emit "player:toggle"
@@ -113,6 +114,8 @@ class Remote extends EventEmitter
     # scroll events
     "scroll:up"
     "scroll:down"
+    "scroll:left"
+    "scroll:right"
     # player events
     "player:toggle"
     "player:next"
