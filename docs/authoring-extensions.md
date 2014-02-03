@@ -1,4 +1,5 @@
-# Authoring and Modifying Extensions
+Authoring and Modifying Extensions
+==================================
 
 One of the key concepts I have tried to keep in mind is the way in which UNTV can be extended. UNTV comes bundled with 6 extensions (at the time of writing).
 

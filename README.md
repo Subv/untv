@@ -2,8 +2,8 @@ UNTV
 ====
 
 UNTV is a cross platform DRM-free media platform for home theater computers. 
-This project is very new, so right now your best bet is to check out the `docs/`
-directory.
+This project is very new, so right now your best bet is to check out the 
+[docs/](https://github.com/gordonwritescode/untv/tree/master/docs) directory.
 
 ## Getting Started
 

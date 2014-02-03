@@ -92,7 +92,7 @@ class Remote extends EventEmitter
     keyboard.bind "pagedown", => @emit "go:next"
     # keyboard.bind "space", => @emit "go:select"
     keyboard.bind "home", => @emit "menu:toggle"
-    keyboard.bind "shift+enter", => @emit "player:toggle"
+    # keyboard.bind "shift+enter", => @emit "player:toggle"
     keyboard.bind "shift+space", => @emit "player:toggle"
     keyboard.bind "shift+right", => @emit "player:next"
     keyboard.bind "shift+left", => @emit "player:prev"
