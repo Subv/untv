@@ -1,9 +1,9 @@
 #vkeyboard
-  .vkeyboard-prompt
+  .vkeyboard-prompt.animated.fadeInDown
     p #{hint}
   .vkeyboard-input
-    input.vkeyboard-value(type="text")
-  .vkeyboard(data-type="alphanum")
+    input.vkeyboard-value.mousetrap(type="text")
+  .vkeyboard.animated.fadeInUp(data-type="alphanum")
     dl
       dd 1
       dd 2
@@ -36,7 +36,7 @@
       dd j
       dd k
       dd l
-      dd.empty
+      dd.delete(data-action="backspace")
     dl
       dd z
       dd x
@@ -45,9 +45,9 @@
       dd b
       dd n
       dd m
-      dd.delete
-      dd.return.two-wide
-  .vkeyboard(data-type="symbols")
+      dd.space.two-wide(data-action="space")
+      dd.return(data-action="submit")
+  .vkeyboard.animated.fadeInUp(data-type="symbols")
     dl
       dd !
       dd @
@@ -63,7 +63,7 @@
       dd -
       dd _
       dd +
-      dd \=
+      dd =
       dd [
       dd ]
       dd {
@@ -73,7 +73,7 @@
     dl 
       dd '
       dd "
-      dd \\
+      dd \
       dd |
       dd &lt;
       dd &gt;
@@ -87,7 +87,6 @@
       dd.empty
       dd.empty
       dd.empty
-      dd.empty
-      dd.empty
-      dd.delete
-      dd.return.two-wide
+      dd.space.two-wide(data-action="space")
+      dd.delete(data-action="backspace")
+      dd.return.two-wide(data-action="submit")

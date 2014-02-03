@@ -13,7 +13,15 @@ Remote         = require "../remote-server"
 common         = require "../common"
 
 class VirtualKeyboard extends EventEmitter
-  constructor: (@remote) -> 
+
+  defaults =
+    default: "alphanum"
+    allow: [
+      "alphanum"
+      "symbols"
+    ]
+
+  constructor: (@remote, @options = defaults) -> 
     if @remote not instanceof Remote then throw new TypeError """
       Value 'remote' is not an instance of Remote
     """
@@ -29,12 +37,36 @@ class VirtualKeyboard extends EventEmitter
     do @unbind
     # do @cacheRemoteListeners
     do @getView().remove
+    # show keyboard, blur body, and show default keys
     ($ "body").append compiled_view
+    ($ "#app").addClass "blurred"
+    ($ ".vkeyboard[data-type='#{@options.default}']").show()
+    ($ ".vkeyboard-value").focus()
     do @bind
+    do @focusKey
 
   view_id: "vkeyboard"
 
   getView: => ($ "##{@view_id}")
+
+  getCurrentKeyboard: => ($ ".vkeyboard:visible").first()
+
+  getCurrentKey: => ($ "dd.focused", @getCurrentKeyboard())
+
+  getAdjacentKeys: => 
+    current_key   = @getCurrentKey()
+    current_index = current_key.index() 
+    current_row   = current_key.parent()
+    prev_row      = current_row.prev()
+    next_row      = current_row.next()
+    top_key       = ($ "dd", prev_row)[current_index] or ($ "dd", prev_row).last()
+    bottom_key    = ($ "dd", next_row)[current_index] or ($ "dd", prev_row).last()
+
+    keys = 
+      left: if current_key.prev().length then current_key.prev() else null 
+      right: if current_key.next().length then current_key.next() else null
+      top: if prev_row.length then $ top_key else null
+      bottom: if next_row.length then $ bottom_key else null
 
   value: => ($ ".vkeyboard-value", @getView()).val()
 
@@ -52,33 +84,72 @@ class VirtualKeyboard extends EventEmitter
   rebindCachedListeners: common.rebindCachedListeners
 
   moveUp: =>
-    console.log "up"
+    keys = @getAdjacentKeys()
+    @focusKey keys.top if keys.top
 
   moveDown: =>
-    console.log "down"
+    keys = @getAdjacentKeys()
+    @focusKey keys.bottom if keys.bottom
 
   moveLeft: =>
-    console.log "left"
+    keys = @getAdjacentKeys()
+    @focusKey keys.left if keys.left
 
   moveRight: =>
-    console.log "right"
+    keys = @getAdjacentKeys()
+    @focusKey keys.right if keys.right
 
   selectKey: =>
-    console.log "select"
+    action = @getCurrentKey().attr "data-action"
+    if action then @handleAction action
+    else @type @getCurrentKey().text()
 
   confirm: =>
-    console.log "confirm"
-    do @unbind
-    do @rebindCachedListeners
-    @emit "input", @value()
-
-  cancel: =>
-    console.log "cancel"
     do @unbind
     # do @rebindCachedListeners
-    @getView().fadeOut 200, => do @getView().remove
-    @emit "input", null
+    @emit "input", @value()
+    do @close
 
+  cancel: =>
+    do @unbind
+    # do @rebindCachedListeners
+    @emit "input", null
+    do @close
+
+  close: =>
+    @getView().fadeOut 200, => do @getView().remove
+    ($ "#app").removeClass "blurred"
+
+  focusKey: (key) =>
+    if key and ($ key).hasClass "empty" then return
+    keyboard = @getCurrentKeyboard()
+    ($ "dd", keyboard).removeClass "focused"
+    if key then ($ key).addClass "focused"
+    else ($ "dd", keyboard).first().addClass "focused"
+
+  type: (key = "") =>
+    view  = @getView()
+    value = @value()
+    ($ ".vkeyboard-value", view).val "#{value}#{key}"
+
+  backspace: =>
+    view  = @getView()
+    value = @value().substr 0, @value().length - 1
+    ($ ".vkeyboard-value", view).val value 
+
+  handleAction: (action) =>
+    switch action
+      when "backspace" then do @backspace
+      when "space" then @type " "
+      when "submit" then do @confirm
+
+  switchKeyboard: =>
+    keyboard = @getCurrentKeyboard()
+    if keyboard.next().length then keyboard.next().show()
+    else ($ ".vkeyboard").first().show()
+    keyboard.hide()
+    ($ ".vkeyboard-value").focus()
+    do @focusKey
 
   events: [
     { name: "scroll:up", handler: "moveUp" }
@@ -88,6 +159,7 @@ class VirtualKeyboard extends EventEmitter
     { name: "go:select", handler: "selectKey" }
     { name: "go:back", handler: "cancel" }
     { name: "menu:toggle", handler: "cancel" }
+    { name: "go:next", handler: "switchKeyboard" }
   ]
 
 module.exports = VirtualKeyboard

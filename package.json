@@ -35,7 +35,7 @@
     "min_width": 640,
     "max_width": 1920,
     "fullscreen": false,
-    "show": true,
+    "show": false,
     "kiosk": false
   },
   "webkit": {

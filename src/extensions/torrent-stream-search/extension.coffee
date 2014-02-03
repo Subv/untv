@@ -97,16 +97,33 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       return keyboard.prompt "Search by movie title or keyword...", (text) =>
         if not text 
           do menu.unlock
-          return do menu.giveFocus
-        # if we have text input then search
-        window.alert text
+          do menu.giveFocus
+        else
+          getTorrentMovies item, text
+    else
+      getTorrentMovies item
+    
 
+  menu.on "out_of_bounds", (data) ->
+    switch data.direction
+      # when "up"
+      # when "down"
+      when "right"
+        do menu.releaseFocus
+        do grid.giveFocus
+
+  getTorrentMovies = (item, search) ->
     do menu.lock
     key   = item.attr "data-param-name"
     param = item.attr "data-list-param"
 
-    query = quality: "1080p", limit: 50
-    query[key] = param
+    query = 
+      quality: "1080p"
+      limit: 50
+      keywords: search
+
+    query[key] = param if param
+
     # load torrent list
     details_view.addClass "loading"
     torrents.list query, (err, list) ->
@@ -118,14 +135,6 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         grid.populate list, torrents.compileTemplate "list"
         do grid.giveFocus
       details_view.removeClass "loading"
-
-  menu.on "out_of_bounds", (data) ->
-    switch data.direction
-      # when "up"
-      # when "down"
-      when "right"
-        do menu.releaseFocus
-        do grid.giveFocus
 
   ###
   Grid Event Handlers
@@ -146,12 +155,13 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         (gui.$ "#torrent-details").html details data
       
       # if this is the last row in the grid, load the next 50 movies
+      # but only if there is already more than one row loaded
       current_row   = grid.getCurrentRow()
       current_pos   = current_row.outerHeight() * current_row.siblings().length
       current_item  = grid.getCurrentItem()
       current_index = (gui.$ "li", grid.scroller).index current_item 
 
-      if not current_row.next().length
+      if not current_row.next().length and current_row.prev().length
         item       = menu.last_item
         key        = item.attr "data-param-name"
         param      = item.attr "data-list-param"

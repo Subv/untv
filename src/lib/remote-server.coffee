@@ -88,13 +88,14 @@ class Remote extends EventEmitter
     keyboard.bind "left", => @emit "scroll:left"
     keyboard.bind "right", => @emit "scroll:right"
     keyboard.bind "enter", => @emit "go:select"
-    keyboard.bind "backspace", => @emit "go:back"
-    keyboard.bind "space", => @emit "go:select"
-    keyboard.bind "escape", => @emit "menu:toggle"
-    keyboard.bind "ctrl+enter", => @emit "player:toggle"
-    keyboard.bind "ctrl+space", => @emit "player:toggle"
-    keyboard.bind "ctrl+right", => @emit "player:next"
-    keyboard.bind "ctrl+left", => @emit "player:prev"
+    keyboard.bind "escape", => @emit "go:back"
+    keyboard.bind "end", => @emit "go:next"
+    # keyboard.bind "space", => @emit "go:select"
+    keyboard.bind "home", => @emit "menu:toggle"
+    keyboard.bind "shift+enter", => @emit "player:toggle"
+    keyboard.bind "shift+space", => @emit "player:toggle"
+    keyboard.bind "shift+right", => @emit "player:next"
+    keyboard.bind "shift+left", => @emit "player:prev"
 
   interfaces: =>
     interfaces = do networkInterfaces
