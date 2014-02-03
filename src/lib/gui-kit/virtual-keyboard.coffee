@@ -29,6 +29,7 @@ class VirtualKeyboard extends EventEmitter
   view: jade.compile fs.readFileSync "#{__dirname}/../../views/keyboard.jade"
 
   prompt: (hint = "Enter text:", callback) =>
+    @remote.sockets.emit "prompt:ask", message: hint
     # if a callback is specified, bind to the input event
     if typeof callback is "function" then @once "input", callback
     # compile the view
