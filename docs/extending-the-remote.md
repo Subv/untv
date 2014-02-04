@@ -112,4 +112,55 @@ event sent to the Remote Interface (smartphone) and contains boolean data.
 This event is fired as a response to a `remote.sockets.emit("alert:show")` 
 event sent to the Remote Interface (smartphone).
 
+## Remote Interface (Smartphone)
 
+The UNTV `Remote` class is instantiated with a single argument which defines 
+the port on which the instance will serve the smartphone interface. If the 
+`Remote` is instantiated without this parameter it will default to `8080`.
+
+This starts a web server that is accessible via the host machine's IP address 
+and port, when your phone is connected to the same local network.
+
+When the interface is accessed via HTTP (using your phone's web browser), it 
+opens a socket connection back to the host machine to transmit events receieved 
+from the user (you), back to the originating `Remote` instance. These events 
+are essentially proxied through the `Remote` instance after filtering out any 
+non-standard events and since `Remote` is an `EventEmitter`, it simply emits 
+the same events back to the UNTV application, where they are handled by the 
+different interface components.
+
+Since using a smartphone buys us some functionality we would otherwise not have 
+using an IR remote or otherwise, the Remote Interface supports a few events 
+UNTV can actually send to **it**.
+
+This can be done by emitting an event from the application back to the 
+`sockets` object tied to the `Remote` instance:
+
+```javascript
+var remote = new Remote(8080)
+// send alert to phone
+remote.sockets.emit("alert:show", {
+  message: "Hello, Remote Interface!"
+});
+```
+
+All of these events should pass an object where `message` is a string that 
+should indicate to the user, what action should be taken if any.
+
+### Event: "alert:show"
+
+Shows a notification on the remote interface similar to a traditional `alert`, 
+and emits an "alert:dismissed" event back to the `Remote`, when the alert is 
+dismissed.
+
+### Event: "prompt:ask"
+
+Shows a text prompt on the remote interface similar to a traditional `prompt`, 
+and emits a "prompt:answer" event back to the `Remote`, passing along the value 
+the user entered into the prompt.
+
+### Event: "confirm:ask"
+
+Shows a confirmation popup on the remote interface similar to a traditional 
+`confirm`, and emits a "confirm:answer" event back to the `Remote`, passing 
+along a boolean value indicating whether or not the user confirmed.
