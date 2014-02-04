@@ -7,9 +7,9 @@ Initializes application
 
 fs         = require "fs"
 {$}        = require "./lib/gui-kit"
-Notifier   = require "./lib/tv-notifier"
-GlobalMenu = require "./lib/tv-globalmenu"
-Player     = require "./lib/tv-player"
+Notifier   = require "./lib/notifier"
+GlobalMenu = require "./lib/global-menu"
+Player     = require "./lib/player"
 Remote     = require "./lib/remote-server"
 config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
 win        = global.window.nwDispatcher.requireNwGui()?.Window.get()
@@ -75,7 +75,6 @@ for directory, index in do getExtensionInstallTarget
 do ($ "#init-loader").hide
 do menu.open
 do win?.show
-
 
 setTimeout ->
   view    = jade.compile fs.readFileSync "#{__dirname}/views/connect-remote.jade"
