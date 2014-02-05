@@ -115,6 +115,17 @@ class GlobalMenu extends EventEmitter
       stylesheet.data "type", type
       ($ "head").append stylesheet
 
+  createExtensionEnvironment: (overrides) =>
+    env = 
+      manifest: null
+      remote: @remote
+      player: @player
+      notifier: @notifier
+      view: null
+      gui: gui
+    # apply overrides
+    env = env extends overrides
+
   ###
   Remote Listener Caching
   ###
