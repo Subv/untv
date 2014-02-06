@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="UNTV : Cross-Platform DRM-Free Media Center for Home Theater Computers" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>UNTV</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/gordonwritescode/untv">View on GitHub</a>
+
+          <h1 id="project_title">UNTV</h1>
+          <h2 id="project_tagline">Cross-Platform DRM-Free Media Center for Home Theater Computers</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/gordonwritescode/untv/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/gordonwritescode/untv/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>UNTV is a cross platform DRM-free media platform for home theater computers. 
+This project is very new, so right now your best bet is to check out the 
+<a href="https://github.com/gordonwritescode/untv/tree/master/docs">bundled documentation</a>.</p>
+
+<h2>
+<a name="end-users" class="anchor" href="#end-users"><span class="octicon octicon-link"></span></a>End Users</h2>
+
+<p><del>Download the latest bundled application for your platform:</del></p>
+
+<blockquote>
+<p><strong>UNTV bundled applications are not yet available.</strong></p>
+</blockquote>
+
+<ul>
+<li>GNU/Linux: <a href="#">64bit</a> | <a href="#">32bit</a>
+</li>
+<li>Mac OSX 10.7+: <a href="#">32bit</a>
+</li>
+<li>Windows: <a href="#">32bit</a>
+</li>
+</ul><p>Place in your Applications directory (or equivalent) and launch as usual. </p>
+
+<h2>
+<a name="developers" class="anchor" href="#developers"><span class="octicon octicon-link"></span></a>Developers</h2>
+
+<p>Since UNTV is very much in infancy, I do not provide pre-built packages (yet). 
+UNTV also depends on a custom build of 
+<a href="https://github.com/rogerwang/node-webkit">Node-Webkit</a> which I have compiled 
+for linux64, darwin32, and win32.</p>
+
+<h5>
+<a name="clone-the-repository" class="anchor" href="#clone-the-repository"><span class="octicon octicon-link"></span></a>Clone the repository:</h5>
+
+<pre><code>~# git clone https://github.com/gordonwritescode/untv.git
+</code></pre>
+
+<h5>
+<a name="install-dependencies-using-node-package-manager" class="anchor" href="#install-dependencies-using-node-package-manager"><span class="octicon octicon-link"></span></a>Install dependencies using Node Package Manager:</h5>
+
+<pre><code>~# cd untv &amp;&amp; sudo npm install
+</code></pre>
+
+<h5>
+<a name="make-sure-you-have-coffeescript-installed-globally-we-use-cake-for-tasks" class="anchor" href="#make-sure-you-have-coffeescript-installed-globally-we-use-cake-for-tasks"><span class="octicon octicon-link"></span></a>Make sure you have CoffeeScript installed globally (we use <code>cake</code> for tasks):</h5>
+
+<pre><code>~# sudo npm install coffee-script -g
+</code></pre>
+
+<h5>
+<a name="run-the-setup-task" class="anchor" href="#run-the-setup-task"><span class="octicon octicon-link"></span></a>Run the setup task</h5>
+
+<pre><code>~# cake setup
+</code></pre>
+
+<blockquote>
+<p>Alternatively download the custom build of node-webkit here: 
+<a href="https://file.ac/s4Lt3Vo6rls/">https://file.ac/s4Lt3Vo6rls/</a>
+Then, unzip and place contents in the <code>bin/nw-0.8.4-custom</code> directory.</p>
+</blockquote>
+
+<h5>
+<a name="start-untv" class="anchor" href="#start-untv"><span class="octicon octicon-link"></span></a>Start UNTV!</h5>
+
+<pre><code>~# cake start
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">UNTV maintained by <a href="https://github.com/gordonwritescode">gordonwritescode</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
