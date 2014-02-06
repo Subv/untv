@@ -61,19 +61,19 @@ Here is what a bare bones extension might look like:
 # gets executed once during registration
 console.log "registered my extension!"
 # gets executed on extension load
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) ->
   # access manifest file as object literal
-  config = manifest.config
+  config = env.manifest.config
   # access the gui kit library
-  my_grid = new gui.NavigableGrid view
+  my_grid = new env.gui.NavigableGrid view
   # use notification system
-  notifier.notify manifest.name, "Loaded!", yes
+  env.notifier.notify manifest.name, "Loaded!", yes
   # access the view
-  view.html "press select to watch a movie"
+  env.view.html "press select to watch a movie"
   # access the remote emitter
-  remote.on "go:select", ->
+  env.remote.on "go:select", ->
     # access the global player
-    player.play config.default_movie_path
+    env.player.play config.default_movie_path
 ```
 
 ## Passive Extensions
@@ -111,15 +111,15 @@ Other passive extensions might seek to modify or embellish the behavior of UNTV 
 In this case, you create your extension just as you normally would, but the function that you export from your `main` script only gets executed once at runtime. For example:
 
 ```coffeescript
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) ->
   # do crazy voodoo magic to get IR input
   ir_remote = magicallyGetAppleTVRemote()
   # then just force the remote to emit it's normal set of events
   ir_remote.on "input", (button) ->
     switch button
-      when "left" then remote.emit "scroll:left"
-      when "right" then remote.emit "scroll:right"
-      when "up" then remote.emit "scroll:up"
-      when "down" then remote.emit "scroll:down"
-      when "select" then remote.emit "go:select"
+      when "left" then env.remote.emit "scroll:left"
+      when "right" then env.remote.emit "scroll:right"
+      when "up" then env.remote.emit "scroll:up"
+      when "down" then env.remote.emit "scroll:down"
+      when "select" then env.remote.emit "go:select"
 ```

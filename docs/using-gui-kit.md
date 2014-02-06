@@ -6,11 +6,10 @@ As part of the core libraries, UNTV ships with a toolkit, tentatively name
 for common use cases. This toolkit gets passed to each extension, so it can be 
 used to build your extension interface.
 
-This gets passed as the last argument to your extension's main function 
-(`gui`):
+This gets passed as part of the `env` argument to your extension's main function as `gui`:
 
 ```coffeescript
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) -> console.log env.gui
 ```
 
 Each component in the GUI kit is relatively "plug-and-play" in that, while they 
