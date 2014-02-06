@@ -11,12 +11,12 @@ fs           = require "fs"
 jade         = require "jade"
 localStorage = window.localStorage
 
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) ->
   
-  conf           = manifest.config
-  selector_view  = (gui.$ "#files", view)
-  grid_view      = (gui.$ "#photos", view)
-  header         = (gui.$ "header", view)
+  conf           = env.manifest.config
+  selector_view  = (env.gui.$ "#files", env.view)
+  grid_view      = (env.gui.$ "#photos", env.view)
+  header         = (env.gui.$ "header", env.view)
 
   supported_types = [
     ".jpg"
@@ -38,7 +38,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     leave_decoration: yes
     # set initial path to last one
     initial_path: localStorage.getItem "photos:last_directory"
-  file_selector = new gui.FileSelector selector_view, remote, ["*"], file_config
+  file_selector = new env.gui.FileSelector selector_view, env.remote, ["*"], file_config
 
   # when a directory is opened, we should load up the videos
   # in another NavigableList, and use ffmpeg to generate thumbs
@@ -74,7 +74,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   grid_view_raw  = fs.readFileSync "#{__dirname}/views/photos.jade"
   grid_template  = jade.compile grid_view_raw.toString()
   # create new movie_list
-  photo_grid = new gui.NavigableGrid grid_view, remote, photo_grid_config
+  photo_grid = new env.gui.NavigableGrid grid_view, env.remote, photo_grid_config
 
   # if we empty the grid by populating with no photos, then show an
   # appropriate message in the container
@@ -83,7 +83,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     container.html do jade.compile view
 
   photo_grid.on "item_focused", (item) ->
-    source = (gui.$ "img", item).attr "src"
+    source = (env.gui.$ "img", item).attr "src"
     grid_view.css "background-image", "url('#{source}')"
 
   # when navigating out of bounds left from photo grid, focus on the

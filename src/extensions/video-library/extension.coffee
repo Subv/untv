@@ -15,12 +15,12 @@ path         = require "path"
 os           = require "os"
 localStorage = window.localStorage
 
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) ->
 
-  conf          = manifest.config
-  selector_view = (gui.$ "#files", view)
-  grid_view     = (gui.$ "#movie-files")
-  header        = (gui.$ "header", view)
+  conf          = env.manifest.config
+  selector_view = (env.gui.$ "#files", env.view)
+  grid_view     = (env.gui.$ "#movie-files")
+  header        = (env.gui.$ "header", env.view)
 
   ###
   Supported File Type
@@ -70,7 +70,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     leave_decoration: yes
     # set initial path to last one
     initial_path: localStorage.getItem "videos:last_directory"
-  file_selector = new gui.FileSelector selector_view, remote, ["*"], file_config
+  file_selector = new env.gui.FileSelector selector_view, env.remote, ["*"], file_config
 
   # when a directory is opened, we should load up the videos
   # in another NavigableList, and use ffmpeg to generate thumbs
@@ -119,7 +119,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   grid_view_raw  = fs.readFileSync "#{__dirname}/views/movie-files.jade"
   grid_template  = jade.compile grid_view_raw.toString()
   # create new movie_list
-  movie_grid = new gui.NavigableGrid grid_view, remote, movie_grid_config
+  movie_grid = new env.gui.NavigableGrid grid_view, env.remote, movie_grid_config
 
   # if we empty the grid by populating with no movies, then show an
   # appropriate message in the container
@@ -130,8 +130,8 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   # when selecting a movie file, go ahead and load it and pass it's 
   # absolute path to the player instance
   movie_grid.on "item_selected", (item) ->
-    movie_file_path = (gui.$ ".local-movie", item).attr "data-path"
-    player.play movie_file_path, "video"
+    movie_file_path = (env.gui.$ ".local-movie", item).attr "data-path"
+    env.player.play movie_file_path, "video"
 
   # when navigating out of bounds left from movie grid, focus on the
   # file selector

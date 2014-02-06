@@ -96,7 +96,8 @@ class GlobalMenu extends EventEmitter
       # keep track...
       @passive_extensions.push extension if manifest and manifest.name
       # also go ahead and execute the passive extension without view and guikit
-      extension.main? extension, @remote, @player, @notifier, null, null
+      extension.main? @createExtensionEnvironment
+        manifest: extension
     else
       @extensions.push extension if manifest and manifest.name
     # filter the list by list priority
@@ -250,9 +251,14 @@ class GlobalMenu extends EventEmitter
     # after the animation duration, execute the main extension script and
     # animate the extension view back into the main view
     setTimeout (=> 
-      extension.main extension, @remote, @player, @notifier, container, gui
+
+      extension.main @createExtensionEnvironment
+        manifest: extension
+        view: container
+
       ($ "*", container).removeClass "#{@menu_animation_out_classname}"
       ($ "*", container).addClass "visible #{@menu_animation_in_classname}"
+        
     ), 400
 
     @extension_loaded = yes

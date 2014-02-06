@@ -5,5 +5,5 @@ Author: Gordon Hall
 Enables user to configure settings API
 ###
 
-module.exports = (manifest, remote, player, view, gui) ->
+module.exports = (env) ->
   # build extension here!

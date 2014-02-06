@@ -21,18 +21,18 @@ do torrents.latest
 ###
 Initialize Extension 
 ###
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) ->
 
-  config     = manifest.config
+  config     = env.manifest.config
   disclaimer = (fs.readFileSync "#{__dirname}/disclaimer.html").toString()
   # show disclaimer
-  notifier.notify manifest.name, disclaimer if config.show_disclaimer
+  notifier.notify env.manifest.name, disclaimer if config.show_disclaimer
 
   # get dom containers
-  container    = (gui.$ "#torrent-list")
-  details_view = (gui.$ "#torrent-details")
-  menu_view    = (gui.$ "#torrent-menu")
-  header       = (gui.$ "header", view)
+  container    = (env.gui.$ "#torrent-list")
+  details_view = (env.gui.$ "#torrent-details")
+  menu_view    = (env.gui.$ "#torrent-menu")
+  header       = (env.gui.$ "header", env.view)
 
   ###
   Configure Virtual Keyboard
@@ -43,7 +43,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
       "alphanum"
       "symbols"
     ]
-  keyboard = new gui.VirtualKeyboard remote, keyboard_config
+  keyboard = new env.gui.VirtualKeyboard env.remote, keyboard_config
   
   ###
   Configure Movie Grid
@@ -57,7 +57,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     smart_rows: no
     animation: "fadeInUp"
   # instantiate grid
-  grid = new gui.NavigableGrid container, remote, grid_config
+  grid = new env.gui.NavigableGrid container, env.remote, grid_config
   
   ###
   Configure Menu List
@@ -70,7 +70,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     # leaves the selection class on focus removal
     leave_decoration: yes
   # instantiate grid
-  menu = new gui.NavigableList (gui.$ "ul", menu_view), remote, menu_config
+  menu = new env.gui.NavigableList (env.gui.$ "ul", menu_view), env.remote, menu_config
   # auto give menu focus
   menu.giveFocus 1
 
@@ -84,10 +84,10 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   Menu List Event Handlers
   ###
   menu.on "item_focused", (item) ->
-    input = (gui.$ "input", item)
+    input = (env.gui.$ "input", item)
     if input.length
       do input.focus
-      remote.sockets.emit "prompt:ask", message: input.attr "placeholder"
+      env.remote.sockets.emit "prompt:ask", message: input.attr "placeholder"
 
   menu.on "item_selected", (item) ->
     action = item.attr "data-list-action"
@@ -129,7 +129,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     torrents.list query, (err, list) ->
       do menu.unlock
       if err or not list
-        notifier.notify manifest.name, err or "No Results", yes
+        env.notifier.notify env.manifest.name, err or "No Results", yes
         do menu.giveFocus
       else
         grid.populate list, torrents.compileTemplate "list"
@@ -143,7 +143,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
   grid.on "item_focused", (item) ->
     # kill any pending details request
     do detail_request?.abort
-    movie_id = (gui.$ ".movie", item).data "id"
+    movie_id = (env.gui.$ ".movie", item).data "id"
     # show details
     if movie_id
       details_view.addClass "loading"
@@ -152,14 +152,14 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         if err then return
         details = torrents.compileTemplate "details"
         # render view
-        (gui.$ "#torrent-details").html details data
+        (env.gui.$ "#torrent-details").html details data
       
       # if this is the last row in the grid, load the next 50 movies
       # but only if there is already more than one row loaded
       current_row   = grid.getCurrentRow()
       current_pos   = current_row.outerHeight() * current_row.siblings().length
       current_item  = grid.getCurrentItem()
-      current_index = (gui.$ "li", grid.scroller).index current_item 
+      current_index = (env.gui.$ "li", grid.scroller).index current_item 
 
       if not current_row.next().length and current_row.prev().length
         item       = menu.last_item
@@ -175,7 +175,7 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
         grid.scroller.addClass "loading"
         torrents.list query, (err, list) ->
           if err or not list
-            notifier.notify manifest.name, err or "No more movies to load.", yes
+            env.notifier.notify manifest.name, err or "No more movies to load.", yes
           else
             list = grid.data.concat list
             grid.populate list, torrents.compileTemplate "list"
@@ -183,15 +183,15 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
           grid.scroller.removeClass "loading"
           grid.scroller.css "margin-top", "-#{current_pos}px"
 
-          last_item = (gui.$ "li", grid.scroller)[current_index]
-          grid.last_item_id = (gui.$ last_item).attr "data-navigrid-id"
+          last_item = (env.gui.$ "li", grid.scroller)[current_index]
+          grid.last_item_id = (env.gui.$ last_item).attr "data-navigrid-id"
           do grid.giveFocus
 
   grid.on "item_selected", (item) ->
     do grid.releaseFocus
-    notifier.notify manifest.name, "Preparing...", yes
+    env.notifier.notify manifest.name, "Preparing...", yes
 
-    item_data    = (gui.$ ".movie", item).data()
+    item_data    = (env.gui.$ ".movie", item).data()
     torrent_url  = item_data.torrent
     torrent_hash = item_data.hash
 
@@ -209,8 +209,8 @@ module.exports = (manifest, remote, player, notifier, view, gui) ->
     torrent.on "stream", (stream_info) ->
       # pass `stream_url` to the player and show
       url = stream_info.stream_url
-      player.play url, "video"
-      player.on "player:progress", (progress) -> # use for updating custom controls?
+      env.player.play url, "video"
+      env.player.on "player:progress", (progress) -> # use for updating custom controls?
 
   grid.on "out_of_bounds", (data) ->
     switch data.direction

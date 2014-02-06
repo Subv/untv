@@ -10,5 +10,5 @@ fs              = require "fs"
 path            = require "path"
 music_meta_data = require "musicmetadata"
 
-module.exports = (manifest, remote, player, notifier, view, gui) ->
+module.exports = (env) ->
   # build extension here!
