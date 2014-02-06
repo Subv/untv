@@ -67,7 +67,7 @@ module.exports = (env) ->
   # access the gui kit library
   my_grid = new env.gui.NavigableGrid view
   # use notification system
-  env.notifier.notify manifest.name, "Loaded!", yes
+  env.notifier.notify env.manifest.name, "Loaded!", yes
   # access the view
   env.view.html "press select to watch a movie"
   # access the remote emitter
@@ -75,6 +75,17 @@ module.exports = (env) ->
     # access the global player
     env.player.play config.default_movie_path
 ```
+
+## Environment Object
+
+You'll notice in the example above that we reference the `env` argument several times. This object gets passed to all extensions and currently exposes the following:
+
+* `env.manifest` - a parsed version of the extension's manifest file
+* `env.remote` - a reference to the global `Remote` instance (*see extending-the-remote.md*)
+* `env.player` - a reference to the global `Player` instance (*see sending-media-to-player.md*)
+* `env.notifier` - a reference to the global `Notifier` instance (*see showing-notifications.md*)
+* `env.view` - the extension's compiled view
+* `env.gui` - a reference to the GUI Kit API (*see using-gui-kit.md*)
 
 ## Passive Extensions
 
