@@ -175,7 +175,7 @@ module.exports = (env) ->
         grid.scroller.addClass "loading"
         torrents.list query, (err, list) ->
           if err or not list
-            env.notifier.notify manifest.name, err or "No more movies to load.", yes
+            env.notifier.notify env.manifest.name, err or "No more movies to load.", yes
           else
             list = grid.data.concat list
             grid.populate list, torrents.compileTemplate "list"
@@ -189,7 +189,7 @@ module.exports = (env) ->
 
   grid.on "item_selected", (item) ->
     do grid.releaseFocus
-    env.notifier.notify manifest.name, "Preparing...", yes
+    env.notifier.notify env.manifest.name, "Preparing...", yes
 
     item_data    = (env.gui.$ ".movie", item).data()
     torrent_url  = item_data.torrent
