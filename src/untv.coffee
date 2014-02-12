@@ -68,8 +68,9 @@ for directory, index in bundled_ext_dir
   registerExtension "#{bundled_ext_path}/#{directory}" 
 
 # Register Third Party Extensions
-for directory, index in do getExtensionInstallTarget
-  registerExtension "#{installed_ext_dir}/#{directory}"
+if config.load_third_party_extensions
+  for directory, index in do getExtensionInstallTarget
+    registerExtension "#{installed_ext_dir}/#{directory}"
 
 # show user interface
 do ($ "#init-loader").hide
