@@ -6,16 +6,16 @@ Injects the global menu interface and subscribes to events from
 the remote control bus
 ###
 
-gui              = require "./gui-kit"
-$                = gui.$
-{EventEmitter}   = require "events"
-jade             = require "jade"
-fs               = require "fs"
-extend           = require "node.extend"
-path             = require "path"
-dns              = require "dns"
-SettingsRegistry = require "./settings-registry"
-common           = require "./common"
+gui                = require "./gui-kit"
+$                  = gui.$
+{EventEmitter}     = require "events"
+jade               = require "jade"
+fs                 = require "fs"
+extend             = require "node.extend"
+path               = require "path"
+dns                = require "dns"
+{SettingsRegistry} = require "./settings-registry"
+common             = require "./common"
 
 class GlobalMenu extends EventEmitter
 
@@ -25,7 +25,7 @@ class GlobalMenu extends EventEmitter
     @visible            = no
     @window_height      = ($ window).height()
     @ready              = yes
-    @settings           = new SettingsRegistry()
+    @settings           = new SettingsRegistry "untv_global"
     
     do @subscribe
 
@@ -80,6 +80,9 @@ class GlobalMenu extends EventEmitter
     extension.icon   = "#{path}/#{extension.icon}"
     init_script_path = "#{path}/#{extension.main}"
 
+    # register the config with the settings registry
+    @settings.register extension
+
     if fs.existsSync init_script_path
       ext_init       = require init_script_path
       extension.main = ext_init
@@ -98,6 +101,7 @@ class GlobalMenu extends EventEmitter
       # also go ahead and execute the passive extension without view and guikit
       extension.main? @createExtensionEnvironment
         manifest: extension
+      , 
     else
       @extensions.push extension if manifest and manifest.name
     # filter the list by list priority
@@ -126,6 +130,8 @@ class GlobalMenu extends EventEmitter
       gui: gui
     # apply overrides
     env = env extends overrides
+    if env.manifest and env.manifest.privileged then env.settings = @settings
+    return env
 
   ###
   Remote Listener Caching

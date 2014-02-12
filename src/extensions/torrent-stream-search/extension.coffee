@@ -26,8 +26,7 @@ module.exports = (env) ->
   config     = env.manifest.config
   disclaimer = (fs.readFileSync "#{__dirname}/disclaimer.html").toString()
   # show disclaimer
-  notifier.notify env.manifest.name, disclaimer if config.show_disclaimer
-
+  env.notifier.notify env.manifest.name, disclaimer if config.show_disclaimer
   # get dom containers
   container    = (env.gui.$ "#torrent-list")
   details_view = (env.gui.$ "#torrent-details")

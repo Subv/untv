@@ -9,8 +9,12 @@
     "styles/extension.css"
   ],
   "config": {
-    "show_disclaimer": false,
-    "use_test_data": true
+    "show_disclaimer": {
+      "register": true,
+      "default": false,
+      "is_toggle": true
+    },
+    "use_test_data": false
   },
   "locals": {
     "genres": [

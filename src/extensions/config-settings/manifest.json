@@ -1,5 +1,6 @@
 {
   "name": "Settings & Preferences",
+  "privileged": true,
   "icon": "icons/icon-white.svg",
   "description": "Configure preferences and extensions.",
   "main": "extension.coffee",
