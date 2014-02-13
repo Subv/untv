@@ -32,7 +32,8 @@ These properties are statically configured and aren't touched by the `SettingsRe
             "options": [
                 "Action", "Adventure", "Biography",
                 "Comedy", "Sci-Fi", "Horror"
-            ]
+            ],
+            "description": "My Favorite Genre"
         }
     }
 }
@@ -43,7 +44,8 @@ As seen in the example above, we have 4 keys:
 * **register** - `Boolean` indicating whether or not to register the property with the `SettingsRegistry`
 * **is_toggle** - `Boolean` indicating whether or not this value is a simple on/off toggle (default must be a Boolean)
 * **default** - `Mixed` type value indicating the default setting for this property
-* **options** - `Array` of possible values for the property, or pass a `String` wildcard (`"*"`) to indicate that any string value can be set.
+* **options** - `Array` of possible values for the property, or pass a `String` wildcard (`"*"`) to indicate that any string value can be set
+* **description** - `String` of human-friendly text describing the setting
 
 ## Accessing Configuration from Extension
 
