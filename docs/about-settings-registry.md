@@ -5,7 +5,7 @@ Extensions will often want to remember some sort of user data whether it's authe
 
 The `GlobalMenu` creates a single instance of this class before any extensions are loaded. During extension registration, the extension manifest file gets fed to the `SettingsRegistry`, where it parses the `config` property to determine which settings you have defined as **user configurable** (*see writing-configurable-extensions.md*). 
 
-The `SettingsRegistry` instance uses a `localStorage` adapter to sync changes made to the setting and first looks for the value to your configuration key there (else your specified default is used. Then the value in your configuration is replaced. So for example if my extension's config is defined like so:
+The `SettingsRegistry` instance uses a `localStorage` adapter to sync changes made to the setting and first looks for the value to your configuration key there (else your specified default is used). Then the value in your configuration is replaced. So for example if my extension's config is defined like so:
 
 ```json
 {
