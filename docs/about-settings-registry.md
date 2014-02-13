@@ -33,7 +33,7 @@ Unless, of course, the user has changed it via the Settings Extension.
 
 > The bundled Settings Extension provides the global interface for modifying configuration for all extensions that are registered in this way. It does this by getting "privileged" context from the `GlobalMenu` (by passing the settings for all extensions with the `ExtensionEnvironment` object).
 
-## Class: Setting(spec)
+## Class: Setting(key, spec)
 
 Represents a single configurable value that is stored and recalled.
 
@@ -43,7 +43,7 @@ Represents a single configurable value that is stored and recalled.
 * default: `Mixed` - The default value for this setting
 * options: `Array` - Possible values for this option or use `["*"]` for any
 * is_toggle: `Boolean` - Whether or not this setting is simply on/off
-* description: `String` - Human-friendly description of setting (shown in Settings Extension)
+* description: `String` - Human-friendly description of setting (shown in Settings Extension) - defaults to `key`
 
 #### Core Methods
 
