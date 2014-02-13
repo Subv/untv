@@ -130,7 +130,8 @@ class GlobalMenu extends EventEmitter
       gui: gui
     # apply overrides
     env = env extends overrides
-    if env.manifest and env.manifest.privileged then env.settings = @settings
+    if env.manifest and env.manifest.privileged
+      env.settings_registry = @settings
     return env
 
   ###
@@ -243,6 +244,8 @@ class GlobalMenu extends EventEmitter
     # if extension is @active_extension then return @close()
     # otherwise move on and set the new active extension
     @active_extension = extension
+    # re-register the settings
+    @settings.update @active_extension
     # inject view
     container.html extension.view extension.locals or {}
     # remove previous extension stylesheets

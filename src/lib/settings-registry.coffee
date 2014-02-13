@@ -74,13 +74,23 @@ class SettingsRegistry
     settings =
       name: extension.name
       config: entry
+
     # push the setting instance to the resgistry
     @settings.push settings
+    @update extension
 
-    for key of extension.config
-      setting = settings.config[key]
-      if setting instanceof Setting
-        extension.config[key] = setting.value
+  update: (extension) =>
+    name = extension.name
+    settings = null
+
+    for ext in @settings
+      if ext.name is name then settings = ext
+
+    if settings
+      for key of extension.config
+        setting = settings.config[key]
+        if setting instanceof Setting
+          extension.config[key] = setting.value
 
   _createKey: (name) =>
     name = name.toLowerCase().replace(/\s+/g, "_")

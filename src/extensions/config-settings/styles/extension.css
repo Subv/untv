@@ -18,3 +18,62 @@ header.extension-header {
   background-position: 12px center;
   background-size: 32px;
 }
+
+#settings-container {
+  top: 65px;
+  position: fixed;
+}
+
+.settings-container {
+  padding: 0;
+  list-style-type: none;
+}
+
+.settings-container > * {
+  margin: 12px 24px;
+}
+
+.settings-container header {
+  font-size: 26px;
+  padding: 12px 0;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.settings-container li.setting {
+  font-size: 22px;
+  padding: 12px 0;
+  overflow: hidden;
+}
+
+.settings-container li.setting strong {
+  float: left;
+  font-weight: normal;
+}
+
+.settings-container li.setting span {
+  float: right;
+  font-style: italic;
+}
+
+#settings-container .navilist-selected {
+  border-left: 6px solid #fff;
+  padding-left: 12px;
+}
+
+.setting-toggle {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 34px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.setting-toggle[data-value="true"] {
+  background-image: url("../icons/toggle-on.svg");
+}
+
+.setting-toggle[data-value="false"] {
+  background-image: url("../icons/toggle-off.svg");
+}

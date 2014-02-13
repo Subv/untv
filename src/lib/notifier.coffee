@@ -11,6 +11,7 @@ fs             = require "fs"
 jade           = require "jade"
 $              = require "../vendor/jquery-2.0.3"
 hat            = require "hat"
+common         = require "./common"
 
 class Notifier extends EventEmitter
   constructor: (@container, @menu, @remote) ->
@@ -26,21 +27,19 @@ class Notifier extends EventEmitter
 
   stealRemoteFocus: =>
     # borrow from the menu proto
-    @menu.cacheRemoteListeners.call @
+    common.cacheRemoteListeners.call this
     # get rid of listeners
     do @remote.removeAllListeners
     do @menu.listenForRemoteConnectivity
     # bind our own
-    @remote.on "go:select", => do @dismiss
-    # @remote.on "scroll:up", => do @scrollUp
-    # @remote.on "scroll:down", => do @scrollDown
+    @remote.on "go:select", @dismiss
 
   returnRemoteFocus: =>
     # kill our listeners
     do @remote.removeAllListeners
     do @menu.listenForRemoteConnectivity
     # borrow from the menu proto and rebind cached ones
-    @menu.rebindCachedListeners.call @
+    common.rebindCachedListeners.call this
     do @menu.checkRemoteInterface
 
   dismiss: =>

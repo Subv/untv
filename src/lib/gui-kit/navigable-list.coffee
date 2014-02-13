@@ -41,9 +41,9 @@ class NavigableList extends EventEmitter
     @remote.on "scroll:down", => do @nextItem if @focused # and not @scrolling
 
   nextItem: =>
-    if @last_item.next().length
+    if @last_item.next("li").length
       @last_item.removeClass @selected_item_classname
-      @last_item = @last_item.next().addClass @selected_item_classname
+      @last_item = @last_item.next("li").addClass @selected_item_classname
       @setScrollPosition @last_item
     else
       if @config.smart_scroll
@@ -57,9 +57,9 @@ class NavigableList extends EventEmitter
     @remote.playEventSound "click", 0.2, 0.3
 
   prevItem: =>
-    if @last_item.prev().length
+    if @last_item.prev("li").length
       @last_item.removeClass @selected_item_classname
-      @last_item = @last_item.prev().addClass @selected_item_classname
+      @last_item = @last_item.prev("li").addClass @selected_item_classname
       @setScrollPosition @last_item
     else
       if @config.smart_scroll

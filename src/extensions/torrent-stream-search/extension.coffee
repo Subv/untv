@@ -25,8 +25,7 @@ module.exports = (env) ->
 
   config     = env.manifest.config
   disclaimer = (fs.readFileSync "#{__dirname}/disclaimer.html").toString()
-  # show disclaimer
-  env.notifier.notify env.manifest.name, disclaimer if config.show_disclaimer
+  
   # get dom containers
   container    = (env.gui.$ "#torrent-list")
   details_view = (env.gui.$ "#torrent-details")
@@ -219,3 +218,6 @@ module.exports = (env) ->
         do grid.releaseFocus
         do menu.giveFocus
       # when "right"
+
+  # show disclaimer after all bindings are set up
+  env.notifier.notify env.manifest.name, disclaimer if config.show_disclaimer

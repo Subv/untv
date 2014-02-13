@@ -1,0 +1,14 @@
+each extension, index in extensions
+  if Object.keys(extension.config).length
+    header #{extension.name}
+    each setting, key in extension.config
+      - var any_value  = setting.options.indexOf("*") > -1
+      - var input_type = (any_value) ? "text" : "options"
+      - var type       = (setting.is_toggle) ? "toggle" : input_type 
+      li.setting(data-key="#{key}", data-index="#{index}", data-type="#{type}")
+        strong #{setting.description}
+        span.value
+          if setting.is_toggle
+            span.setting-toggle(data-value="#{setting.value}")
+          else
+            | #{setting.value}

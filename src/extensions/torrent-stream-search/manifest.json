@@ -12,7 +12,8 @@
     "show_disclaimer": {
       "register": true,
       "default": false,
-      "is_toggle": true
+      "is_toggle": true,
+      "description": "Always show copyright law disclaimer"
     },
     "use_test_data": false
   },
