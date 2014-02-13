@@ -9,10 +9,11 @@ localStorage = window.localStorage
 extend       = require "node.extend"
 
 class Setting
-  constructor: (spec) ->
-    @is_toggle = spec.is_toggle or no 
-    @default   = if @is_toggle then Boolean spec.default else spec.default
-    @options   = spec.options or []
+  constructor: (key, spec) ->
+    @is_toggle   = spec.is_toggle or no 
+    @default     = if @is_toggle then Boolean spec.default else spec.default
+    @options     = spec.options or []
+    @description = spec.description or key
     # set the default value
     do @set
 
@@ -57,7 +58,7 @@ class SettingsRegistry
     # enumerate configuration properies, initializing ones we need to
     for key, spec of extension.config
       if spec.register is on
-        entry[key] = new Setting(spec)
+        entry[key] = new Setting(key, spec)
         # check persistent storage for a value to set
         extension_key = @_createKey extension.name
         storage_key   = "#{@namespace}:#{extension_key}:#{key}"

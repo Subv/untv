@@ -37,6 +37,14 @@ Unless, of course, the user has changed it via the Settings Extension.
 
 Represents a single configurable value that is stored and recalled.
 
+#### Spec
+
+* register: `Boolean` - Indicates to the `SettingsRegistry` that this option is configurable
+* default: `Mixed` - The default value for this setting
+* options: `Array` - Possible values for this option or use `["*"]` for any
+* is_toggle: `Boolean` - Whether or not this setting is simply on/off
+* description: `String` - Human-friendly description of setting (shown in Settings Extension)
+
 #### Core Methods
 
 ##### toggle()
