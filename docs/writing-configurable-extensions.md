@@ -31,7 +31,7 @@ These properties are statically configured and aren't touched by the `SettingsRe
             "default": "Sci-Fi",
             "options": [
                 "Action", "Adventure", "Biography",
-                "Comedy", "Horror"
+                "Comedy", "Sci-Fi", "Horror"
             ]
         }
     }
