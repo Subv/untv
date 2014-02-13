@@ -59,7 +59,7 @@ class SettingsRegistry
       if spec.register is on
         entry[key] = new Setting(spec)
         # check persistent storage for a value to set
-        extension_key = @createKey extension.name
+        extension_key = @_createKey extension.name
         storage_key   = "#{@namespace}:#{extension_key}:#{key}"
         # track the items we have stored so we can reset this instances
         # default settings without clobbering other instances
@@ -81,9 +81,9 @@ class SettingsRegistry
       if setting instanceof Setting
         extension.config[key] = setting.value
 
-  createKey: (name) =>
+  _createKey: (name) =>
     name = name.toLowerCase().replace(/\s+/g, "_")
-    # if name in @used_names then return @createKey "_#{name}"
+    # if name in @used_names then return @_createKey "_#{name}"
     # @used_names.push name
     return name
 
