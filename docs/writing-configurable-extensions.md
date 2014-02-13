@@ -13,12 +13,10 @@ A simple `config` that is static (non-configurable) might look like this:
 
 ```json
 {
-    // ...
     "config": {
         "remember_selections": true,
         "default_genre": "Sci-Fi"
     }
-    // ...
 }
 ```
 
@@ -26,7 +24,6 @@ These properties are statically configured and aren't touched by the `SettingsRe
 
 ```json
 {
-    // ...
     "config": {
         "default_genre": {
             "register": true,
@@ -38,7 +35,6 @@ These properties are statically configured and aren't touched by the `SettingsRe
             ]
         }
     }
-    // ...
 }
 ```
 
