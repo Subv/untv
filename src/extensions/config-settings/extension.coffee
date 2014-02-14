@@ -10,12 +10,19 @@ fs   = require "fs"
 
 module.exports = (env) ->
   
-  $               = env.gui.$
-  settings        = env.settings_registry.settings
-  {NavigableList} = env.gui
-  header          = $ "header", env.view
+  $                 = env.gui.$
+  settings          = env.settings_registry.settings
+  {NavigableList}   = env.gui
+  {VirtualKeyboard} = env.gui
+  header            = $ "header", env.view
 
-  console.log settings
+  keyboard_config = 
+    default: "alphanum"
+    allow: [
+      "alphanum"
+      "symbols"
+    ]
+  keyboard = new VirtualKeyboard env.remote, keyboard_config
 
   ###
   Get Settings List Template and Populate
@@ -56,6 +63,50 @@ module.exports = (env) ->
         setting.toggle()
         ($ ".setting-toggle", item).attr "data-value", setting.value
       when "text"
-        console.log type
-      when "options"
-        console.log type
+        description = ($ "strong", item).html()
+        settings_menu.lock()
+        keyboard.prompt description, (text) ->
+          settings_menu.unlock()
+          settings_menu.giveFocus()
+
+          # set value in ui and registry
+          if text
+            ($ ".value", item).html text
+            setting.set text
+
+  # Handle cycling through options
+  settings_menu.on "out_of_bounds", (data) ->
+    item      = settings_menu.last_item
+    type      = item.attr "data-type"
+    index     = item.attr "data-index"
+    key       = item.attr "data-key"
+    extension = settings[index]
+    setting   = extension.config[key]
+    first_opt = ($ ".setting-option", item).first() 
+    last_opt  = ($ ".setting-option", item).last() 
+
+    switch data.direction
+      when "left"
+        if (item.attr "data-type") is "options"
+          setting.set(cycleOption(item, data.direction, last_opt))
+      when "right"
+        if (item.attr "data-type") is "options"
+          setting.set(cycleOption(item, data.direction, first_opt))
+
+  ###
+  Helpers
+  ###
+  cycleOption = (item, direction, fallback) ->
+    current  = ($ "[data-selected=true]", item)
+    target   = if direction is "right" then current.next() else current.prev()
+    
+    current.removeAttr "data-selected"
+    if target.length then target.attr "data-selected", yes
+    else fallback?.attr "data-selected", yes
+    # cast to number if we think we need to
+    value   = ($ "[data-selected=true]", item).text()
+    num_val = Number value 
+    value   = Number(value) unless Number.isNaN(num_val)
+
+    return value
+

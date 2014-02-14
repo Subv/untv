@@ -9,7 +9,12 @@
     "styles/extension.css"
   ],
   "config": {
-    "ffmpeg_procs": 5
+    "ffmpeg_procs": {
+      "register": true,
+      "default": 5,
+      "options": [1, 5, 10, 15],
+      "description": "Concurrent FFMPEG processes for generating thumbnails"
+    }
   },
   "locals": {
 

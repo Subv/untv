@@ -9,7 +9,12 @@
     "styles/extension.css"
   ],
   "config": {
-    
+    "flickr_username": {
+      "register": true,
+      "default": "",
+      "options": ["*"],
+      "description": "Flickr username"
+    }
   },
   "locals": {
 

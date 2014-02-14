@@ -10,5 +10,11 @@ each extension, index in extensions
         span.value
           if setting.is_toggle
             span.setting-toggle(data-value="#{setting.value}")
-          else
+          else if type === "text"
             | #{setting.value}
+          else
+            each option in setting.options
+              if option === setting.default
+                span.setting-option(data-selected="true") #{option}
+              else
+                span.setting-option #{option}

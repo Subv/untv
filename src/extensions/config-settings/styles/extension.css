@@ -77,3 +77,32 @@ header.extension-header {
 .setting-toggle[data-value="false"] {
   background-image: url("../icons/toggle-off.svg");
 }
+
+.setting-option {
+  display: none;
+  padding: 0 18px;
+}
+
+.setting-option:after {
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+  border: 10px solid transparent;
+  border-left-color: #fff;
+  margin: 4px 0 0 12px;
+}
+
+.setting-option:before {
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+  border: 10px solid transparent;
+  border-right-color: #fff;
+  margin: 4px 0 0 -32px;
+}
+
+.setting-option[data-selected="true"] {
+  display: block;
+}
