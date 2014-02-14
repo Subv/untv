@@ -1,14 +1,13 @@
 Authoring and Modifying Extensions
 ==================================
 
-One of the key concepts I have tried to keep in mind is the way in which UNTV can be extended. UNTV comes bundled with 6 extensions (at the time of writing).
+One of the key concepts I have tried to keep in mind is the way in which UNTV can be extended. UNTV comes bundled with 5 extensions (at the time of writing).
 
 1. **Instant Streaming** - allowing for search and streaming of BitTorrent movies
 2. **Video Library** - allowing for navigating a local directory of movies and playing them
-3. **Music Player** - allowing for navigating a local directory of music and playing it
-4. **Photo Slideshow** - allowing for navigating a local directory of photos and viewing them
-5. **Extensions Manager** - allowing for installing/removing/updating third party extensions
-6. **Settings & Preferences** - providing an interface for modifying configuration of UNTV and extensions
+3. **Photo Slideshow** - allowing for navigating a local directory of photos and viewing them
+4. **Extensions Manager** - allowing for installing/removing/updating third party extensions
+5. **Settings & Preferences** - providing an interface for modifying configuration of UNTV and extensions
 
 When UNTV starts, the first thing that happens after the `GlobalMenu` is initialized is that the bundled extensions are loaded, then third party extensions are loaded from `~/.untv/extensions`. UNTV decides how to load an extension based on the `manifest.json` file located in the root of the extension directory.
 

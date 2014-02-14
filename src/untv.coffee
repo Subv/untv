@@ -14,6 +14,7 @@ Remote     = require "./lib/remote-server"
 config     = JSON.parse fs.readFileSync "#{__dirname}/config.json"
 win        = global.window.nwDispatcher.requireNwGui()?.Window.get()
 jade       = require "jade"
+actions    = require "./lib/menu-actions"
 
 ###
 Setup Remote, Global Menu, and Player
@@ -71,6 +72,9 @@ for directory, index in bundled_ext_dir
 if config.load_third_party_extensions
   for directory, index in do getExtensionInstallTarget
     registerExtension "#{installed_ext_dir}/#{directory}"
+
+# Register "Actions"
+menu.addAction action for action in actions
 
 # show user interface
 do ($ "#init-loader").hide

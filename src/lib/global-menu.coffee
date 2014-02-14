@@ -16,11 +16,13 @@ path               = require "path"
 dns                = require "dns"
 {SettingsRegistry} = require "./settings-registry"
 common             = require "./common"
+hat                = require "hat"
 
 class GlobalMenu extends EventEmitter
 
   constructor: (@container, @remote, @player) ->
     @extensions         = []
+    @actions            = []
     @passive_extensions = []
     @visible            = no
     @window_height      = ($ window).height()
@@ -60,18 +62,39 @@ class GlobalMenu extends EventEmitter
   render: =>
     view_path = "#{__dirname}/../views/globalmenu.jade"
     compiled  = jade.compile fs.readFileSync view_path
-    html      = compiled items: @extensions
+    items     = (@extensions.concat @actions).sort @sorter
+    html      = compiled items: items
+
     @container.html? html
     ($ ".menu-list li", @container).height @window_height
     ($ ".menu-list li:first-of-type", @container).addClass "has-focus"
+
     do @setClock
     do @checkRemoteInterface
     do @checkInternet
+
+  sorter: (ext1, ext2) -> 
+    ext2.list_priority < ext1.list_priority
 
   ###
   Extension Registration and Rendering
   ###
   extension_loaded: no
+
+  # don't load an extension, just fire a callback on select
+  addAction: (spec = {}) =>
+    # spec properties: name, description, handler, icon
+    if not spec.handler or typeof spec.handler isnt "function"
+      throw new Error "A `handler` property must be specified"
+    if not spec.name or typeof spec.name isnt "string"
+      throw new Error "A `name` property must be specified"
+    spec.id = hat()
+    @actions.push spec
+
+  fireAction: (id) =>
+    if not id then throw new Error "No action `id` specified"
+    for action in @actions
+      if action.id is id then return action.handler()
 
   addExtension: (path, manifest) =>
     # check manifest's main file here and store reference to it
@@ -235,9 +258,14 @@ class GlobalMenu extends EventEmitter
 
   select: =>
     if not @visible then return
+    # if the item is just an "action" then fire it
+    # be done and just return
+    if (@current().attr "data-type") is "action"
+      return @fireAction @current().attr "data-action-id"
+    # otherwise load the extension
     @player.pause yes
     @remote.playEventSound "open", 0.8
-    index     = @current().index "li", @container
+    index     = @current().index "li[data-type='extension']", @container
     extension = @extensions[index]
     container = @extension_container()
     # if we are selecting an already loaded extension then just close

@@ -1,6 +1,8 @@
 ul.menu-list
   for item in items
-    li.animated 
+    - var type = (item.handler) ? "action" : "extension"
+    - var id   = (type === "action") ? item.id : ""
+    li.animated(data-type=type, data-action-id=id)
       .menu-item-wrapper  
         if (item === items[0])
           span.inactive.up.scroll-indicator &laquo;

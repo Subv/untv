@@ -22,6 +22,8 @@ advantage of this feature.
 
 ## Music Player
 
+> This extension was removed from the bundled scope, but is being developed as a third-party extension found [here](https://github.com/gordonwritescode/untv-music-player).
+
 The Music Player extension enables the user to play music stored on their hard 
 drive or connected device. They may also create custom playlists. Cover art is 
 shown using the `musicmetadata` module as well as artist and album information 
