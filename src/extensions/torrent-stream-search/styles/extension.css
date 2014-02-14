@@ -20,7 +20,7 @@ header.extension-header {
 }
 
 #torrent-list {
-  background-color: rgba(0,0,0,0.25);
+  background-color: rgba(0,0,0,0.5);
   position: fixed;
   top: 40%;
   left: 20%;
@@ -36,9 +36,13 @@ header.extension-header {
   padding: 0;
 }
 
+#torrent-list .movie {
+  display: table;
+}
+
 #torrent-list li {
   display: inline-table;
-  width: 120px;
+  width: 328px;
   padding: 12px;
   -webkit-transform: scale(0.9);
   opacity: 0.9;
@@ -56,19 +60,24 @@ header.extension-header {
 
 #torrent-list .poster {
   box-shadow: 0 0 32px #000;
+  float: left;
+  margin-right: 20px;
 }
 
 #torrent-list li img {
   border-radius: 4px;
   border: 1px solid #fff;
-  width: 122px;
-  height: 182px;
+  width: 160px;
+  height: 230px;
 }
 
 #torrent-list li strong {
-  display: block;
-  text-align: center;
-  text-shadow: 0 0 12px #000
+  display: table-cell;
+  vertical-align: bottom;
+  text-shadow: 0 0 12px #000;
+  font-size: 24px;
+  vertical-align: middle;
+  word-break: break-word;
 }
 
 #torrent-details {
@@ -191,7 +200,7 @@ header.extension-header {
 
 #torrent-menu ul li {
   padding: 10px 24px;
-  font-size: 22px;
+  font-size: 28px;
   -webkit-transform: scale(0.9);
   opacity: 0.9;
 }

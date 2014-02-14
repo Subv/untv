@@ -45,7 +45,7 @@ header.extension-header {
 
 #files ul li {
   padding: 10px 24px;
-  font-size: 22px;
+  font-size: 28px;
   -webkit-transform: scale(0.9);
   opacity: 0.9;
 }
@@ -113,10 +113,12 @@ header.extension-header {
 
 .local-movie h3 {
   margin: 0;
+  font-size: 28px;
 }
 
 .local-movie .metadata {
   margin: 12px 0;
+  font-size: 18px;
 }
 
 .local-movie .metadata strong {

@@ -96,10 +96,24 @@
 
 .vkeyboard .delete {
   height: 28px;
+  background: url("../assets/images/icons/delete.svg") center center no-repeat;
+  background-size: 24px;
 }
 
 .vkeyboard .return {
   height: 28px;
+  background: url("../assets/images/icons/confirm.svg") center center no-repeat;
+  background-size: 24px;
+}
+
+.vkeyboard .delete.focused {
+  background-size: 24px;
+  background: url("../assets/images/icons/delete-active.svg") center center no-repeat #fff;
+}
+
+.vkeyboard .return.focused {
+  background-size: 24px;
+  background: url("../assets/images/icons/confirm-active.svg") center center no-repeat #fff;
 }
 
 .vkeyboard .space {

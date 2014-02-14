@@ -25,7 +25,7 @@
   "window": {
     "title": "UNTV",
     "icon": "src/assets/images/icon.png",
-    "toolbar": false,
+    "toolbar": true,
     "frame": false,
     "width": 1024,
     "height": 576,
