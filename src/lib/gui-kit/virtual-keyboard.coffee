@@ -9,7 +9,7 @@ fs             = require "fs"
 jade           = require "jade"
 $              = require "../../vendor/jquery-2.0.3"
 {EventEmitter} = require "events"
-Remote         = require "../remote-server"
+Remote         = require "../remote"
 common         = require "../common"
 
 class VirtualKeyboard extends EventEmitter
