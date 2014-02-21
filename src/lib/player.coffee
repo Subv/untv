@@ -93,13 +93,13 @@ class Player extends EventEmitter
   informTime: =>
     new_time = @active_player?.currentTime
     if @time < new_time
-      @is_playing = yes
+      # @is_playing = yes
       @time       = new_time
       @emit "player:progress", 
         duration: @duration()
         position: time
-    else
-      @is_playing = no
+    # else
+    #   @is_playing = no
 
   inform_interval: null
 
