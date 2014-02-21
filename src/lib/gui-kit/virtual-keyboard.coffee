@@ -31,7 +31,13 @@ class VirtualKeyboard extends EventEmitter
   prompt: (hint = "Enter text:", callback) =>
     @remote.sockets.emit "prompt:ask", message: hint
     # if a callback is specified, bind to the input event
-    if typeof callback is "function" then @once "input", callback
+    if typeof callback is "function" 
+      @once "input", callback
+      @remote.once "prompt:answer", (data) =>
+        if data.value
+          @emit "input", data.value
+          @close()
+
     # compile the view
     compiled_view = @view hint: hint
     # remove any existing ui instance and replace with new one
