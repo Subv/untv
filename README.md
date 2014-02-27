@@ -1,5 +1,4 @@
-UNTV
-====
+![UNTV](https://raw.github.com/untv/untv/master/src/assets/images/untv-logo.png)
 
 UNTV is a cross platform DRM-free media platform for home theater computers. 
 This project is very new, so right now your best bet is to check out the 
