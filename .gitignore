@@ -18,3 +18,5 @@ bin/*
 !bin/nw-0.8.4-custom
 bin/nw-0.8.4-custom/*
 !bin/nw-0.8.4-custom/README.md
+
+dist
