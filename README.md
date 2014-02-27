@@ -8,7 +8,7 @@ This project is still evolving, so right now your best bet is to check out the
 
 ### End Users
 
-Download the (latest bundled release)[https://github.com/untv/untv/releases] for your platform and place in your Applications directory (or equivalent) and launch as usual. 
+Download the [latest bundled release](https://github.com/untv/untv/releases) for your platform and place in your Applications directory (or equivalent) and launch as usual. 
 
 ### Developers
 
