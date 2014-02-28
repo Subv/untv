@@ -8,6 +8,7 @@ os            = require "os"
 path          = require "path"
 {exec, spawn} = require "child_process"
 readline      = require "readline"
+about         = JSON.parse fs.readFileSync "#{__dirname}/package.json"
 
 ################################################################################
 ### Globals
@@ -156,11 +157,13 @@ task 'start', 'starts untv application', (options) ->
 ### Package UNTV Bundle for Specified Platform
 ################################################################################
 task 'build', 'builds platform specific package(s) for untv', (options) ->
-  platform   = options.platform or os.platform()
-  only_32    = platform is "win" or platform is "darwin"
-  arch       = if only_32 then "32" else os.arch().match /\d+/
-  platform   = "#{platform}#{arch}"
-  binary_loc = platforms[platform]
+  platform          = options.platform or os.platform()
+  only_32           = platform is "win" or platform is "darwin"
+  arch              = if only_32 then "32" else os.arch().match /\d+/
+  platform          = "#{platform}#{arch}"
+  binary_loc        = platforms[platform]
+  default_build_dir = "#{__dirname}/dist"
+  build_dir         = options.output or default_build_dir
 
   if platform not of platforms 
     console.log "'#{platform}' is not supported."
@@ -171,22 +174,53 @@ task 'build', 'builds platform specific package(s) for untv', (options) ->
     Run `cake --platform (linux64|linux32|darwin32|win32) setup` to download it.
   """ and process.exit -1
 
-  # run build for platform
+  # create output dir if it doesn't exist
+  if not fs.existsSync build_dir then fs.mkdirSync build_dir
+
+  # create `nw` package
+  pack     = "#{os.tmpdir()}/untv-#{platform}.nw"
+  build_to = "#{build_dir}/untv-#{about.version}-#{platform}"
+  dest     = "#{build_to}/untv"
+
+  fs.mkdirSync(build_to) if not fs.existsSync(build_to)
+
+  console.log "Building for #{platform} to #{dest}..."
+
   switch platform
-    when "linux64", "linux32" then do buildLinux
-    when "darwin32" then do buildOSX
-    when "win32" then do buildWindows
+    # GNU/Linux
+    when "linux64", "linux32"
+      console.log "Compressing source..."
+      zip_proc = exec "zip -r --exclude=bin/* --exclude=build/* #{pack} *"
+      
+      zip_proc.stdout.on "data", (data) -> console.log data
+      zip_proc.stderr.on "data", (err) -> console.log(err) and process.exit -1
+      
+      zip_proc.on "close", (code) ->
+        inputs = [binary_loc, pack];
+        output = fs.createWriteStream path.normalize dest
 
-################################################################################
-### Build Scripts for All Platforms (merges source with `nw` executable)
-################################################################################
+        console.log "Creating executable..."
 
-# GNU/Linux
-buildLinux = ->
+        cat = exec "cat #{binary_loc} #{pack} > #{dest} && chmod +x #{dest}"
+        cat.stdout.on "data", (data) -> console.log data
+        cat.stderr.on "data", (err) -> console.log(err) and process.exit -1
+        cat.on "close", (code) -> 
+          # copy nw.pak to build
+          console.log "Copying `nw.pak`..."
 
-# Mac OSX
-buildOSX = ->
+          input  = fs.createReadStream path.normalize "#{binary_loc}/../nw.pak"
+          output = fs.createWriteStream "#{build_to}/nw.pak"
 
-# Microsoft Windows
-buildWindows = ->
+          input.pipe output
 
+          input.on "error", (err) -> console.log err
+          output.on "error", (err) -> console.log err
+          output.on "finish", -> console.log "UNTV build written to #{dest}"
+
+    # Mac OSX
+    when "darwin32"
+      process.exit -1
+
+    # Microsoft Windows
+    when "win32"
+      process.exit -1
