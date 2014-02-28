@@ -57,6 +57,6 @@
     "hat": "0.0.3",
     "nt": "~0.3.1",
     "musicmetadata": "~0.2.7",
-    "untv-remote": "git+https://github.com/untv/untv-remote.git"
+    "untv-remote": "0.5.0"
   }
 }
