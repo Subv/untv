@@ -2,7 +2,7 @@
   "main": "src/index.html",
   "name": "untv",
   "description": "drm-free media platform for home theater computers",
-  "version": "0.5.0",
+  "version": "0.5.0-alpha",
   "author": "Gordon Hall <gordon@gordonwritescode.com>",
   "repository": {
     "type": "git",
