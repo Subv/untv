@@ -10,6 +10,26 @@ This project is still evolving, so right now your best bet is to check out the
 
 Download the [latest bundled release](https://github.com/untv/untv/releases) for your platform and place in your Applications directory (or equivalent) and launch as usual. 
 
+#### Using the Keyboard as a Remote
+
+If you are developing for UNTV or do not wish to use your smartphone as a 
+remote control, you may use your keyboard as a remote. Below is a list of 
+the different keys and combinations as well as their targeted `event`. For 
+more information about these events from a development perspective, you will 
+likely need to read `extending-the-remote.md`.
+
+* **Up Arrow**: Scroll Up
+* **Left Arrow**: Scroll Left
+* **Right Arrow**: Scroll Right
+* **Down Arrow**: Scroll Down
+* **Home**: Toggle Menu
+* **Page Up**: Go Back
+* **Page Down**: Go Next
+* **Enter**: Select
+* **Shift + Space**: Pause/Play Player
+* **Shift + Left Arrow**: Seek Player Previous
+* **Shift + Right Arrow**: Seek Player Next
+
 ### Developers
 
 Since UNTV aims to provide support for as many codecs as possible, it uses a custom build of [Node-Webkit](https://github.com/rogerwang/node-webkit) which I have compiled for linux64, darwin32, and win32. You may, however, use the upstream builds of Node-Webkit, but you will sacrifice playback support for just about everything except for `.ogg` and `.webm`. 
