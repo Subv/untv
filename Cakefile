@@ -190,12 +190,12 @@ task 'build', 'builds platform specific package(s) for untv', (options) ->
     # GNU/Linux
     when "linux64", "linux32"
       console.log "Compressing source..."
-      zip_proc = exec "zip -r --exclude=bin/* --exclude=build/* #{pack} *"
+      zip_proc = exec "zip -r --exclude='bin/*' --exclude='build/*' --exclude='dist/*' #{pack} *"
       
       zip_proc.stdout.on "data", (data) -> console.log data
       zip_proc.stderr.on "data", (err) -> console.log(err) and process.exit -1
       
-      zip_proc.on "close", (code) ->
+      zip_proc.on "exit", (code) ->
         inputs = [binary_loc, pack];
         output = fs.createWriteStream path.normalize dest
 
@@ -208,14 +208,25 @@ task 'build', 'builds platform specific package(s) for untv', (options) ->
           # copy nw.pak to build
           console.log "Copying `nw.pak`..."
 
-          input  = fs.createReadStream path.normalize "#{binary_loc}/../nw.pak"
-          output = fs.createWriteStream "#{build_to}/nw.pak"
+          nwpak_input  = fs.createReadStream path.normalize "#{binary_loc}/../nw.pak"
+          nwpak_output = fs.createWriteStream "#{build_to}/nw.pak"
 
-          input.pipe output
+          nwpak_input.pipe nwpak_output
 
-          input.on "error", (err) -> console.log err
-          output.on "error", (err) -> console.log err
-          output.on "finish", -> console.log "UNTV build written to #{dest}"
+          nwpak_input.on "error", (err) -> console.log err
+          nwpak_output.on "error", (err) -> console.log err
+          nwpak_output.on "finish", -> 
+            # copy libffmpeg to build
+            console.log "Copying `libffmpegsumo.so`..."
+
+            libff_input  = fs.createReadStream path.normalize "#{binary_loc}/../libffmpegsumo.so"
+            libff_output = fs.createWriteStream "#{build_to}/libffmpegsumo.so"
+
+            libff_input.pipe libff_output
+
+            libff_input.on "error", (err) -> console.log err
+            libff_output.on "error", (err) -> console.log err
+            libff_output.on "finish", -> console.log "UNTV build written to #{dest}"
 
     # Mac OSX
     when "darwin32"
