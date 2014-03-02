@@ -1,8 +1,7 @@
 ![UNTV](https://raw.github.com/untv/untv/master/src/assets/images/untv-logo.png)
 
 UNTV is a cross platform DRM-free media platform for home theater computers. 
-This project is still evolving, so right now your best bet is to check out the 
-**[docs/ directory](https://github.com/gordonwritescode/untv/tree/master/docs)**.
+Developers should read "Getting Started" and the [API Documentation](http://untvapp.com/api.html).
 
 ## Getting Started
 
@@ -37,7 +36,7 @@ Since UNTV aims to provide support for as many codecs as possible, it uses a cus
 Clone the repository:
 
 ```
-~# git clone https://github.com/gordonwritescode/untv.git
+~# git clone https://github.com/untv/untv.git
 ```
 
 Install dependencies using Node Package Manager:
