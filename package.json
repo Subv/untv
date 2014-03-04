@@ -26,7 +26,7 @@
     "title": "UNTV",
     "icon": "src/assets/images/untv-icon.png",
     "toolbar": false,
-    "frame": false,
+    "frame": true,
     "width": 1024,
     "height": 576,
     "position": "center",
@@ -34,7 +34,7 @@
     "max_height": 1080,
     "min_width": 640,
     "max_width": 1920,
-    "fullscreen": true,
+    "fullscreen": false,
     "show": false,
     "kiosk": false
   },

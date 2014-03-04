@@ -21,6 +21,7 @@ class Remote extends EventEmitter
     # initialize
     do @subscribe
     do @bindKeyboard
+    do @bindMousewheel
 
   listen: (callback) =>
     @server.listen @port, callback
@@ -65,6 +66,23 @@ class Remote extends EventEmitter
     keyboard.bind "shift+space", => @emit "player:toggle"
     keyboard.bind "shift+right", => @emit "player:next"
     keyboard.bind "shift+left", => @emit "player:prev"
+
+  bindMousewheel: =>
+    # swiping up and down
+    $(window).bind "mousewheel", (event) =>
+      x_delta = event.originalEvent.wheelDeltaX
+      y_delta = event.originalEvent.wheelDeltaY
+
+      if y_delta
+        if y_delta > 0 then @emit "scroll:up"
+        else @emit "scroll:down"
+        
+      if x_delta
+        if x_delta > 0 then @emit "scroll:left"
+        else @emit "scroll:right"
+
+    # making a selection
+    $(window).bind "click", (event) => @emit "go:select"
 
   interfaces: =>
     interfaces = do networkInterfaces

@@ -197,7 +197,7 @@ module.exports = (env) ->
 
     torrent.on "error", (err) ->
       # show error message
-      # notifier.notify manifest.name, err, yes
+      notifier.notify manifest.name, err, yes
       # do grid.giveFocus
 
     torrent.on "ready", (file_info) ->
