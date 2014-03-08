@@ -22,7 +22,7 @@ header.extension-header {
 #torrent-list {
   background-color: rgba(0,0,0,0.5);
   position: fixed;
-  top: 40%;
+  top: 65px;
   left: 20%;
   right: 0;
   bottom: 0;
@@ -82,12 +82,24 @@ header.extension-header {
 
 #torrent-details {
   position: absolute;
-  top: 65px;
-  left: 20%;
-  right: 0;
-  bottom: 60%;
-  z-index: 1;
+  top: 50%;
+  left: 50%;
+  z-index: 9;
   overflow: hidden;
+  display: none;
+  background: #000;
+  width: 800px;
+  height: 400px;
+  margin: -200px 0 0 -400px;
+  border: 1px solid #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #fff;
+}
+
+.movie-help {
+  margin: 32px;
+  font-size: 24px;
+  text-align: center;
 }
 
 #torrent-details .loader {

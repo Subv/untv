@@ -208,6 +208,7 @@ class GlobalMenu extends EventEmitter
       do @rebindCachedListeners if @cached_remote_listeners
       # then do teh flashy things
       @container.removeClass "#{@menu_animation_in_classname}"
+      @container.removeClass "visible"
       @container.addClass "#{@menu_animation_out_classname}"
       ($ "#app").removeClass "blurred"
       @visible = no

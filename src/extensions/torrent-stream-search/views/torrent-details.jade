@@ -13,6 +13,8 @@
         -var stars = CastList.map(function(d) { return d.ActorName }).join(", ")
         span #{stars}
     p.movie-plot !{ShortDescription}
+    div.movie-help.
+      Press <strong>select</strong> to play. Press <strong>back</strong> to dismiss.
 .loader
-.movie-screen.blurred-less
-  img(src="#{MediumScreenshot2}")
+//- .movie-screen.blurred-less
+//-   img(src="#{MediumScreenshot2}")

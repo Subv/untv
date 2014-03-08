@@ -40,6 +40,10 @@ class NavigableList extends EventEmitter
     @remote.on "scroll:up", => do @prevItem if @focused # and not @scrolling
     @remote.on "scroll:down", => do @nextItem if @focused # and not @scrolling
 
+    ($ "li", @scroller).bind "mouseover", (event) =>
+      item = $ event.target
+      @giveFocus item.index()
+
   nextItem: =>
     if @last_item.nextAll("li").length
       @last_item.removeClass @selected_item_classname
@@ -106,6 +110,7 @@ class NavigableList extends EventEmitter
       if index
         items = ($ "li", @scroller)
         item  = items[index] or items[0]
+        items.removeClass @selected_item_classname
         @last_item = ($ item).addClass @selected_item_classname if item
       else
         if @last_item then @last_item.addClass @selected_item_classname

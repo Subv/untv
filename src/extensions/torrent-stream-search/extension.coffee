@@ -48,7 +48,7 @@ module.exports = (env) ->
   ###
   grid_config  = 
     adjust_x: menu_view.outerWidth()
-    adjust_y: details_view.height() - header.outerHeight()
+    adjust_y: header.outerHeight()
     # prevents auto row switch on bounds reached left/right
     smart_scroll: no 
     # prevents auto row sizing based on visibility of items
@@ -186,29 +186,42 @@ module.exports = (env) ->
           do grid.giveFocus
 
   grid.on "item_selected", (item) ->
-    do grid.releaseFocus
-    env.notifier.notify env.manifest.name, "Preparing...", yes
+    # show the details view and bind remote controls
+    details_view.show()
+    grid.releaseFocus()
 
-    item_data    = (env.gui.$ ".movie", item).data()
-    torrent_url  = item_data.torrent
-    torrent_hash = item_data.hash
+    dismissMovie = -> 
+      details_view.hide()
+      grid.giveFocus()
+      env.remote.removeListener "go:select", playMovie
 
-    torrent.consume torrent_url
+    playMovie = ->
+      env.remote.removeListener "go:back", dismissMovie
+      env.notifier.notify env.manifest.name, "Preparing...", yes
 
-    torrent.on "error", (err) ->
-      # show error message
-      notifier.notify manifest.name, err, yes
-      # do grid.giveFocus
+      item_data    = (env.gui.$ ".movie", item).data()
+      torrent_url  = item_data.torrent
+      torrent_hash = item_data.hash
 
-    torrent.on "ready", (file_info) ->
-      # check codec support and open stream
-      do torrent.stream
+      torrent.consume torrent_url
 
-    torrent.on "stream", (stream_info) ->
-      # pass `stream_url` to the player and show
-      url = stream_info.stream_url
-      env.player.play url, "video"
-      env.player.on "player:progress", (progress) -> # use for updating custom controls?
+      torrent.on "error", (err) ->
+        # show error message
+        notifier.notify manifest.name, err, yes
+        # do grid.giveFocus
+
+      torrent.on "ready", (file_info) ->
+        # check codec support and open stream
+        do torrent.stream
+
+      torrent.on "stream", (stream_info) ->
+        # pass `stream_url` to the player and show
+        url = stream_info.stream_url
+        env.player.play url, "video"
+        env.player.on "player:progress", (progress) -> 
+
+    env.remote.once "go:select", playMovie
+    env.remote.once "go:back", dismissMovie
 
   grid.on "out_of_bounds", (data) ->
     switch data.direction
