@@ -37,7 +37,7 @@ module.exports = (env) ->
   Initialize Navigable List
   ###
   list_config = 
-    adjust_y: header.outerHeight()
+    # adjust_y: header.outerHeight()
     smart_scroll: yes 
     leave_decoration: yes
   settings_menu = new NavigableList settings_cont, env.remote, list_config

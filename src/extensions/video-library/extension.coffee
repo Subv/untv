@@ -112,7 +112,7 @@ module.exports = (env) ->
   Load Movie Grid
   ###
   movie_grid_config = 
-    adjust_y: header.outerHeight()
+    # adjust_y: header.outerHeight()
     adjust_x: selector_view.width()
     smart_scroll: no 
     smart_rows: yes

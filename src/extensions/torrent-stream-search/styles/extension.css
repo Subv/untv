@@ -22,7 +22,8 @@ header.extension-header {
 #torrent-list {
   background-color: rgba(0,0,0,0.5);
   position: fixed;
-  top: 65px;
+  /*top: 65px;*/
+  top: 0;
   left: 20%;
   right: 0;
   bottom: 0;
@@ -189,7 +190,8 @@ header.extension-header {
 
 #torrent-menu {
   position: fixed;
-  top: 65px;
+  /*top: 65px;*/
+  top: 0;
   bottom: 0;
   left: 0;
   right: 80%;

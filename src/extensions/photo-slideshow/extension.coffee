@@ -67,7 +67,7 @@ module.exports = (env) ->
   Load Photo Grid
   ###
   photo_grid_config = 
-    adjust_y: header.outerHeight()
+    # adjust_y: header.outerHeight()
     adjust_x: selector_view.width()
     smart_scroll: no 
     smart_rows: no

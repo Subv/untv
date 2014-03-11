@@ -48,7 +48,7 @@ module.exports = (env) ->
   ###
   grid_config  = 
     adjust_x: menu_view.outerWidth()
-    adjust_y: header.outerHeight()
+    # adjust_y: header.outerHeight()
     # prevents auto row switch on bounds reached left/right
     smart_scroll: no 
     # prevents auto row sizing based on visibility of items
@@ -61,7 +61,7 @@ module.exports = (env) ->
   Configure Menu List
   ###
   menu_config  = 
-    adjust_y: header.outerHeight()
+    # adjust_y: header.outerHeight()
     adjust_x: details_view.width()
     # enables scroll to top/bottom when scrolling past bottom/top
     smart_scroll: yes 

@@ -44,6 +44,9 @@ class NavigableList extends EventEmitter
       item = $ event.target
       @giveFocus item.index()
 
+    @scroller.bind "mouseover", (event) => @giveFocus()
+    @scroller.bind "mouseout", (event) => @releaseFocus()
+
   nextItem: =>
     if @last_item.nextAll("li").length
       @last_item.removeClass @selected_item_classname
