@@ -1,5 +1,5 @@
 {
   "remote_port": 8080,
   "show_remote_instructions": true,
-  "load_third_party_extensions": true
+  "load_third_party_extensions": false
 }
