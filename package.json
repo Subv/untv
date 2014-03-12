@@ -2,7 +2,7 @@
   "main": "src/index.html",
   "name": "untv",
   "description": "drm-free media platform for home theater computers",
-  "version": "0.5.0-alpha",
+  "version": "0.5.1-alpha",
   "author": "Gordon Hall <gordon@gordonwritescode.com>",
   "repository": {
     "type": "git",
@@ -56,7 +56,7 @@
     "hat": "0.0.3",
     "nt": "~0.3.1",
     "musicmetadata": "~0.2.7",
-    "untv-remote": "git+https://github.com/untv/untv-remote.git#v0.5.0",
+    "untv-remote": "git+https://github.com/untv/untv-remote.git#v0.5.1",
     "peerflix": "~0.1.6"
   }
 }
