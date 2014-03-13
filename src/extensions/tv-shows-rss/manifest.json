@@ -1,0 +1,17 @@
+{
+  "name": "Stream TV Shows",
+  "icon": "icons/icon-white.svg",
+  "description": "Browse and watch popular TV shows.",
+  "main": "extension.coffee",
+  "view": "view.jade",
+  "list_priority": 0,
+  "stylesheets": [
+    "styles/extension.css"
+  ],
+  "config": {
+    
+  },
+  "locals": {
+    
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "Instant Streaming",
+  "name": "Stream Movies",
   "icon": "icons/icon-white.svg",
   "description": "Search and browse BitTorrents and stream movies.",
   "main": "extension.coffee",
