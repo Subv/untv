@@ -42,16 +42,17 @@ class ShowFeed extends EventEmitter
       callback null, show.episodes
 
   parse: (item) =>
-    data = {} 
-    parts        = item.title.split /([0-9]*x[0-9]*)/
-    data.title   = item['showrss:showname']['#']
-    data.season  = parts[1]?.split("x")[0]
-    data.episode = 
+    data          = {} 
+    parts         = item.title.split /([0-9]*x[0-9]*)/
+    data.title    = item['showrss:showname']['#']
+    data.season   = parts[1]?.split("x")[0]
+    data.episode  = 
       title: parts[2]?.split("720p")[0].trim()
       number: parts[1]?.split("x")[1]
-    data.link    = item.link
-    data.id      = item['showrss:showid']['#']
-    data.date    = new Date item.pubdate
+    data.link     = item.link
+    data.torrents = @getTorrentURLFromMagnet data.link
+    data.id       = item['showrss:showid']['#']
+    data.date     = new Date item.pubdate
     return data
 
   getShowById: (showId) =>
@@ -70,6 +71,23 @@ class ShowFeed extends EventEmitter
           title: ($ this).html()
       
       @emit "ready", @shows
+
+  getTorrentURLFromMagnet: (magnet_uri) ->
+    magnet_uri = magnet_uri.replace /^\s+/, ""
+    if magnet_uri.length is 0 then throw "no magnet specified"
+    a1 = magnet_uri.indexOf "xt=urn:btih:"
+    if a1 is -1 then throw "broken magnet link"
+    a2 = magnet_uri.indexOf "&", a1
+    a1 += 12;
+    if a2 is -1 then magnet_uri = magnet_uri.substring a1
+    else magnet_uri = magnet_uri.substring a1, a2
+    if magnet_uri.length is 0 then throw "broken magnet link"
+    magnet_uri = magnet_uri.toUpperCase()
+    return [
+      "https://torcache.net/torrent/#{magnet_uri}.torrent"
+      "https://zoink.it/torrent/#{magnet_uri}.torrent"
+    ]
+
 
 
 module.exports = ShowFeed

@@ -22,4 +22,3 @@ feed.on "ready", ->
   # now get available episodes for portlandia!
   feed.getFeed "329", (err, episodes) ->
     console.log err or episodes
-
