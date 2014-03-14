@@ -150,6 +150,7 @@ task 'start', 'starts untv application', (options) ->
     #{binary_loc} "#{__dirname}"
   """
   untv = exec command
+
   # pipe untv output to console
   untv.stdout.on "data", (data) -> console.log "untv: #{data}"
   untv.stderr.on "data", (data) -> console.error "untv: #{data}"

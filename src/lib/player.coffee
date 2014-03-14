@@ -26,15 +26,23 @@ class Player extends EventEmitter
     @video.src        = null
     @video.onprogress = @informTime
     @video.poster     = "/assets/images/loader.gif"
-
+    
+    # create subtitles tag
+    @subtitles        = window.document.createElement "track"
+    @subtitles.kind   = "subtitles"
+    @subtitles.label  = "en"
+    @subtitles.srclang = "eng"
+    @subtitles.src    = "/assets/subtitles/1.srt"
+    ($ @subtitles).appendTo @video
+    
     # listen for remote events
     do @subscribe
-
+    
     # resize the video player
     ($ window).on "resize", =>
       @video.height = @height()
       @video.width  = @width()
-
+    
     # handle errors
     ($ @video).on "error", (err) => do @showErrorMessage
     ($ @audio).on "error", (err) => do @showErrorMessage
@@ -77,12 +85,12 @@ class Player extends EventEmitter
 
   next: =>
     # seek by increment forward
-    @remote.emit "player:seek", 
+    @remote.emit "player:seek",
       position: @active_player?.currentTime + @seek_increment
 
   prev: =>
     # seek by increment backward
-    @remote.emit "player:seek", 
+    @remote.emit "player:seek",
       position: @active_player?.currentTime - @seek_increment
 
   seek_increment: 12000 # 12 secs
@@ -95,7 +103,7 @@ class Player extends EventEmitter
     if @time < new_time
       # @is_playing = yes
       @time       = new_time
-      @emit "player:progress", 
+      @emit "player:progress",
         duration: @duration()
         position: time
     # else

@@ -76,6 +76,8 @@ if config.load_third_party_extensions
 # Register "Actions"
 menu.addAction action for action in actions
 
+process.on "uncaughtException", (err) => console.log("Ex: " + err);
+
 # show user interface
 do ($ "#init-loader").hide
 do menu.open
